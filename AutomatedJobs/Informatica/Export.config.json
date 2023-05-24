@@ -1,0 +1,5 @@
+{
+    "IICSDatabaseConnectionName": "IICSDatabase",
+    "IICSAPIConnectionName": "InformaticaAPI",
+    "Projects": [ "Default" ]
+}

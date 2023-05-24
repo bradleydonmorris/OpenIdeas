@@ -1,0 +1,268 @@
+{
+    "features": [
+        {
+            "geometry": null,
+            "id": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+            "type": "Feature",
+            "properties": {
+                "creator": "0425LE",
+                "visible": true,
+                "title": "Mohawk",
+                "class": "Folder",
+                "updated": 1682565226094,
+                "labelVisible": true
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.8895846997052,
+                    36.21921521753944,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "036c328a-ca80-483d-aaf8-07e46c33e7f5",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 40258 12135\nUTM:15S 240258E  4012135N",
+                "title": "D",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632395726,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.88671064192997,
+                    36.223741552855536,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "38e019d4-53fc-40c0-8000-45b66aca22c9",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 40531 12630\nUTM:15S 240531E  4012630N",
+                "title": "B",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632377478,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.89676359824804,
+                    36.22282180733927,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "46dbe1b2-8921-4b61-9d2e-281198eb4b83",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 39624 12555\nUTM:15S 239624E  4012555N",
+                "title": "C",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632386184,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.89298,
+                    36.22029,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "80233007-6240-4470-a16d-cccfe5d90b3e",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 39956 12263\nUTM:15S 239956E  4012263N",
+                "title": "A",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632367139,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.88676139927006,
+                    36.218747229188196,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "27faa538-2354-402a-be24-f14e13df27ee",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 40510 12076\nUTM:15S 240510E  4012076N",
+                "title": "E",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632405038,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.88998005008793,
+                    36.21570037362412,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "9f066743-e012-46a0-bf35-995071c6fe16",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 40211 11746\nUTM:15S 240211E  4011746N",
+                "title": "F",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632418544,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.8868043146143,
+                    36.22750627794254,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "29d87998-aa3d-4f8a-9c3d-50c30b9bca6e",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 40535 13048\nUTM:15S 240535E  4013048N",
+                "title": "G",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632428773,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.89585945224857,
+                    36.21660059329996,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "c4ef7c3f-09c4-44dd-bd04-7cf7e2affede",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 39685 11862\nUTM:15S 239685E  4011862N",
+                "title": "H",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632439752,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.90279028034305,
+                    36.214298087726476,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "1c52dc43-d492-4beb-8d3f-526fdf7ca12a",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 39054 11625\nUTM:15S 239054E  4011625N",
+                "title": "I",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632448364,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    -95.8987991533289,
+                    36.219733969472834,
+                    0,
+                    0
+                ],
+                "type": "Point"
+            },
+            "id": "d632b6ef-4cad-426f-9946-d0341f710dd2",
+            "type": "Feature",
+            "properties": {
+                "marker-symbol": "point",
+                "creator": "0425LE",
+                "marker-color": "FF0000",
+                "description": "USNG:15S TA 39431 12217\nUTM:15S 239431E  4012217N",
+                "title": "J",
+                "marker-size": "1",
+                "class": "Marker",
+                "updated": 1682632457073,
+                "folderId": "91e1f312-5065-4809-b2e3-b74eb816d79a",
+                "marker-rotation": null
+            }
+        }
+    ],
+    "type": "FeatureCollection"
+}

@@ -1,0 +1,3 @@
+﻿#This script should be saved to...
+#  $HOME\Documents\WindowsPowerShell\profile.ps1
+Get-ChildItem -Filter "*.ps1" -Path ([IO.Path]::Combine($HOME, "source\repos\bradleydonmorris\Common\PowerShell\Functions")) | %{. $_.FullName }

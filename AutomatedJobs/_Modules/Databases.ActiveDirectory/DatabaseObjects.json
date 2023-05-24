@@ -1,0 +1,2791 @@
+{
+  "Storage": {
+    "HeapFileGroupName": "PRIMARY",
+    "IndexFileGroupName": "PRIMARY",
+    "LobFileGroupName": "PRIMARY"
+  },
+  "DropSequence": [
+    {
+      "Sequence": 1,
+      "Type": "Procedure",
+      "Name": "ImportUser"
+    },
+    {
+      "Sequence": 2,
+      "Type": "Procedure",
+      "Name": "ImportGroup"
+    },
+    {
+      "Sequence": 3,
+      "Type": "Procedure",
+      "Name": "Temmtp"
+    },
+    {
+      "Sequence": 4,
+      "Type": "Procedure",
+      "Name": "RebuildIndexes"
+    },
+    {
+      "Sequence": 5,
+      "Type": "Procedure",
+      "Name": "ProcessManagerialChanges"
+    },
+    {
+      "Sequence": 6,
+      "Type": "Procedure",
+      "Name": "ProcessGroupMembershipChanges"
+    },
+    {
+      "Sequence": 7,
+      "Type": "Procedure",
+      "Name": "ProcessGroupManagerChanges"
+    },
+    {
+      "Sequence": 8,
+      "Type": "Procedure",
+      "Name": "GetUserLastWhenChangedTime"
+    },
+    {
+      "Sequence": 9,
+      "Type": "Procedure",
+      "Name": "GetGroupLastWhenChangedTime"
+    },
+    {
+      "Sequence": 10,
+      "Type": "Procedure",
+      "Name": "AddUserAccountControl"
+    },
+    {
+      "Sequence": 11,
+      "Type": "Function",
+      "Name": "Temsdfasdf"
+    },
+    {
+      "Sequence": 12,
+      "Type": "Function",
+      "Name": "GetNaturalPathFromLDIFPath"
+    },
+    {
+      "Sequence": 13,
+      "Type": "Function",
+      "Name": "GetE164PhoneNumber"
+    },
+    {
+      "Sequence": 14,
+      "Type": "Function",
+      "Name": "GetDigitsOnly"
+    },
+    {
+      "Sequence": 15,
+      "Type": "Table",
+      "Name": "UserPhone"
+    },
+    {
+      "Sequence": 16,
+      "Type": "Table",
+      "Name": "UserObjectClass"
+    },
+    {
+      "Sequence": 17,
+      "Type": "Table",
+      "Name": "temp"
+    },
+    {
+      "Sequence": 18,
+      "Type": "Table",
+      "Name": "ManagerialHierarchy"
+    },
+    {
+      "Sequence": 19,
+      "Type": "Table",
+      "Name": "GroupObjectClass"
+    },
+    {
+      "Sequence": 20,
+      "Type": "Table",
+      "Name": "GroupMembershipUser"
+    },
+    {
+      "Sequence": 21,
+      "Type": "Table",
+      "Name": "GroupMembershipGroup"
+    },
+    {
+      "Sequence": 22,
+      "Type": "Table",
+      "Name": "GroupManagerUser"
+    },
+    {
+      "Sequence": 23,
+      "Type": "Table",
+      "Name": "GroupManagerGroup"
+    },
+    {
+      "Sequence": 24,
+      "Type": "Table",
+      "Name": "User"
+    },
+    {
+      "Sequence": 25,
+      "Type": "Table",
+      "Name": "Group"
+    },
+    {
+      "Sequence": 26,
+      "Type": "Table",
+      "Name": "UserAccountControlFlag"
+    },
+    {
+      "Sequence": 27,
+      "Type": "Table",
+      "Name": "UserAccountControl"
+    },
+    {
+      "Sequence": 28,
+      "Type": "Table",
+      "Name": "tempHeap"
+    },
+    {
+      "Sequence": 29,
+      "Type": "Table",
+      "Name": "StagedManagerialHierarchy"
+    },
+    {
+      "Sequence": 30,
+      "Type": "Table",
+      "Name": "StagedGroupMembership"
+    },
+    {
+      "Sequence": 31,
+      "Type": "Table",
+      "Name": "StagedGroupManager"
+    },
+    {
+      "Sequence": 32,
+      "Type": "Table",
+      "Name": "PhoneType"
+    },
+    {
+      "Sequence": 33,
+      "Type": "Table",
+      "Name": "OrganizationalUnit"
+    },
+    {
+      "Sequence": 34,
+      "Type": "Table",
+      "Name": "ObjectClass"
+    },
+    {
+      "Sequence": 35,
+      "Type": "Table",
+      "Name": "ObjectCategory"
+    },
+    {
+      "Sequence": 36,
+      "Type": "Table",
+      "Name": "GroupType"
+    },
+    {
+      "Sequence": 37,
+      "Type": "Table",
+      "Name": "Attribute"
+    }
+  ],
+  "Tables": [
+    {
+      "Sequence": 1,
+      "Name": "Attribute",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "AttributeId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Group",
+          "CondensedType": "[tinyint]",
+          "Type": "tinyint",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "Sequence",
+          "CondensedType": "[tinyint]",
+          "Type": "tinyint",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "ActiveDirectoryName",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "Name",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "DataType",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 2,
+      "Name": "GroupType",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupTypeId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Category",
+          "CondensedType": "[nvarchar](20)",
+          "Type": "nvarchar",
+          "TypeLength": 20,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "Scope",
+          "CondensedType": "[nvarchar](20)",
+          "Type": "nvarchar",
+          "TypeLength": 20,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 3,
+      "Name": "ObjectCategory",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "ObjectCategoryId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Name",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_ObjectCategory_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "Name",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 4,
+      "Name": "ObjectClass",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "ObjectClassId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Name",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_ObjectClass_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "Name",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 5,
+      "Name": "OrganizationalUnit",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "OrganizationalUnitId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "LDIFPath",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "NaturalPath",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_OrganizationalUnit_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "LDIFPath",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 6,
+      "Name": "PhoneType",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "PhoneTypeId",
+          "CondensedType": "[tinyint]",
+          "Type": "tinyint",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Name",
+          "CondensedType": "[nvarchar](30)",
+          "Type": "nvarchar",
+          "TypeLength": 30,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_PhoneType_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "Name",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 7,
+      "Name": "StagedGroupManager",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "StagedGroupManagerId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ObjectGUID",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "ManagerDistinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 8,
+      "Name": "StagedGroupMembership",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "StagedGroupMembershipId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "IsProcessed",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "Default": {
+            "Definition": "((0))"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "InsertTimestamp",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "ObjectGUID",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "MemberDistinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 9,
+      "Name": "StagedManagerialHierarchy",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "StagedManagerialHierarchyId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "IsProcessed",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "Default": {
+            "Definition": "((0))"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "InsertTimestamp",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "objectGuid",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "distinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "managerDistinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 10,
+      "Name": "tempHeap",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "tempHeapId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 2,
+          "Name": "u",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": true,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "t",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_tempHeap_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Descending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_tempHeap_GroupIdt",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Descending"
+            },
+            {
+              "Name": "t",
+              "SortDirection": "Ascending"
+            }
+          ],
+          "IncludeColumns": [
+            {
+              "Name": "u"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 11,
+      "Name": "UserAccountControl",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "UserAccountControlId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "LoginScriptWillRun",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "AccountIsDisabled",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "HomeDirectoryIsRequire",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "AccountIsLockedOut",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "PasswordIsNotRequired",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 7,
+          "Name": "UserCannotChangePassword",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 8,
+          "Name": "UserCanSendEncryptedPassword",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 9,
+          "Name": "AccountFor MatchingAccountInTrustedDomain",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 10,
+          "Name": "NormalAccount",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 11,
+          "Name": "InternalDomainTrustAccount",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 12,
+          "Name": "WorkstationTrustAccount",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 13,
+          "Name": "ServerTrustAccount",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 14,
+          "Name": "PasswordNeverExpires",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 15,
+          "Name": "MajorityNodeSetLogonAccount",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 16,
+          "Name": "SmartcardIsRequired",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 17,
+          "Name": "AccountIsTrustedForDelegation",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 18,
+          "Name": "AccountIsNotDelegated",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 19,
+          "Name": "OnlyAllowDataEncryptionStandardKeyTypes",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 20,
+          "Name": "DoNotRequireKerberosPerAuthorization",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 21,
+          "Name": "PasswordHasExpired",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 22,
+          "Name": "AccountIsTrustedForAuthenticationDelegation",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 23,
+          "Name": "AccountIsReadOnlyDomainController",
+          "CondensedType": "[bit]",
+          "Type": "bit",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ]
+    },
+    {
+      "Sequence": 12,
+      "Name": "UserAccountControlFlag",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "UserAccountControlFlagId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "Name",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "HumanReadableName",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 4,
+          "Name": "Description",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_UserAccountControlFlag_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "Name",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 13,
+      "Name": "Group",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "ParentOrganizationalUnitId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "OrganizationalUnit",
+            "Column": "OrganizationalUnitId",
+            "Suffix": "Parent"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ObjectCategoryId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "ObjectCategory",
+            "Column": "ObjectCategoryId"
+          }
+        },
+        {
+          "Ordinal": 4,
+          "Name": "GroupTypeId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "GroupType",
+            "Column": "GroupTypeId"
+          }
+        },
+        {
+          "Ordinal": 5,
+          "Name": "ObjectGUID",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "ObjectSID",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 7,
+          "Name": "USNCreated",
+          "CondensedType": "[bigint]",
+          "Type": "bigint",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 8,
+          "Name": "USNChanged",
+          "CondensedType": "[bigint]",
+          "Type": "bigint",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 9,
+          "Name": "WhenCreatedTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 10,
+          "Name": "WhenChangedTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 11,
+          "Name": "DistinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 12,
+          "Name": "CommonName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 13,
+          "Name": "SAMAccountName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 14,
+          "Name": "EmailAddress",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 15,
+          "Name": "DisplayName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 16,
+          "Name": "Name",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 17,
+          "Name": "Description",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 18,
+          "Name": "Info",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_Group_Key1",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ObjectGUID",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "UX_Group_Key2",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "DistinguishedName",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_Group_ParentOrganizationalUnitId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ParentOrganizationalUnitId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_Group_ObjectCategoryId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ObjectCategoryId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_Group_GroupTypeId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupTypeId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 14,
+      "Name": "User",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "UserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "ParentOrganizationalUnitId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "OrganizationalUnit",
+            "Column": "OrganizationalUnitId",
+            "Suffix": "Parent"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ObjectCategoryId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "ObjectCategory",
+            "Column": "ObjectCategoryId"
+          }
+        },
+        {
+          "Ordinal": 4,
+          "Name": "UserAccountControlId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "UserAccountControl",
+            "Column": "UserAccountControlId"
+          }
+        },
+        {
+          "Ordinal": 5,
+          "Name": "ObjectGUID",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "ObjectSID",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 7,
+          "Name": "USNCreated",
+          "CondensedType": "[bigint]",
+          "Type": "bigint",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 8,
+          "Name": "USNChanged",
+          "CondensedType": "[bigint]",
+          "Type": "bigint",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 9,
+          "Name": "LastLogoffTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 10,
+          "Name": "LastLogonTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 11,
+          "Name": "LastLogonTimestamp",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 12,
+          "Name": "PasswordLastSetTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 13,
+          "Name": "AccountExpiresTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 14,
+          "Name": "WhenCreatedTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 15,
+          "Name": "WhenChangedTime",
+          "CondensedType": "[datetime2](7)",
+          "Type": "datetime2",
+          "TypeLength": 7,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 16,
+          "Name": "UserPrincipalName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 17,
+          "Name": "DistinguishedName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 18,
+          "Name": "CommonName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 19,
+          "Name": "SAMAccountName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 20,
+          "Name": "EmailAddress",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 21,
+          "Name": "DisplayName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 22,
+          "Name": "Name",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 23,
+          "Name": "GivenName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 24,
+          "Name": "MiddleName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 25,
+          "Name": "Surname",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 26,
+          "Name": "Initials",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 27,
+          "Name": "EmployeeNumber",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 28,
+          "Name": "EmployeeID",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 29,
+          "Name": "Title",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 30,
+          "Name": "Department",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 31,
+          "Name": "Company",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 32,
+          "Name": "ExtensionAttribute1",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 33,
+          "Name": "ExtensionAttribute2",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 34,
+          "Name": "ExtensionAttribute3",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 35,
+          "Name": "PhysicalDeliveryOfficeName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 36,
+          "Name": "PostalCode",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 37,
+          "Name": "StreetAddress",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 38,
+          "Name": "PostOfficeBox",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 39,
+          "Name": "City",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 40,
+          "Name": "State",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 41,
+          "Name": "ISOAlpha2CountryCode",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 42,
+          "Name": "ISONumericCountryCode",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 43,
+          "Name": "CountryName",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 44,
+          "Name": "HomeDrive",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 45,
+          "Name": "HomeDirectory",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 46,
+          "Name": "ProfilePath",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 47,
+          "Name": "ScriptPath",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 48,
+          "Name": "URL",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 49,
+          "Name": "HomePage",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 50,
+          "Name": "Description",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 51,
+          "Name": "Info",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_User_Key1",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ObjectGUID",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "UX_User_Key2",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "DistinguishedName",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_User_ParentOrganizationalUnitId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ParentOrganizationalUnitId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_User_ObjectCategoryId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "ObjectCategoryId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_User_UserAccountControlId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "UserAccountControlId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 15,
+      "Name": "GroupManagerGroup",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupManagerGroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ManagerGroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId",
+            "Suffix": "Manager"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_GroupManagerGroup_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "ManagerGroupId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 16,
+      "Name": "GroupManagerUser",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupManagerUserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ManagerUserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId",
+            "Suffix": "Manager"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_GroupManagerUser_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "ManagerUserId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 17,
+      "Name": "GroupMembershipGroup",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupMembershipGroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "MemberGroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId",
+            "Suffix": "Member"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_GroupMembershipGroup_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "MemberGroupId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 18,
+      "Name": "GroupMembershipUser",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupMembershipUserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "MemberUserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId",
+            "Suffix": "Member"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_GroupMembershipUser_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "MemberUserId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 19,
+      "Name": "GroupObjectClass",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupObjectClassId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ObjectClassId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "ObjectClass",
+            "Column": "ObjectClassId"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_GroupObjectClass_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "ObjectClassId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 20,
+      "Name": "ManagerialHierarchy",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "ManagerialHierarchyId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "UserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ManagerUserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId",
+            "Suffix": "Manager"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_ManagerialHierarchy_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "UserId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "ManagerUserId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 21,
+      "Name": "temp",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "tempId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "u",
+          "CondensedType": "[uniqueidentifier]",
+          "Type": "uniqueidentifier",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": true,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 3,
+          "Name": "GroupId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "Group",
+            "Column": "GroupId"
+          }
+        },
+        {
+          "Ordinal": 4,
+          "Name": "t",
+          "CondensedType": "[sys].[sysname]",
+          "Type": "sys.sysname",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "d",
+          "CondensedType": "[decimal](18, 2)",
+          "Type": "decimal",
+          "TypePrecision": 18,
+          "TypeScale": 2,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "Default": {
+            "Definition": "((1))"
+          }
+        },
+        {
+          "Ordinal": 6,
+          "Name": "comp1",
+          "CondensedType": "[decimal](19, 2)",
+          "Type": "decimal",
+          "TypePrecision": 19,
+          "TypeScale": 2,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "Computation": {
+            "Definition": "([d]+(1))"
+          }
+        },
+        {
+          "Ordinal": 7,
+          "Name": "comp2",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "Computation": {
+            "Definition": "([i]+(1))"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_temp_Key1",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Descending"
+            },
+            {
+              "Name": "u",
+              "SortDirection": "Ascending"
+            }
+          ],
+          "IncludeColumns": [
+            {
+              "Name": "d"
+            }
+          ]
+        },
+        {
+          "Name": "UX_temp_Key2",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "GroupId",
+              "SortDirection": "Descending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 22,
+      "Name": "UserObjectClass",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "UserObjectClassId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "UserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "ObjectClassId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "ObjectClass",
+            "Column": "ObjectClassId"
+          }
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "UX_UserObjectClass_Key",
+          "IsUnique": true,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "UserId",
+              "SortDirection": "Ascending"
+            },
+            {
+              "Name": "ObjectClassId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Sequence": 23,
+      "Name": "UserPhone",
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "UserPhoneId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": true,
+          "IsRowGUID": false,
+          "IsPrimaryKey": true
+        },
+        {
+          "Ordinal": 2,
+          "Name": "UserId",
+          "CondensedType": "[int]",
+          "Type": "int",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "User",
+            "Column": "UserId"
+          }
+        },
+        {
+          "Ordinal": 3,
+          "Name": "PhoneTypeId",
+          "CondensedType": "[tinyint]",
+          "Type": "tinyint",
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false,
+          "ForeignKey": {
+            "Schema": "ActiveDirectory",
+            "Table": "PhoneType",
+            "Column": "PhoneTypeId"
+          }
+        },
+        {
+          "Ordinal": 4,
+          "Name": "Number",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 5,
+          "Name": "NormailizedNumber",
+          "CondensedType": "[nvarchar](400)",
+          "Type": "nvarchar",
+          "TypeLength": 400,
+          "IsNullable": false,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 6,
+          "Name": "E164Format",
+          "CondensedType": "[nvarchar](20)",
+          "Type": "nvarchar",
+          "TypeLength": 20,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        },
+        {
+          "Ordinal": 7,
+          "Name": "Extension",
+          "CondensedType": "[nvarchar](10)",
+          "Type": "nvarchar",
+          "TypeLength": 10,
+          "IsNullable": true,
+          "IsIdentity": false,
+          "IsRowGUID": false,
+          "IsPrimaryKey": false
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "IX_UserPhone_UserId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "UserId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        },
+        {
+          "Name": "IX_UserPhone_PhoneTypeId",
+          "IsUnique": false,
+          "FileGroup": "DEFAULT_INDEX_FILE_GROUP",
+          "Columns": [
+            {
+              "Name": "PhoneTypeId",
+              "SortDirection": "Ascending"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Modules": [
+    {
+      "Sequence": 1,
+      "Type": "Function",
+      "Name": "GetDigitsOnly",
+      "ContentFileReference": "Function_GetDigitsOnly.sql",
+      "Returns": {
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "TypeLength": 400
+      },
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@Text",
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "Length": 400,
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 2,
+      "Type": "Function",
+      "Name": "GetE164PhoneNumber",
+      "ContentFileReference": "Function_GetE164PhoneNumber.sql",
+      "Returns": {
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "TypeLength": 400
+      },
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@NormalizedNumber",
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "Length": 400,
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 3,
+      "Type": "Function",
+      "Name": "GetNaturalPathFromLDIFPath",
+      "ContentFileReference": "Function_GetNaturalPathFromLDIFPath.sql",
+      "Returns": {
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "TypeLength": 400
+      },
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@LDIFPath",
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "Length": 400,
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 4,
+      "Type": "Function",
+      "Name": "Temsdfasdf",
+      "ContentFileReference": "Function_Temsdfasdf.sql",
+      "Returns": {
+        "CondensedType": "[nvarchar](1232)",
+        "Type": "nvarchar",
+        "TypeLength": 1232
+      },
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@Pam22",
+        "CondensedType": "[sys].[sysname]",
+        "Type": "sys.sysname",
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 5,
+      "Type": "Procedure",
+      "Name": "AddUserAccountControl",
+      "ContentFileReference": "Procedure_AddUserAccountControl.sql",
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@UserAccountControl",
+        "CondensedType": "[int]",
+        "Type": "int",
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 6,
+      "Type": "Procedure",
+      "Name": "GetGroupLastWhenChangedTime",
+      "ContentFileReference": "Procedure_GetGroupLastWhenChangedTime.sql"
+    },
+    {
+      "Sequence": 7,
+      "Type": "Procedure",
+      "Name": "GetUserLastWhenChangedTime",
+      "ContentFileReference": "Procedure_GetUserLastWhenChangedTime.sql"
+    },
+    {
+      "Sequence": 8,
+      "Type": "Procedure",
+      "Name": "ProcessGroupManagerChanges",
+      "ContentFileReference": "Procedure_ProcessGroupManagerChanges.sql"
+    },
+    {
+      "Sequence": 9,
+      "Type": "Procedure",
+      "Name": "ProcessGroupMembershipChanges",
+      "ContentFileReference": "Procedure_ProcessGroupMembershipChanges.sql"
+    },
+    {
+      "Sequence": 10,
+      "Type": "Procedure",
+      "Name": "ProcessManagerialChanges",
+      "ContentFileReference": "Procedure_ProcessManagerialChanges.sql"
+    },
+    {
+      "Sequence": 11,
+      "Type": "Procedure",
+      "Name": "RebuildIndexes",
+      "ContentFileReference": "Procedure_RebuildIndexes.sql"
+    },
+    {
+      "Sequence": 12,
+      "Type": "Procedure",
+      "Name": "Temmtp",
+      "ContentFileReference": "Procedure_Temmtp.sql",
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@Param22",
+        "CondensedType": "[sys].[sysname]",
+        "Type": "sys.sysname",
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 13,
+      "Type": "Procedure",
+      "Name": "ImportGroup",
+      "ContentFileReference": "Procedure_ImportGroup.sql",
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@GroupJSON",
+        "CondensedType": "[nvarchar](MAX)",
+        "Type": "nvarchar",
+        "Length": -1,
+        "IsOutput": false
+      }
+    },
+    {
+      "Sequence": 14,
+      "Type": "Procedure",
+      "Name": "ImportUser",
+      "ContentFileReference": "Procedure_ImportUser.sql",
+      "Parameters": {
+        "Sequence": 1,
+        "Name": "@UserJSON",
+        "CondensedType": "[nvarchar](MAX)",
+        "Type": "nvarchar",
+        "Length": -1,
+        "IsOutput": false
+      }
+    }
+  ]
+}

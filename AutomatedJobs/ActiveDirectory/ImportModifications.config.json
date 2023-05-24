@@ -1,0 +1,4 @@
+{
+    "DatabaseConnectionName": "ActiveDirectoryDatabase",
+    "LDAPConnectionName": "ActiveDirectoryLDAP"
+}
