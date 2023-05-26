@@ -1,30 +1,44 @@
 . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
     "Prompts",
-    "SQLDatabaseJson"
+    "ScriptSQLServerDatabase"
 );
 
-[String] $SQLInstance = "localhost";
-[String] $Database = "Integrations";
-[String] $Schema = "ActiveDirectory";
-[String] $OutputFolderPath = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Modules\Databases.ActiveDirectory";
+[String] $SQLInstance = "tsd-sql02-aws.fox.local";
+[String] $Database = "Reports_Library";
+[String] $Schema = "IICS";
+[String] $OutputDirectoryPath = "D:\SQLExports\temp";
 
-
+Clear-Host;
 $SQLInstance = $Global:Job.Prompts.StringResponse("SQL Instance", $SQLInstance);
 $Database = $Global:Job.Prompts.StringResponse("SQL Database", $Database);
 $Schema = $Global:Job.Prompts.StringResponse("SQL Schema", $Schema);
-$OutputFolderPath = $Global:Job.Prompts.StringResponse("Output Folder", $OutputFolderPath);
+$OutputDirectoryPath = $Global:Job.Prompts.StringResponse("Output Folder", $OutputDirectoryPath);
+
+$Global:Job.Logging.WriteVariables("Config", @{
+    "SQL Instance" = $SQLInstance;
+    "Database" = $Database;
+    "Schema" = $Schema;
+    "Output Folder Path" = $OutputDirectoryPath;
+});
 
 Clear-Host;
 $Global:Job.Prompts.WriteHashTable("Variables", 180, [Ordered]@{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;
-    "Output Folder Path" = $OutputFolderPath;
+    "Output Folder Path" = $OutputDirectoryPath;
 });
 
-$Global:Job.SQLDatabaseJson.Export(
-    $SQLInstance,
-    $Database,
-    $Schema,
-    $OutputFolderPath
-);
+$Global:Job.Logging.Execute("GenerateScriptsByDependency", {
+    $Global:Job.ScriptSQLServerDatabase.GenerateScriptsByDependency(
+        $SQLInstance,
+        $Database,
+        $Schema,
+        $null,
+        $OutputDirectoryPath,
+        $null
+    );
+});
+
+$Global:Job.Logging.Close();
+$Global:Job.Logging.ClearLogs();

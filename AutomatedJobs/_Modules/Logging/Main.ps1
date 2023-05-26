@@ -594,5 +594,50 @@ Add-Member `
             $SmtpClient.Send($MailMessage);
         }
     };
+Add-Member `
+    -InputObject $Global:Job.Logging `
+    -Name "Execute" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [CmdletBinding()]
+        Param (
+            [Parameter(Mandatory=$true)]
+            [String] $Name,
+
+            [Parameter(Mandatory=$true)]
+            [ScriptBlock] $ScriptBlock
+        )
+        $Global:Job.Logging.WriteEntry("Information", [String]::Format("Executing {0}", $Name));
+        $Global:Job.Logging.Timers.Add($Name);
+        $Global:Job.Logging.Timers.Start($Name);
+        $ScriptBlock.Invoke();
+        $Global:Job.Logging.Timers.Stop($Name);
+    };
+Add-Member `
+    -InputObject $Global:Job.Logging `
+    -Name "ExecuteAll" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [CmdletBinding()]
+        Param (
+            [Parameter(Mandatory=$true)]
+            [Collections.Hashtable] $Scripts
+        )
+        ForEach ($ScriptKey In $Scripts.Keys)
+        {
+            If ($Scripts[$ScriptKey] -is [ScriptBlock])
+            {
+                $Global:Job.Logging.WriteEntry("Information", [String]::Format("Executing {0}", $ScriptKey));
+                $Global:Job.Logging.Timers.Add($ScriptKey);
+                $Global:Job.Logging.Timers.Start($ScriptKey);
+                $Scripts[$ScriptKey].Invoke();
+                $Global:Job.Logging.Timers.Stop($ScriptKey);
+            }
+        }
+    };
+
+
+
+
 Set-Content -Path $Global:Job.Logging.CurrentLogFilePath -Value ([DateTime]::UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`tINFORMATION`tOpening Log");
 $Global:Job.Logging.OpenLogTime = [DateTime]::UtcNow;

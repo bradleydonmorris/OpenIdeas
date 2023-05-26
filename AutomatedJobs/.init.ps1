@@ -3,7 +3,7 @@ Param
     [Parameter(Position=1, Mandatory=$false)]
     [String[]] $RequiredModules
 )
-
+[IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".jobs-config.json");
 [String] $JobsConfigFilePath = [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".jobs-config.json");
 If (![IO.File]::Exists($JobsConfigFilePath))
 {
@@ -56,12 +56,19 @@ If (![IO.Directory]::Exists($Global:Job.DataDirectory))
 }
 
 [Collections.Hashtable] $Local:Modules = [Collections.Hashtable]::new();
-[String] $LoggingModuleFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, "Logging\Main.ps1"));
 
+[String] $LoggingModuleFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, "Logging\Main.ps1"));
 If ([IO.File]::Exists($LoggingModuleFilePath))
 {
     [void] $Local:Modules.Add("Logging", $LoggingModuleFilePath);
     . $LoggingModuleFilePath;
+}
+
+[String] $UtilitiesModuleFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, "Utilities\Main.ps1"));
+If ([IO.File]::Exists($UtilitiesModuleFilePath))
+{
+    [void] $Local:Modules.Add("Utilities", $UtilitiesModuleFilePath);
+    . $UtilitiesModuleFilePath;
 }
 
 [String] $ConnectionsModuleFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, "Connections\Main.ps1"));
@@ -99,87 +106,3 @@ Add-Member `
     -InputObject $Global:Job `
     -NotePropertyName "Modules" `
     -NotePropertyValue ([PSCustomObject]$Local:Modules);
-
-Add-Member `
-    -InputObject $Global:Job `
-    -Name "Execute" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [CmdletBinding()]
-        Param (
-            [Parameter(Mandatory=$true)]
-            [String] $Name,
-
-            [Parameter(Mandatory=$true)]
-            [ScriptBlock] $ScriptBlock
-        )
-        $Global:Job.Logging.WriteEntry("Information", [String]::Format("Executing {0}", $Name));
-        $Global:Job.Logging.Timers.Add($Name);
-        $Global:Job.Logging.Timers.Start($Name);
-        $ScriptBlock.Invoke();
-        $Global:Job.Logging.Timers.Stop($Name);
-    };
-Add-Member `
-    -InputObject $Global:Job `
-    -Name "ExecuteAll" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [CmdletBinding()]
-        Param (
-            [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Scripts
-        )
-        ForEach ($ScriptKey In $Scripts.Keys)
-        {
-            If ($Scripts[$ScriptKey] -is [ScriptBlock])
-            {
-                $Global:Job.Logging.WriteEntry("Information", [String]::Format("Executing {0}", $ScriptKey));
-                $Global:Job.Logging.Timers.Add($ScriptKey);
-                $Global:Job.Logging.Timers.Start($ScriptKey);
-                $Scripts[$ScriptKey].Invoke();
-                $Global:Job.Logging.Timers.Stop($ScriptKey);
-            }
-        }
-    };
-Add-Member `
-    -InputObject $Global:Job `
-    -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "Utilities" `
-    -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-Add-Member `
-    -InputObject $Global:Job.Utilities `
-    -Name "ParseFileNameTime" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([DateTime])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $FilePath,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $DateTimeFormatString,
-    
-            [Parameter(Mandatory=$false)]
-            [Int32] $DateTimeStartPosition
-        )
-        [DateTime] $Results = [DateTime]::MinValue;
-        [String] $FileName = [IO.Path]::GetFileName($FilePath);
-        If ($FileName.Length -ge ($DateTimeStartPosition + $DateTimeFormatString.Length))
-        {
-            [String] $FileDateStamp = $FileName.Substring($DateTimeStartPosition, $DateTimeFormatString.Length);
-            [DateTime] $ResultDateTime = [DateTime]::MinValue;
-            If ([DateTime]::TryParseExact(
-                                            $FileDateStamp, $DateTimeFormatString,
-                                            [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::None,
-                                            [ref]$ResultDateTime))
-            {
-                $Results = $ResultDateTime;
-            }
-        }
-        Else
-        {
-            $Results = [DateTime]::MinValue;
-        }
-        Return $Results
-    };

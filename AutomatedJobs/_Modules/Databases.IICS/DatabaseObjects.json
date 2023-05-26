@@ -1,0 +1,5357 @@
+[
+    {
+        "CreateOrder": 1,
+        "DropOrder": 59,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ActivityLogState",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ActivityLogStateId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Code",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ActivityLogState",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ActivityLogStateId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_ActivityLogState_Key1",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Code",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "UX_ActivityLogState_Key2",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 2,
+        "DropOrder": 58,
+        "Schema": "_SCHEMANAME_",
+        "Name": "AssetType",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "AssetTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Code",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_AssetType",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "AssetTypeId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_AssetType_Key1",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "UX_AssetType_Key2",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Code",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 3,
+        "DropOrder": 57,
+        "Schema": "_SCHEMANAME_",
+        "Name": "CustomSourceType",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "CustomSourceTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_CustomSourceType",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "CustomSourceTypeId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_CustomSourceType_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 4,
+        "DropOrder": 56,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Operation",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "OperationId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Operation",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "OperationId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_Operation_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 5,
+        "DropOrder": 55,
+        "Schema": "_SCHEMANAME_",
+        "Name": "RunContextType",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "RunContextTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Code",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_RunContextType",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "RunContextTypeId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_RunContextType_Key1",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Code",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "UX_RunContextType_Key2",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 6,
+        "DropOrder": 54,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ScheduleInterval",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ScheduleIntervalId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Name",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Description",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ScheduleInterval",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ScheduleIntervalId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "Indexes": [
+            {
+                "Name": "UX_ScheduleInterval_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 7,
+        "DropOrder": 53,
+        "Schema": "_SCHEMANAME_",
+        "Name": "StagedActivityLog",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "RunId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ActivityStateCode",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "RunContextTypeCode",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "ObjectId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "ObjectName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Type",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "ScheduleName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "StartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 10,
+                "Name": "EndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 11,
+                "Name": "FailedSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 12,
+                "Name": "SuccessSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 13,
+                "Name": "FailedTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 14,
+                "Name": "SuccessTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 15,
+                "Name": "TotalSuccessRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 16,
+                "Name": "TotalFailedRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 17,
+                "Name": "StopOnError",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 18,
+                "Name": "HasStopOnErrorRecord",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 19,
+                "Name": "ErrorMessage",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 20,
+                "Name": "Entries",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ]
+    },
+    {
+        "CreateOrder": 8,
+        "DropOrder": 52,
+        "Schema": "_SCHEMANAME_",
+        "Name": "StagedAsset",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetGuid",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Type",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Path",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ]
+    },
+    {
+        "CreateOrder": 9,
+        "DropOrder": 51,
+        "Schema": "_SCHEMANAME_",
+        "Name": "StagedAssetFile",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "FileName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "FileType",
+                "CondensedType": "[varchar](10)",
+                "Type": "varchar",
+                "TypeLength": 10,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Content",
+                "CondensedType": "[varchar](MAX)",
+                "Type": "varchar",
+                "TypeLength": -1,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ]
+    },
+    {
+        "CreateOrder": 10,
+        "DropOrder": 50,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ActivityLog",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ActivityLogId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ActivityLogStateId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "RunContextTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "RunId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "StartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "EndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "FailedSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "SuccessSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 10,
+                "Name": "FailedTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 11,
+                "Name": "SuccessTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 12,
+                "Name": "TotalSuccessRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 13,
+                "Name": "TotalFailedRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 14,
+                "Name": "StopOnError",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 15,
+                "Name": "HasStopOnErrorRecord",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 16,
+                "Name": "ErrorMessage",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 17,
+                "Name": "Entries",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ActivityLog",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ActivityLogId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLog_ActivityLogState",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLog",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "ActivityLogState",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ActivityLogStateId",
+                        "ReferencedColumn": "ActivityLogStateId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLog_RunContextType",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLog",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "RunContextType",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "RunContextTypeId",
+                        "ReferencedColumn": "RunContextTypeId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_ActivityLog_ActivityLogStateId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ActivityLogStateId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_ActivityLog_RunContextTypeId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "RunContextTypeId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 11,
+        "DropOrder": 49,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Asset",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "AssetGuid",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "Type",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Path",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "IsRemoved",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false,
+                "Default": {
+                    "Definition": "((0))"
+                }
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Asset",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "AssetId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Asset_AssetType",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Asset",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "AssetType",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetTypeId",
+                        "ReferencedColumn": "AssetTypeId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_Asset_AssetTypeId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetTypeId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_Asset_FederatedId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "FederatedId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 12,
+        "DropOrder": 48,
+        "Schema": "_SCHEMANAME_",
+        "Name": "CustomSource",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "CustomSourceId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "CustomSourceTypeId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Query",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_CustomSource",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "CustomSourceId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_CustomSource_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "CustomSource",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_CustomSource_CustomSourceType",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "CustomSource",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "CustomSourceType",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "CustomSourceTypeId",
+                        "ReferencedColumn": "CustomSourceTypeId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_CustomSource_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 13,
+        "DropOrder": 47,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Schedule",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ScheduleId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ScheduleIntervalId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Id",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "Description",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Status",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "RangeStartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "RangeEndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 10,
+                "Name": "StartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 11,
+                "Name": "EndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 12,
+                "Name": "Interval",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 13,
+                "Name": "Frequency",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 14,
+                "Name": "Monday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 15,
+                "Name": "Tuesday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 16,
+                "Name": "Wednesday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 17,
+                "Name": "Thursday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 18,
+                "Name": "Friday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 19,
+                "Name": "Saturday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 20,
+                "Name": "Sunday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 21,
+                "Name": "Weekday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 22,
+                "Name": "DayOfMonth",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 23,
+                "Name": "WeekOfMonth",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 24,
+                "Name": "DayOfWeek",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 25,
+                "Name": "CreateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 26,
+                "Name": "UpdateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 27,
+                "Name": "CreatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 28,
+                "Name": "UpdatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 29,
+                "Name": "ScheduleText",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 30,
+                "Name": "IsRemoved",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false,
+                "Default": {
+                    "Definition": "((0))"
+                }
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Schedule",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ScheduleId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Schedule_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Schedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Schedule_ScheduleInterval",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Schedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "ScheduleInterval",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ScheduleIntervalId",
+                        "ReferencedColumn": "ScheduleIntervalId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_Schedule_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_Schedule_ScheduleIntervalId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ScheduleIntervalId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 14,
+        "DropOrder": 46,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Synchronization",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "SynchronizationId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "TargetConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "OperationId",
+                "CondensedType": "[tinyint]",
+                "Type": "tinyint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "PreProcessingCmd",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "PostProcessingCmd",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "TargetObject",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "TruncateTarget",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Synchronization",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "SynchronizationId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Synchronization_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Synchronization",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Synchronization_Connection_Target",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Synchronization",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Synchronization_Operation",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Synchronization",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Operation",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "OperationId",
+                        "ReferencedColumn": "OperationId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_Synchronization_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 15,
+        "DropOrder": 45,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ActivityLogAsset",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ActivityLogAssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ActivityLogId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ActivityLogAsset",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ActivityLogAssetId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLogAsset_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLogAsset",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLogAsset_ActivityLog",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLogAsset",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "ActivityLog",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ActivityLogId",
+                        "ReferencedColumn": "ActivityLogId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_ActivityLogAsset_ActivityLogId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ActivityLogId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "UX_ActivityLogAsset_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ActivityLogId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 16,
+        "DropOrder": 44,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ActivityLogSchedule",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ActivityLogScheduleId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ActivityLogId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ScheduleId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ActivityLogSchedule",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ActivityLogScheduleId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLogSchedule_ActivityLog",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLogSchedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "ActivityLog",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ActivityLogId",
+                        "ReferencedColumn": "ActivityLogId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ActivityLogSchedule_Schedule",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ActivityLogSchedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Schedule",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ScheduleId",
+                        "ReferencedColumn": "ScheduleId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_ActivityLogSchedule_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ActivityLogId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "ScheduleId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 17,
+        "DropOrder": 43,
+        "Schema": "_SCHEMANAME_",
+        "Name": "AssetConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "AssetConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Use",
+                "CondensedType": "[varchar](20)",
+                "Type": "varchar",
+                "TypeLength": 20,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_AssetConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "AssetConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_AssetConnection_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "AssetConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_AssetConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "AssetConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_AssetConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "Use",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 18,
+        "DropOrder": 42,
+        "Schema": "_SCHEMANAME_",
+        "Name": "AssetSchedule",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "AssetScheduleId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ScheduleId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_AssetSchedule",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "AssetScheduleId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_AssetSchedule_Schedule",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "AssetSchedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Schedule",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ScheduleId",
+                        "ReferencedColumn": "ScheduleId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_AssetSchedule_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "AssetSchedule",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_AssetSchedule_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "ScheduleId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 19,
+        "DropOrder": 41,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Connection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Type",
+                "CondensedType": "[nvarchar](50)",
+                "Type": "nvarchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "InstanceDisplayName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "CreateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "UpdateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "CreatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "UpdatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Connection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Connection_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Connection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_Connection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 20,
+        "DropOrder": 40,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Mapping",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_Mapping",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Mapping_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "Mapping",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_Mapping_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 21,
+        "DropOrder": 39,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTask",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "MappingId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTask",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTaskId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTask_Asset",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTask",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTask_Mapping",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTask",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Mapping",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingId",
+                        "ReferencedColumn": "MappingId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTask_AssetIdMappingId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "AssetId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "MappingId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 22,
+        "DropOrder": 38,
+        "Schema": "_SCHEMANAME_",
+        "Name": "SynchronizationFilter",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "SynchronizationFilterId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "SynchronizationId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ObjectName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "ObjectLabel",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Field",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "FieldLabel",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Type",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "Operator",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "Value",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_SynchronizationFilter",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "SynchronizationFilterId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_SynchronizationFilter_Synchronization",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "SynchronizationFilter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Synchronization",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "SynchronizationId",
+                        "ReferencedColumn": "SynchronizationId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_SynchronizationFilter_SynchronizationId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "SynchronizationId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 23,
+        "DropOrder": 37,
+        "Schema": "_SCHEMANAME_",
+        "Name": "SynchronizationSource",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "SynchronizationSourceId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "SynchronizationId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "SourceConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Label",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_SynchronizationSource",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "SynchronizationSourceId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_SynchronizationSource_Synchronization",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "SynchronizationSource",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Synchronization",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "SynchronizationId",
+                        "ReferencedColumn": "SynchronizationId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_Synchronization_Connection_Source",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "SynchronizationSource",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_SynchronizationSource_SynchronizationId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "SynchronizationId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_SynchronizationSource_SourceConnectionId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "SourceConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 24,
+        "DropOrder": 36,
+        "Schema": "_SCHEMANAME_",
+        "Name": "WorkflowTask",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "WorkflowTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "WorkflowAssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "TaskAssetId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Sequence",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_WorkflowTask",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "WorkflowTaskId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_WorkflowTask_WorkflowAsset_Workflow",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "WorkflowTask",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_WorkflowTask_WorkflowAsset_Task",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "WorkflowTask",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Asset",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "AssetId",
+                        "ReferencedColumn": "AssetId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_WorkflowTask_WorkflowAssetId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "WorkflowAssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_WorkflowTask_TaskAssetId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "TaskAssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_WorkflowTask_TaskAssetId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "TaskAssetId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 25,
+        "DropOrder": 35,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ConnectionProperty",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ConnectionPropertyId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](100)",
+                "Type": "nvarchar",
+                "TypeLength": 100,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Value",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ConnectionProperty",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ConnectionPropertyId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ConnectionProperty_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ConnectionProperty",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_ConnectionProperty_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    },
+                    {
+                        "Name": "Name",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 26,
+        "DropOrder": 34,
+        "Schema": "_SCHEMANAME_",
+        "Name": "CSVFileConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "CSVFileConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Database",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "DateFormat",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_CSVFileConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "CSVFileConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_CSVFileConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "CSVFileConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_CSVFileConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 27,
+        "DropOrder": 33,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTaskExtendedSourceParameter",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTaskExtendedSourceParameterId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "MappingTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Name",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Label",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "ObjectName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "ObjectLabel",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTaskExtendedSourceParameter",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTaskExtendedSourceParameterId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskExtendedSourceParameter_MappingTask",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskExtendedSourceParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "MappingTask",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingTaskId",
+                        "ReferencedColumn": "MappingTaskId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskExtendedSourceParameter_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskExtendedSourceParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTaskExtendedSourceParameter_ConnectionId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_MappingTaskExtendedSourceParameter_MappingTaskId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "MappingTaskId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 28,
+        "DropOrder": 32,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTaskSourceParameter",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTaskSourceParameterId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "MappingTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Name",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Label",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "CustomQuery",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTaskSourceParameter",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTaskSourceParameterId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskSourceParameter_MappingTask",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskSourceParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "MappingTask",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingTaskId",
+                        "ReferencedColumn": "MappingTaskId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskSourceParameter_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskSourceParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTaskSourceParameter_MappingTaskId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "MappingTaskId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_MappingTaskSourceParameter_ConnectionId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 29,
+        "DropOrder": 31,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTaskStringParameter",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTaskStringParameterId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "MappingTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Name",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Text",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Label",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "Description",
+                "CondensedType": "[varchar](MAX)",
+                "Type": "varchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTaskStringParameter",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTaskStringParameterId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskStringParameter_MappingTask",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskStringParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "MappingTask",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingTaskId",
+                        "ReferencedColumn": "MappingTaskId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTaskStringParameter_MappingTaskId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "MappingTaskId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 30,
+        "DropOrder": 30,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTaskTargetParameter",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTaskTargetParameterId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "MappingTaskId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Name",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Label",
+                "CondensedType": "[varchar](100)",
+                "Type": "varchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "ObjectName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "ObjectLabel",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "TruncateTarget",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTaskTargetParameter",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTaskTargetParameterId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskTargetParameter_MappingTask",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskTargetParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "MappingTask",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingTaskId",
+                        "ReferencedColumn": "MappingTaskId"
+                    }
+                ]
+            },
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTaskTargetParameter_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTaskTargetParameter",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTaskTargetParameter_ConnectionId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            },
+            {
+                "Name": "IX_MappingTaskTargetParameter_MappingTaskId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "MappingTaskId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 31,
+        "DropOrder": 29,
+        "Schema": "_SCHEMANAME_",
+        "Name": "MappingTransformationProperty",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "LobFileGroupName": "_LOBFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "MappingTransformationPropertyId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "MappingId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "TransformationName",
+                "CondensedType": "[nvarchar](100)",
+                "Type": "nvarchar",
+                "TypeLength": 100,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "PropertyName",
+                "CondensedType": "[nvarchar](100)",
+                "Type": "nvarchar",
+                "TypeLength": 100,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Value",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_MappingTransformationProperty",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "MappingTransformationPropertyId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_MappingTransformationProperty_Mapping",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "MappingTransformationProperty",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Mapping",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "MappingId",
+                        "ReferencedColumn": "MappingId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "IX_MappingTransformationProperty_MappingId",
+                "IsUnique": false,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "MappingId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 32,
+        "DropOrder": 28,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ODBCConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ODBCConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Database",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "UserName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ODBCFileConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ODBCConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ODBCConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ODBCConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_ODBCConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 33,
+        "DropOrder": 27,
+        "Schema": "_SCHEMANAME_",
+        "Name": "SalesforceConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "SalesforceConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ServiceUrl",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "UserName",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_SalesforceConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "SalesforceConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_SalesforceConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "SalesforceConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_SalesforceConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 34,
+        "DropOrder": 26,
+        "Schema": "_SCHEMANAME_",
+        "Name": "SQLServerConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "SQLServerConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "Host",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Port",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Database",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "AuthenticationType",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Schema",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "UserName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_SQLServerConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "SQLServerConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_SQLServerConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "SQLServerConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_SQLServerConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 35,
+        "DropOrder": 25,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ToolkitCCIConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ToolkitCCIConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "InstanceName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ToolkitCCIConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ToolkitCCIConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ToolkitCCIConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ToolkitCCIConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_ToolkitCCIConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 36,
+        "DropOrder": 24,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ToolkitConnection",
+        "SimpleType": "Table",
+        "Type": "USER_TABLE",
+        "HeapFileGroupName": "_HEAPFILEGROUP_",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "ToolkitConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": true,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "ConnectionId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "InstanceName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "PrimaryKey": {
+            "Name": "PK_ToolkitConnection",
+            "FileGroup": "_HEAPFILEGROUP_",
+            "IsClustered": true,
+            "IsUnique": true,
+            "IgnoreDuplicateKey": false,
+            "AllowRowLocks": true,
+            "AllowPageLocks": true,
+            "IsPadded": false,
+            "FillFactor": 0,
+            "Columns": [
+                {
+                    "Ordinal": 1,
+                    "Name": "ToolkitConnectionId",
+                    "SortDirection": "Ascending"
+                }
+            ]
+        },
+        "ForeignKeys": [
+            {
+                "Schema": "_SCHEMANAME_",
+                "KeySchema": "_SCHEMANAME_",
+                "KeyName": "FK_ToolkitConnection_Connection",
+                "ForeignSchema": "_SCHEMANAME_",
+                "ForiengTable": "ToolkitConnection",
+                "ReferencedSchema": "_SCHEMANAME_",
+                "ReferencedTable": "Connection",
+                "Columns": [
+                    {
+                        "Ordinal": 1,
+                        "ForeignColumn": "ConnectionId",
+                        "ReferencedColumn": "ConnectionId"
+                    }
+                ]
+            }
+        ],
+        "Indexes": [
+            {
+                "Name": "UX_ToolkitConnection_Key",
+                "IsUnique": true,
+                "FileGroup": "_INDEXFILEGROUP_",
+                "IgnoreDuplicateKey": false,
+                "AllowRowLocks": true,
+                "AllowPageLocks": true,
+                "IsPadded": false,
+                "FillFactor": 0,
+                "Columns": [
+                    {
+                        "Name": "ConnectionId",
+                        "SortDirection": "Ascending"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CreateOrder": 37,
+        "DropOrder": 23,
+        "Schema": "_SCHEMANAME_",
+        "Name": "GetScheduleTexturalStatement",
+        "SimpleType": "Function",
+        "Type": "SQL_SCALAR_FUNCTION",
+        "Returns": {
+            "CondensedType": "[varchar](100)",
+            "Type": "varchar",
+            "TypeLength": 100
+        },
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@Interval",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "Length": 50,
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetScheduleTexturalStatement.sql"
+    },
+    {
+        "CreateOrder": 38,
+        "DropOrder": 22,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ActivityLogExpanded",
+        "SimpleType": "View",
+        "Type": "VIEW",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "RunId",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "ActivityLogState",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "RunContextType",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Asset",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "AssetPath",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "AssetType",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "Schedule",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "StartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 10,
+                "Name": "EndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 11,
+                "Name": "FailedSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 12,
+                "Name": "SuccessSourceRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 13,
+                "Name": "FailedTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 14,
+                "Name": "SuccessTargetRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 15,
+                "Name": "TotalSuccessRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 16,
+                "Name": "TotalFailedRows",
+                "CondensedType": "[bigint]",
+                "Type": "bigint",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 17,
+                "Name": "StopOnError",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 18,
+                "Name": "HasStopOnErrorRecord",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 19,
+                "Name": "ErrorMessage",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 20,
+                "Name": "Entries",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ActivityLogExpanded.sql"
+    },
+    {
+        "CreateOrder": 39,
+        "DropOrder": 21,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ConnectionExpanded",
+        "SimpleType": "View",
+        "Type": "VIEW",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "Name",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "InstanceDisplayName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Type",
+                "CondensedType": "[nvarchar](50)",
+                "Type": "nvarchar",
+                "TypeLength": 50,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Database",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "Host",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "InstanceName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "Port",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 9,
+                "Name": "ServiceUrl",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 10,
+                "Name": "Schema",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 11,
+                "Name": "DateFormat",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 12,
+                "Name": "AuthenticationType",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 13,
+                "Name": "UserName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 14,
+                "Name": "CreateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 15,
+                "Name": "UpdateTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "TypeLength": 7,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 16,
+                "Name": "CreatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 17,
+                "Name": "UpdatedBy",
+                "CondensedType": "[varchar](320)",
+                "Type": "varchar",
+                "TypeLength": 320,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ConnectionExpanded.sql"
+    },
+    {
+        "CreateOrder": 40,
+        "DropOrder": 20,
+        "Schema": "_SCHEMANAME_",
+        "Name": "TextSearch",
+        "SimpleType": "View",
+        "Type": "VIEW",
+        "Columns": [
+            {
+                "Ordinal": 1,
+                "Name": "Asset",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 2,
+                "Name": "AssetPath",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "TypeLength": 400,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 3,
+                "Name": "AssetType",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "TypeLength": 50,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 4,
+                "Name": "Attribute",
+                "CondensedType": "[nvarchar](100)",
+                "Type": "nvarchar",
+                "TypeLength": 100,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 5,
+                "Name": "Schema",
+                "CondensedType": "[nvarchar](4)",
+                "Type": "nvarchar",
+                "TypeLength": 4,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 6,
+                "Name": "Table",
+                "CondensedType": "[nvarchar](34)",
+                "Type": "nvarchar",
+                "TypeLength": 34,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 7,
+                "Name": "Column",
+                "CondensedType": "[nvarchar](18)",
+                "Type": "nvarchar",
+                "TypeLength": 18,
+                "IsNullable": false,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            },
+            {
+                "Ordinal": 8,
+                "Name": "Text",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "TypeLength": -1,
+                "IsNullable": true,
+                "IsIdentity": false,
+                "IsRowGUID": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\TextSearch.sql"
+    },
+    {
+        "CreateOrder": 41,
+        "DropOrder": 19,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ClearAssetChildTables",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ClearAssetChildTables.sql"
+    },
+    {
+        "CreateOrder": 42,
+        "DropOrder": 18,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ClearStaged",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@ClearAsset",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ClearStaged.sql"
+    },
+    {
+        "CreateOrder": 43,
+        "DropOrder": 17,
+        "Schema": "_SCHEMANAME_",
+        "Name": "GetActivityLogLastStartTime",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetActivityLogLastStartTime.sql"
+    },
+    {
+        "CreateOrder": 44,
+        "DropOrder": 16,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseActivityLogs",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseActivityLogs.sql"
+    },
+    {
+        "CreateOrder": 45,
+        "DropOrder": 15,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseAssetConnections",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseAssetConnections.sql"
+    },
+    {
+        "CreateOrder": 46,
+        "DropOrder": 14,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseAssets.sql"
+    },
+    {
+        "CreateOrder": 47,
+        "DropOrder": 13,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseAssetSchedules",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseAssetSchedules.sql"
+    },
+    {
+        "CreateOrder": 48,
+        "DropOrder": 12,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseConnections",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseConnections.sql"
+    },
+    {
+        "CreateOrder": 49,
+        "DropOrder": 11,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseCustomSourceAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseCustomSourceAssets.sql"
+    },
+    {
+        "CreateOrder": 50,
+        "DropOrder": 10,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseMappingAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseMappingAssets.sql"
+    },
+    {
+        "CreateOrder": 51,
+        "DropOrder": 9,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseMappingTaskAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseMappingTaskAssets.sql"
+    },
+    {
+        "CreateOrder": 52,
+        "DropOrder": 8,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseSynchronizationAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseSynchronizationAssets.sql"
+    },
+    {
+        "CreateOrder": 53,
+        "DropOrder": 7,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseWorkflowTasks",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseWorkflowTasks.sql"
+    },
+    {
+        "CreateOrder": 54,
+        "DropOrder": 6,
+        "Schema": "_SCHEMANAME_",
+        "Name": "PostStagedActivityLogs",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@JSON",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "Length": -1,
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\PostStagedActivityLogs.sql"
+    },
+    {
+        "CreateOrder": 55,
+        "DropOrder": 5,
+        "Schema": "_SCHEMANAME_",
+        "Name": "PostStagedAssetFile",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@FederatedId",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "Length": 50,
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\PostStagedAssetFile.sql"
+    },
+    {
+        "CreateOrder": 56,
+        "DropOrder": 4,
+        "Schema": "_SCHEMANAME_",
+        "Name": "PostStagedAssets",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@JSON",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "Length": -1,
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\PostStagedAssets.sql"
+    },
+    {
+        "CreateOrder": 57,
+        "DropOrder": 3,
+        "Schema": "_SCHEMANAME_",
+        "Name": "RemoveOldActivityLogs",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "Parameters": [
+            {
+                "Sequence": 1,
+                "Name": "@KeepLogsForDays",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsOutput": false
+            }
+        ],
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\RemoveOldActivityLogs.sql"
+    },
+    {
+        "CreateOrder": 58,
+        "DropOrder": 2,
+        "Schema": "_SCHEMANAME_",
+        "Name": "Parse",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\Parse.sql"
+    },
+    {
+        "CreateOrder": 59,
+        "DropOrder": 1,
+        "Schema": "_SCHEMANAME_",
+        "Name": "ParseSchedules",
+        "SimpleType": "Procedure",
+        "Type": "SQL_STORED_PROCEDURE",
+        "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ParseSchedules.sql"
+    }
+]
