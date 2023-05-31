@@ -1,12 +1,16 @@
 [
   {
     "CreateOrder": 1,
-    "DropOrder": 26,
-    "Schema": "_SCHEMANAME_",
+    "Schema": "Google",
+    "DropOrder": 27,
+    "Type": "SCHEMA",
+    "Name": null,
+    "SimpleType": "Schema"
+  },
+  {
     "Name": "AddressType",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -28,6 +32,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 2,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 26,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_AddressType",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -45,16 +54,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 2,
-    "DropOrder": 25,
-    "Schema": "_SCHEMANAME_",
     "Name": "EmailType",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -76,6 +83,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 3,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 25,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_EmailType",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -93,16 +105,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 3,
-    "DropOrder": 24,
-    "Schema": "_SCHEMANAME_",
     "Name": "ExternalIdentifierType",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -124,6 +134,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 4,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 24,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_ExternalIdentifierType",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -141,17 +156,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 4,
-    "DropOrder": 23,
-    "Schema": "_SCHEMANAME_",
     "Name": "Group",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
-    "LobFileGroupName": "_LOBFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -222,6 +234,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 5,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 23,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_Group",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -239,16 +256,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": "_LOBFILEGROUP_",
+    "Indexes": null
   },
   {
-    "CreateOrder": 5,
-    "DropOrder": 22,
-    "Schema": "_SCHEMANAME_",
     "Name": "GroupMemberRole",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -270,6 +285,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 6,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 22,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_GroupMemberRole",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -287,16 +307,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 6,
-    "DropOrder": 21,
-    "Schema": "_SCHEMANAME_",
     "Name": "Language",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -328,6 +346,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 7,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 21,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_Language",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -345,16 +368,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 7,
-    "DropOrder": 20,
-    "Schema": "_SCHEMANAME_",
     "Name": "OrganizationalUnit",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -455,6 +476,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 8,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 20,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_OrganizationalUnit",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -472,16 +498,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 8,
-    "DropOrder": 19,
-    "Schema": "_SCHEMANAME_",
     "Name": "OrganizationType",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -503,6 +527,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 9,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 19,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_OrganizationType",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -520,16 +549,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 9,
-    "DropOrder": 18,
-    "Schema": "_SCHEMANAME_",
     "Name": "PhoneType",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -551,6 +578,11 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 10,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 18,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_PhoneType",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -568,16 +600,14 @@
           "SortDirection": "Ascending"
         }
       ]
-    }
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 10,
-    "DropOrder": 17,
-    "Schema": "_SCHEMANAME_",
     "Name": "StagedGroupMembership",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -657,17 +687,20 @@
         "IsIdentity": false,
         "IsRowGUID": false
       }
-    ]
+    ],
+    "CreateOrder": 11,
+    "Schema": "Google",
+    "ForeignKeys": null,
+    "DropOrder": 17,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
+    "PrimaryKey": null,
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 11,
-    "DropOrder": 16,
-    "Schema": "_SCHEMANAME_",
     "Name": "GroupEmail",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
-    "LobFileGroupName": "_LOBFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -707,6 +740,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 12,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupEmail_Group",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupEmail",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "Group",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "GroupId",
+            "ReferencedColumn": "GroupId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupEmail_EmailType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupEmail",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "EmailType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "EmailTypeId",
+            "ReferencedColumn": "EmailTypeId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 16,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_GroupEmail",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -725,49 +796,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupEmail_Group",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupEmail",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "Group",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupId",
-            "ReferencedColumn": "GroupId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupEmail_EmailType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupEmail",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "EmailType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "EmailTypeId",
-            "ReferencedColumn": "EmailTypeId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": "_LOBFILEGROUP_",
+    "Indexes": null
   },
   {
-    "CreateOrder": 12,
-    "DropOrder": 15,
-    "Schema": "_SCHEMANAME_",
     "Name": "GroupMembershipGroup",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -806,6 +841,60 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 13,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipGroup_Group",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipGroup",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "Group",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "GroupId",
+            "ReferencedColumn": "GroupId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipGroup_Group_Member",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipGroup",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "Group",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "GroupId",
+            "ReferencedColumn": "GroupId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipGroup_GroupMemberRole",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipGroup",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "GroupMemberRole",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "GroupMemberRoleId",
+            "ReferencedColumn": "GroupMemberRoleId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 15,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_GroupMembershipGroup",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -824,180 +913,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipGroup_Group",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipGroup",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "Group",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupId",
-            "ReferencedColumn": "GroupId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipGroup_Group_Member",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipGroup",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "Group",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupId",
-            "ReferencedColumn": "GroupId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipGroup_GroupMemberRole",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipGroup",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "GroupMemberRole",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupMemberRoleId",
-            "ReferencedColumn": "GroupMemberRoleId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 14,
-    "DropOrder": 13,
-    "Schema": "_SCHEMANAME_",
-    "Name": "GroupMembershipUser",
-    "SimpleType": "Table",
-    "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
-    "Columns": [
-      {
-        "Ordinal": 1,
-        "Name": "GroupMembershipUserId",
-        "CondensedType": "[int]",
-        "Type": "int",
-        "IsNullable": false,
-        "IsIdentity": true,
-        "IsRowGUID": false
-      },
-      {
-        "Ordinal": 2,
-        "Name": "GroupId",
-        "CondensedType": "[int]",
-        "Type": "int",
-        "IsNullable": false,
-        "IsIdentity": false,
-        "IsRowGUID": false
-      },
-      {
-        "Ordinal": 3,
-        "Name": "MemberUserId",
-        "CondensedType": "[int]",
-        "Type": "int",
-        "IsNullable": false,
-        "IsIdentity": false,
-        "IsRowGUID": false
-      },
-      {
-        "Ordinal": 4,
-        "Name": "GroupMemberRoleId",
-        "CondensedType": "[tinyint]",
-        "Type": "tinyint",
-        "IsNullable": false,
-        "IsIdentity": false,
-        "IsRowGUID": false
-      }
-    ],
-    "PrimaryKey": {
-      "Name": "PK_GroupMembershipUser",
-      "FileGroup": "_HEAPFILEGROUP_",
-      "IsClustered": true,
-      "IsUnique": true,
-      "IgnoreDuplicateKey": false,
-      "AllowRowLocks": true,
-      "AllowPageLocks": true,
-      "IsPadded": false,
-      "FillFactor": 0,
-      "Columns": [
-        {
-          "Ordinal": 1,
-          "Name": "GroupMembershipUserId",
-          "SortDirection": "Ascending"
-        }
-      ]
-    },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipUser_Group",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipUser",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "Group",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupId",
-            "ReferencedColumn": "GroupId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipUser_User_Member",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipUser",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "MemberUserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_GroupMembershipUser_GroupMemberRole",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "GroupMembershipUser",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "GroupMemberRole",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "GroupMemberRoleId",
-            "ReferencedColumn": "GroupMemberRoleId"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "CreateOrder": 13,
-    "DropOrder": 14,
-    "Schema": "_SCHEMANAME_",
     "Name": "User",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1217,6 +1139,28 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 14,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_User_OrganizationalUnit",
+        "ForeignSchema": "Google",
+        "ForiengTable": "User",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "OrganizationalUnit",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "OrganizationalUnitId",
+            "ReferencedColumn": "OrganizationalUnitId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 14,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_User",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1235,33 +1179,130 @@
         }
       ]
     },
+    "LobFileGroupName": null,
+    "Indexes": null
+  },
+  {
+    "Name": "GroupMembershipUser",
+    "SimpleType": "Table",
+    "Type": "USER_TABLE",
+    "Columns": [
+      {
+        "Ordinal": 1,
+        "Name": "GroupMembershipUserId",
+        "CondensedType": "[int]",
+        "Type": "int",
+        "IsNullable": false,
+        "IsIdentity": true,
+        "IsRowGUID": false
+      },
+      {
+        "Ordinal": 2,
+        "Name": "GroupId",
+        "CondensedType": "[int]",
+        "Type": "int",
+        "IsNullable": false,
+        "IsIdentity": false,
+        "IsRowGUID": false
+      },
+      {
+        "Ordinal": 3,
+        "Name": "MemberUserId",
+        "CondensedType": "[int]",
+        "Type": "int",
+        "IsNullable": false,
+        "IsIdentity": false,
+        "IsRowGUID": false
+      },
+      {
+        "Ordinal": 4,
+        "Name": "GroupMemberRoleId",
+        "CondensedType": "[tinyint]",
+        "Type": "tinyint",
+        "IsNullable": false,
+        "IsIdentity": false,
+        "IsRowGUID": false
+      }
+    ],
+    "CreateOrder": 15,
+    "Schema": "Google",
     "ForeignKeys": [
       {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_User_OrganizationalUnit",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "User",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "OrganizationalUnit",
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipUser_Group",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipUser",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "Group",
         "Columns": [
           {
             "Ordinal": 1,
-            "ForeignColumn": "OrganizationalUnitId",
-            "ReferencedColumn": "OrganizationalUnitId"
+            "ForeignColumn": "GroupId",
+            "ReferencedColumn": "GroupId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipUser_User_Member",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipUser",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "MemberUserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_GroupMembershipUser_GroupMemberRole",
+        "ForeignSchema": "Google",
+        "ForiengTable": "GroupMembershipUser",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "GroupMemberRole",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "GroupMemberRoleId",
+            "ReferencedColumn": "GroupMemberRoleId"
           }
         ]
       }
-    ]
+    ],
+    "DropOrder": 13,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
+    "PrimaryKey": {
+      "Name": "PK_GroupMembershipUser",
+      "FileGroup": "_HEAPFILEGROUP_",
+      "IsClustered": true,
+      "IsUnique": true,
+      "IgnoreDuplicateKey": false,
+      "AllowRowLocks": true,
+      "AllowPageLocks": true,
+      "IsPadded": false,
+      "FillFactor": 0,
+      "Columns": [
+        {
+          "Ordinal": 1,
+          "Name": "GroupMembershipUserId",
+          "SortDirection": "Ascending"
+        }
+      ]
+    },
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 15,
-    "DropOrder": 12,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserAddress",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1409,6 +1450,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 16,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserAddress_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserAddress",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserAddress_AddressType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserAddress",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "AddressType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "AddressTypeId",
+            "ReferencedColumn": "AddressTypeId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 12,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserAddress",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1427,50 +1506,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserAddress_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserAddress",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserAddress_AddressType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserAddress",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "AddressType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "AddressTypeId",
-            "ReferencedColumn": "AddressTypeId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 16,
-    "DropOrder": 11,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserEmail",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
-    "LobFileGroupName": "_LOBFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1519,6 +1561,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 17,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserEmail_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserEmail",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserEmail_EmailType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserEmail",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "EmailType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "EmailTypeId",
+            "ReferencedColumn": "EmailTypeId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 11,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserEmail",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1537,49 +1617,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserEmail_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserEmail",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserEmail_EmailType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserEmail",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "EmailType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "EmailTypeId",
-            "ReferencedColumn": "EmailTypeId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": "_LOBFILEGROUP_",
+    "Indexes": null
   },
   {
-    "CreateOrder": 17,
-    "DropOrder": 10,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserExternalIdentifier",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1619,6 +1663,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 18,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserExternalIdentifier_ExternalIdentifierType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserExternalIdentifier",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "ExternalIdentifierType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "ExternalIdentifierTypeId",
+            "ReferencedColumn": "ExternalIdentifierTypeId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserExternalIdentifier_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserExternalIdentifier",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 10,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserExternalIdentifier",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1637,49 +1719,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserExternalIdentifier_ExternalIdentifierType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserExternalIdentifier",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "ExternalIdentifierType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "ExternalIdentifierTypeId",
-            "ReferencedColumn": "ExternalIdentifierTypeId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserExternalIdentifier_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserExternalIdentifier",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 18,
-    "DropOrder": 9,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserLanguage",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1739,6 +1785,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 19,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserLanguage_Language",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserLanguage",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "Language",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "LanguageId",
+            "ReferencedColumn": "LanguageId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserLanguage_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserLanguage",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 9,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserLanguage",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1757,49 +1841,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserLanguage_Language",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserLanguage",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "Language",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "LanguageId",
-            "ReferencedColumn": "LanguageId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserLanguage_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserLanguage",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 19,
-    "DropOrder": 8,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserOrganization",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -1937,6 +1985,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 20,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserOrganization_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserOrganization",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserOrganization_OrganizationType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserOrganization",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "OrganizationType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "OrganizationTypeId",
+            "ReferencedColumn": "OrganizationTypeId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 8,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserOrganization",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -1955,49 +2041,13 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserOrganization_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserOrganization",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserOrganization_OrganizationType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserOrganization",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "OrganizationType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "OrganizationTypeId",
-            "ReferencedColumn": "OrganizationTypeId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 20,
-    "DropOrder": 7,
-    "Schema": "_SCHEMANAME_",
     "Name": "UserPhone",
     "SimpleType": "Table",
     "Type": "USER_TABLE",
-    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "Columns": [
       {
         "Ordinal": 1,
@@ -2067,6 +2117,44 @@
         "IsRowGUID": false
       }
     ],
+    "CreateOrder": 21,
+    "Schema": "Google",
+    "ForeignKeys": [
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserPhone_User",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserPhone",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "User",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "UserId",
+            "ReferencedColumn": "UserId"
+          }
+        ]
+      },
+      {
+        "Schema": "Google",
+        "KeySchema": "Google",
+        "KeyName": "FK_UserPhone_PhoneType",
+        "ForeignSchema": "Google",
+        "ForiengTable": "UserPhone",
+        "ReferencedSchema": "Google",
+        "ReferencedTable": "PhoneType",
+        "Columns": [
+          {
+            "Ordinal": 1,
+            "ForeignColumn": "PhoneTypeId",
+            "ReferencedColumn": "PhoneTypeId"
+          }
+        ]
+      }
+    ],
+    "DropOrder": 7,
+    "HeapFileGroupName": "_HEAPFILEGROUP_",
     "PrimaryKey": {
       "Name": "PK_UserPhone",
       "FileGroup": "_HEAPFILEGROUP_",
@@ -2085,96 +2173,12 @@
         }
       ]
     },
-    "ForeignKeys": [
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserPhone_User",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserPhone",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "User",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "UserId",
-            "ReferencedColumn": "UserId"
-          }
-        ]
-      },
-      {
-        "Schema": "_SCHEMANAME_",
-        "KeySchema": "_SCHEMANAME_",
-        "KeyName": "FK_UserPhone_PhoneType",
-        "ForeignSchema": "_SCHEMANAME_",
-        "ForiengTable": "UserPhone",
-        "ReferencedSchema": "_SCHEMANAME_",
-        "ReferencedTable": "PhoneType",
-        "Columns": [
-          {
-            "Ordinal": 1,
-            "ForeignColumn": "PhoneTypeId",
-            "ReferencedColumn": "PhoneTypeId"
-          }
-        ]
-      }
-    ]
+    "LobFileGroupName": null,
+    "Indexes": null
   },
   {
-    "CreateOrder": 21,
-    "DropOrder": 6,
-    "Schema": "_SCHEMANAME_",
-    "Name": "GetDigitsOnly",
-    "SimpleType": "Function",
-    "Type": "SQL_SCALAR_FUNCTION",
-    "Returns": {
-      "CondensedType": "[nvarchar](400)",
-      "Type": "nvarchar",
-      "TypeLength": 400
-    },
-    "Parameters": [
-      {
-        "Sequence": 1,
-        "Name": "@Text",
-        "CondensedType": "[nvarchar](400)",
-        "Type": "nvarchar",
-        "Length": 400,
-        "IsOutput": false
-      }
-    ],
-    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetDigitsOnly.sql"
-  },
-  {
-    "CreateOrder": 22,
-    "DropOrder": 5,
-    "Schema": "_SCHEMANAME_",
-    "Name": "GetE164PhoneNumber",
-    "SimpleType": "Function",
-    "Type": "SQL_SCALAR_FUNCTION",
-    "Returns": {
-      "CondensedType": "[nvarchar](400)",
-      "Type": "nvarchar",
-      "TypeLength": 400
-    },
-    "Parameters": [
-      {
-        "Sequence": 1,
-        "Name": "@NormalizedNumber",
-        "CondensedType": "[nvarchar](400)",
-        "Type": "nvarchar",
-        "Length": 400,
-        "IsOutput": false
-      }
-    ],
-    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetE164PhoneNumber.sql"
-  },
-  {
-    "CreateOrder": 23,
-    "DropOrder": 4,
-    "Schema": "_SCHEMANAME_",
     "Name": "ImportGroup",
     "SimpleType": "Procedure",
-    "Type": "SQL_STORED_PROCEDURE",
     "Parameters": [
       {
         "Sequence": 1,
@@ -2185,15 +2189,15 @@
         "IsOutput": false
       }
     ],
+    "Type": "SQL_STORED_PROCEDURE",
+    "CreateOrder": 22,
+    "Schema": "Google",
+    "DropOrder": 6,
     "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ImportGroup.sql"
   },
   {
-    "CreateOrder": 24,
-    "DropOrder": 3,
-    "Schema": "_SCHEMANAME_",
     "Name": "ImportOrganizationalUnit",
     "SimpleType": "Procedure",
-    "Type": "SQL_STORED_PROCEDURE",
     "Parameters": [
       {
         "Sequence": 1,
@@ -2204,24 +2208,15 @@
         "IsOutput": false
       }
     ],
+    "Type": "SQL_STORED_PROCEDURE",
+    "CreateOrder": 23,
+    "Schema": "Google",
+    "DropOrder": 5,
     "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ImportOrganizationalUnit.sql"
   },
   {
-    "CreateOrder": 25,
-    "DropOrder": 2,
-    "Schema": "_SCHEMANAME_",
-    "Name": "ProcessGroupMembershipChanges",
-    "SimpleType": "Procedure",
-    "Type": "SQL_STORED_PROCEDURE",
-    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ProcessGroupMembershipChanges.sql"
-  },
-  {
-    "CreateOrder": 26,
-    "DropOrder": 1,
-    "Schema": "_SCHEMANAME_",
     "Name": "ImportUser",
     "SimpleType": "Procedure",
-    "Type": "SQL_STORED_PROCEDURE",
     "Parameters": [
       {
         "Sequence": 1,
@@ -2232,6 +2227,68 @@
         "IsOutput": false
       }
     ],
+    "Type": "SQL_STORED_PROCEDURE",
+    "CreateOrder": 24,
+    "Schema": "Google",
+    "DropOrder": 4,
     "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ImportUser.sql"
+  },
+  {
+    "Name": "ProcessGroupMembershipChanges",
+    "SimpleType": "Procedure",
+    "Parameters": null,
+    "Type": "SQL_STORED_PROCEDURE",
+    "CreateOrder": 25,
+    "Schema": "Google",
+    "DropOrder": 3,
+    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ProcessGroupMembershipChanges.sql"
+  },
+  {
+    "Name": "GetDigitsOnly",
+    "SimpleType": "Function",
+    "Parameters": [
+      {
+        "Sequence": 1,
+        "Name": "@Text",
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "Length": 400,
+        "IsOutput": false
+      }
+    ],
+    "Type": "SQL_SCALAR_FUNCTION",
+    "CreateOrder": 26,
+    "Schema": "Google",
+    "DropOrder": 2,
+    "Returns": {
+      "CondensedType": "[nvarchar](400)",
+      "Type": "nvarchar",
+      "TypeLength": 400
+    },
+    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetDigitsOnly.sql"
+  },
+  {
+    "Name": "GetE164PhoneNumber",
+    "SimpleType": "Function",
+    "Parameters": [
+      {
+        "Sequence": 1,
+        "Name": "@NormalizedNumber",
+        "CondensedType": "[nvarchar](400)",
+        "Type": "nvarchar",
+        "Length": 400,
+        "IsOutput": false
+      }
+    ],
+    "Type": "SQL_SCALAR_FUNCTION",
+    "CreateOrder": 27,
+    "Schema": "Google",
+    "DropOrder": 1,
+    "Returns": {
+      "CondensedType": "[nvarchar](400)",
+      "Type": "nvarchar",
+      "TypeLength": 400
+    },
+    "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetE164PhoneNumber.sql"
   }
 ]

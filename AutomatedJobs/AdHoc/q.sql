@@ -1,4 +1,4 @@
-DECLARE @SchemaName [sys].[sysname] = @Schema
+DECLARE @SchemaName [sys].[sysname] = N'Google' --@Schema
 DECLARE @ReleventObject TABLE
 (
 	[object_id] [int] NOT NULL,
@@ -137,9 +137,8 @@ SELECT
 	ROW_NUMBER() OVER (
 		ORDER BY 
 			CASE
-				WHEN [@ReleventObject].[Type] = N'SCHEMA' THEN 0
-				WHEN [@ReleventObject].[Type] = N'USER_TABLE' THEN 1
-				ELSE 2
+				WHEN [@ReleventObject].[Type] = N'USER_TABLE' THEN 0
+				ELSE 1
 			END ASC,
 			[@ObjectLevel_MaximumLevel].[Level] ASC,
 			CASE
@@ -157,9 +156,8 @@ SELECT
 	ROW_NUMBER() OVER (
 		ORDER BY 
 			CASE
-				WHEN [@ReleventObject].[Type] = N'SCHEMA' THEN 0
-				WHEN [@ReleventObject].[Type] = N'USER_TABLE' THEN 1
-				ELSE 2
+				WHEN [Type] = 'Table' THEN 0
+				ELSE 1
 			END DESC,
 			[@ObjectLevel_MaximumLevel].[Level] DESC,
 			CASE
@@ -185,3 +183,4 @@ SELECT
 		INNER JOIN @ReleventObject AS [@ReleventObject]
 			ON [@ObjectLevel_MaximumLevel].[object_id] = [@ReleventObject].[object_id]
 	ORDER BY [@ObjectLevel_MaximumLevel].[Level]
+

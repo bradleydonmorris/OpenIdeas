@@ -25,9 +25,7 @@ Add-Member `
         {
             $Response = Read-Host -Prompt ("$PromptText [Default: " + $Default + "]");
             If ([String]::IsNullOrEmpty($Response))
-            {
-                $Response = $Default;
-            }
+                { $Response = $Default; }
         }
         $Result = $Response;
         Return $Result;
@@ -41,14 +39,19 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $PromptText
+            [String] $PromptText,
+        
+            [Parameter(Mandatory=$true)]
+            [Boolean] $Default
         )
         [Boolean] $Result = $false;
-        [String] $Response = Read-Host -Prompt "$PromptText [Options: (Y)es, (T)rue, 1, (N)o, (F)alse, 0]";
-        If (@("Y", "YES", "T", "TRUE", "1").Contains($Response.ToUpper()))
-        {
-            $Result = $true;
-        }
+        [String] $Response = Read-Host -Prompt "$PromptText [Options: (Y)es, (T)rue, 1, (N)o, (F)alse, 0] [Default: $Default]";
+        If ([String]::IsNullOrEmpty($Response))
+            { $Result = $Default; }
+        ElseIf (@("Y", "YES", "T", "TRUE", "1").Contains($Response.ToUpper()))
+            { $Result = $true; }
+        Else
+            { $Result = $false; }
         Return $Result;
     };
 Add-Member `
