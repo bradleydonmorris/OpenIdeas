@@ -53,7 +53,7 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Job.Prompts `
-    -Name "WriteHashTable" `
+    -Name "DisplayHashTable" `
     -MemberType "ScriptMethod" `
     -Value {
         Param

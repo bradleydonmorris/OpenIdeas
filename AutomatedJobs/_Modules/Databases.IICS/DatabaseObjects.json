@@ -1215,8 +1215,8 @@
         ]
     },
     {
-        "CreateOrder": 12,
-        "DropOrder": 48,
+        "CreateOrder": 13,
+        "DropOrder": 47,
         "Schema": "_SCHEMANAME_",
         "Name": "CustomSource",
         "SimpleType": "Table",
@@ -1334,8 +1334,8 @@
         ]
     },
     {
-        "CreateOrder": 13,
-        "DropOrder": 47,
+        "CreateOrder": 14,
+        "DropOrder": 46,
         "Schema": "_SCHEMANAME_",
         "Name": "Schedule",
         "SimpleType": "Table",
@@ -1720,8 +1720,8 @@
         ]
     },
     {
-        "CreateOrder": 14,
-        "DropOrder": 46,
+        "CreateOrder": 15,
+        "DropOrder": 45,
         "Schema": "_SCHEMANAME_",
         "Name": "Synchronization",
         "SimpleType": "Table",
@@ -1851,7 +1851,7 @@
                 "Columns": [
                     {
                         "Ordinal": 1,
-                        "ForeignColumn": "ConnectionId",
+                        "ForeignColumn": "TargetConnectionId",
                         "ReferencedColumn": "ConnectionId"
                     }
                 ]
@@ -1893,8 +1893,8 @@
         ]
     },
     {
-        "CreateOrder": 15,
-        "DropOrder": 45,
+        "CreateOrder": 16,
+        "DropOrder": 44,
         "Schema": "_SCHEMANAME_",
         "Name": "ActivityLogAsset",
         "SimpleType": "Table",
@@ -2021,8 +2021,8 @@
         ]
     },
     {
-        "CreateOrder": 16,
-        "DropOrder": 44,
+        "CreateOrder": 17,
+        "DropOrder": 43,
         "Schema": "_SCHEMANAME_",
         "Name": "ActivityLogSchedule",
         "SimpleType": "Table",
@@ -2133,8 +2133,8 @@
         ]
     },
     {
-        "CreateOrder": 17,
-        "DropOrder": 43,
+        "CreateOrder": 18,
+        "DropOrder": 42,
         "Schema": "_SCHEMANAME_",
         "Name": "AssetConnection",
         "SimpleType": "Table",
@@ -2259,8 +2259,8 @@
         ]
     },
     {
-        "CreateOrder": 18,
-        "DropOrder": 42,
+        "CreateOrder": 19,
+        "DropOrder": 41,
         "Schema": "_SCHEMANAME_",
         "Name": "AssetSchedule",
         "SimpleType": "Table",
@@ -2371,8 +2371,8 @@
         ]
     },
     {
-        "CreateOrder": 19,
-        "DropOrder": 41,
+        "CreateOrder": 12,
+        "DropOrder": 48,
         "Schema": "_SCHEMANAME_",
         "Name": "Connection",
         "SimpleType": "Table",
@@ -2974,7 +2974,7 @@
                 "Columns": [
                     {
                         "Ordinal": 1,
-                        "ForeignColumn": "ConnectionId",
+                        "ForeignColumn": "SourceConnectionId",
                         "ReferencedColumn": "ConnectionId"
                     }
                 ]
@@ -3091,7 +3091,7 @@
                 "Columns": [
                     {
                         "Ordinal": 1,
-                        "ForeignColumn": "AssetId",
+                        "ForeignColumn": "WorkflowAssetId",
                         "ReferencedColumn": "AssetId"
                     }
                 ]
@@ -3107,7 +3107,7 @@
                 "Columns": [
                     {
                         "Ordinal": 1,
-                        "ForeignColumn": "AssetId",
+                        "ForeignColumn": "TaskAssetId",
                         "ReferencedColumn": "AssetId"
                     }
                 ]
@@ -3126,22 +3126,6 @@
                 "Columns": [
                     {
                         "Name": "WorkflowAssetId",
-                        "SortDirection": "Ascending"
-                    }
-                ]
-            },
-            {
-                "Name": "IX_WorkflowTask_TaskAssetId",
-                "IsUnique": false,
-                "FileGroup": "_INDEXFILEGROUP_",
-                "IgnoreDuplicateKey": false,
-                "AllowRowLocks": true,
-                "AllowPageLocks": true,
-                "IsPadded": false,
-                "FillFactor": 0,
-                "Columns": [
-                    {
-                        "Name": "TaskAssetId",
                         "SortDirection": "Ascending"
                     }
                 ]
@@ -4658,6 +4642,124 @@
                 "Type": "varchar",
                 "Length": 50,
                 "IsOutput": false
+            },
+            {
+                "Sequence": 2,
+                "Name": "@Weekday",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 3,
+                "Name": "@DayOfMonth",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 4,
+                "Name": "@WeekOfMonth",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "Length": 50,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 5,
+                "Name": "@DayOfWeek",
+                "CondensedType": "[varchar](50)",
+                "Type": "varchar",
+                "Length": 50,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 6,
+                "Name": "@Frequency",
+                "CondensedType": "[int]",
+                "Type": "int",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 7,
+                "Name": "@Monday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 8,
+                "Name": "@Tuesday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 9,
+                "Name": "@Wednesday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 10,
+                "Name": "@Thursday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 11,
+                "Name": "@Friday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 12,
+                "Name": "@Saturday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 13,
+                "Name": "@Sunday",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 14,
+                "Name": "@StartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "Length": 7,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 15,
+                "Name": "@EndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "Length": 7,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 16,
+                "Name": "@RangeStartTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "Length": 7,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 17,
+                "Name": "@RangeEndTime",
+                "CondensedType": "[datetime2](7)",
+                "Type": "datetime2",
+                "Length": 7,
+                "IsOutput": false
             }
         ],
         "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\GetScheduleTexturalStatement.sql"
@@ -5158,6 +5260,20 @@
                 "CondensedType": "[bit]",
                 "Type": "bit",
                 "IsOutput": false
+            },
+            {
+                "Sequence": 2,
+                "Name": "@ClearAssetFile",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
+            },
+            {
+                "Sequence": 3,
+                "Name": "@ClearActivityLog",
+                "CondensedType": "[bit]",
+                "Type": "bit",
+                "IsOutput": false
             }
         ],
         "ModuleBodyFileRef": "DatabaseObjectsDefinitions\\ClearStaged.sql"
@@ -5294,6 +5410,30 @@
                 "CondensedType": "[varchar](50)",
                 "Type": "varchar",
                 "Length": 50,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 2,
+                "Name": "@FileName",
+                "CondensedType": "[nvarchar](400)",
+                "Type": "nvarchar",
+                "Length": 400,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 3,
+                "Name": "@FileType",
+                "CondensedType": "[varchar](10)",
+                "Type": "varchar",
+                "Length": 10,
+                "IsOutput": false
+            },
+            {
+                "Sequence": 4,
+                "Name": "@Content",
+                "CondensedType": "[nvarchar](MAX)",
+                "Type": "nvarchar",
+                "Length": -1,
                 "IsOutput": false
             }
         ],

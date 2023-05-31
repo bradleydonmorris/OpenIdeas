@@ -5,8 +5,8 @@
 
 [String] $SQLInstance = "tsd-sql02-aws.fox.local";
 [String] $Database = "Reports_Library";
-[String] $Schema = "IICS";
-[String] $OutputDirectoryPath = "D:\SQLExports\temp";
+[String] $Schema = "Google";
+[String] $OutputDirectoryPath = "C:\SQLExports\temp";
 
 Clear-Host;
 $SQLInstance = $Global:Job.Prompts.StringResponse("SQL Instance", $SQLInstance);
@@ -22,7 +22,7 @@ $Global:Job.Logging.WriteVariables("Config", @{
 });
 
 Clear-Host;
-$Global:Job.Prompts.WriteHashTable("Variables", 180, [Ordered]@{
+$Global:Job.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;

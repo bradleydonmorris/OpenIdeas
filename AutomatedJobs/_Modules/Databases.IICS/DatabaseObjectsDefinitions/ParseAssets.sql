@@ -1,3 +1,4 @@
+BEGIN
 	MERGE [_SCHEMANAME_].[Asset] AS [Target]
 		USING
 		(

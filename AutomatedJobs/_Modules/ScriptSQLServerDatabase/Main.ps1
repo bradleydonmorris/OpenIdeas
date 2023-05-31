@@ -4,13 +4,15 @@ Class NamedSQLScript {
     [String] $Type;
     [String] $Name;
     [String] $Script;
+    [Int32] $Order;
 
     NamedSQLScript (
         [String] $mode,
         [Int32] $sequence,
         [String] $type,
         [String] $name,
-        [String] $script
+        [String] $script,
+        [Int32] $order
     )
     {
         $this.Mode = $mode;
@@ -18,6 +20,7 @@ Class NamedSQLScript {
         $this.Type = $type;
         $this.Name = $name;
         $this.Script = $script;
+        $this.Order = $order;
     }
 }
 
@@ -105,8 +108,7 @@ Add-Member `
         {
             $CommandText = $CommandText.Replace("`$($ParameterKey)", $Parameters[$ParameterKey].ToString());
         }
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text
@@ -176,8 +178,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetTableJSON.sql"));
         [String] $Json = $null;
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -261,7 +262,7 @@ Add-Member `
                 "`t`tPRIMARY KEY{0}",
                 ($ReturnValue.PrimaryKey.IsClustered ? " CLUSTERED" : "")
             );
-            If ($ReturnValue.PrimaryKey.Columns -eq 1)
+            If ($ReturnValue.PrimaryKey.Columns.Count -eq 1)
             {
                 $CreateScript += [String]::Format(
                     " ([{0}] {1})`r`n",
@@ -290,7 +291,7 @@ Add-Member `
     
             }
             $CreateScript += "`t`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", $ReturnValue.PrimaryKey.FillFactor);
+            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", ($ReturnValue.PrimaryKey.FillFactor -eq 0 ? 100 : $ReturnValue.PrimaryKey.FillFactor));
             $CreateScript += [String]::Format("PAD_INDEX = {0}, ", ($ReturnValue.PrimaryKey.IsPadded ? "ON" : "OFF"));
             $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($ReturnValue.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
             $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($ReturnValue.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
@@ -413,7 +414,7 @@ Add-Member `
                 $CreateScript += "`t)`r`n"
             }
             $CreateScript += "`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", $Index.FillFactor);
+            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", ($Index.FillFactor -eq 0 ? 100 : $Index.FillFactor));
             $CreateScript += [String]::Format("PAD_INDEX = {0}, ", ($Index.IsPadded ? "ON" : "OFF"));
             $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
             $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
@@ -448,8 +449,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetViewJSON.sql"));
         [String] $Json = $null;
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -503,8 +503,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetFunctionJSON.sql"));
         [String] $Json = $null;
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -558,8 +557,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetProcedureJSON.sql"));
         [String] $Json = $null;
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -740,6 +738,230 @@ Add-Member `
     }
 Add-Member `
     -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -Name "CreateScriptArrayFromJSON" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Collections.ArrayList])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $JSONFilePath,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Schema,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $HeapFileGroup,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $LobFileGroup,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $IndexFileGroup,
+
+            [Parameter(Mandatory=$true)]
+            [Switch] $IncludeDrops
+        )
+        [Collections.ArrayList] $RetrunValue = [Collections.ArrayList]::new();
+        If (![IO.File]::Exists($JSONFilePath))
+        {
+            Throw [IO.FileNotFoundException]::new("File specified by `$JSONFilePath was not found.", $JSONFilePath)
+        }
+        $ObjectInfos = ConvertFrom-Json -InputObject ([IO.File]::ReadAllText($JSONFilePath));
+        [String] $DirectoryPath = [IO.Path]::GetDirectoryName($JSONFilePath);
+        [Int] $CreateSequence = 0;
+        If ($IncludeDrops)
+        {
+            $CreateSequence = $ObjectInfos.Count;
+        }
+        ForEach ($ObjectInfo In ($ObjectInfos | Sort-Object -Property "CreateOrder"))
+        {
+            [String] $Script = $null;
+            $ObjectInfo.Schema = $Schema
+            Switch ($ObjectInfo.SimpleType)
+            {
+                "Table"
+                {
+                    If ($ObjectInfo.HeapFileGroupName -eq "_HEAPFILEGROUP_")
+                    {
+                        $ObjectInfo.HeapFileGroupName = $HeapFileGroup;
+                    }
+
+                    If ($ObjectInfo.PrimaryKey.FileGroup -eq "_HEAPFILEGROUP_")
+                    {
+                        $ObjectInfo.PrimaryKey.FileGroup = $HeapFileGroup;
+                    }
+                    If ($ObjectInfo.PrimaryKey.FileGroup -eq "_INDEXFILEGROUP_")
+                    {
+                        $ObjectInfo.PrimaryKey.FileGroup = $IndexFileGroup;
+                    }
+
+                    If ($ObjectInfo.LobFileGroupName -eq "_LOBFILEGROUP_")
+                    {
+                        $ObjectInfo.LobFileGroupName = $LobFileGroup;
+                    }
+
+                    ForEach ($Index In $ObjectInfo.Indexes)
+                    {
+                        If ($Index.FileGroup -eq "_INDEXFILEGROUP_")
+                        {
+                            $Index.FileGroup = $IndexFileGroup;
+                        }
+                    }
+
+                    ForEach ($ForeignKey In $ObjectInfo.ForeignKeys)
+                    {
+                        If ($ForeignKey.Schema -eq "_SCHEMANAME_")
+                        {
+                            $ForeignKey.Schema = $Schema;
+                        }
+                        If ($ForeignKey.KeySchema -eq "_SCHEMANAME_")
+                        {
+                            $ForeignKey.KeySchema = $Schema;
+                        }
+                        If ($ForeignKey.ForeignSchema -eq "_SCHEMANAME_")
+                        {
+                            $ForeignKey.ForeignSchema = $Schema;
+                        }
+                        If ($ForeignKey.ReferencedSchema -eq "_SCHEMANAME_")
+                        {
+                            $ForeignKey.ReferencedSchema = $Schema;
+                        }
+                    }
+                    $Script = $Global:Job.ScriptSQLServerDatabase.GenerateTableScript($ObjectInfo);
+                }
+                "View"
+                {
+                    $Script = $Global:Job.ScriptSQLServerDatabase.GenerateViewScript(
+                        $ObjectInfo,
+                        [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
+                    );
+                }
+                "Function"
+                {
+                    $Script = $Global:Job.ScriptSQLServerDatabase.GenerateFunctionScript(
+                        $ObjectInfo,
+                        [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
+                    );
+                }
+                "Procedure"
+                {
+                    $Script = $Global:Job.ScriptSQLServerDatabase.GenerateProcedureScript(
+                        $ObjectInfo,
+                        [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
+                    );
+                }
+            }
+            If ($IncludeDrops)
+            {
+                [void] $RetrunValue.Add([NamedSQLScript]::new(
+                    "Drop",
+                    $ObjectInfo.DropOrder,
+                    $ObjectInfo.SimpleType,
+                    [String]::Format("[{0}].[{1}]", $Schema, $ObjectInfo.Name),
+                    [String]::Format("DROP {0} IF EXISTS [{1}].[{2}]", $ObjectInfo.SimpleType.ToUpper(), $Schema, $ObjectInfo.Name),
+                    $ObjectInfo.DropOrder
+                ));
+            }
+            If (![String]::IsNullOrEmpty($Script))
+            {
+                [void] $RetrunValue.Add([NamedSQLScript]::new(
+                    "Create",
+                    ($IncludeDrops ? ($ObjectInfos.Count + $ObjectInfo.CreateOrder) : $ObjectInfo.CreateOrder),
+                    $ObjectInfo.SimpleType,
+                    [String]::Format("[{0}].[{1}]", $Schema, $ObjectInfo.Name),
+                    $Script,
+                    $ObjectInfo.CreateOrder
+                ));
+            }
+        }
+        Return $RetrunValue | Sort-Object -Property "Sequence";
+    }
+Add-Member `
+    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -Name "ImportFromJSON" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Collections.ArrayList])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $JSONFilePath,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Instance,
+                
+            [Parameter(Mandatory=$true)]
+            [String] $Database,
+                
+            [Parameter(Mandatory=$true)]
+            [String] $Schema,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $HeapFileGroup,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $LobFileGroup,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $IndexFileGroup,
+
+            [Parameter(Mandatory=$true)]
+            [Switch] $IncludeDrops
+        )
+        [Collections.ArrayList] $NamedSQLScripts = $Global:Job.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
+            $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
+        );
+        Set-Content -Path "C:\Users\bmorris\source\repos\bradleydonmorris\OpenIdeas\AutomatedJobs\AdHoc\CreateStruct.txt" -Value "Sequence`tOrder`tMode`tType`tName";
+        ForEach ($NamedSQLScript In ($NamedSQLScripts | Sort-Object -Property "Sequence"))
+        {
+            Add-Content -Path "C:\Users\bmorris\source\repos\bradleydonmorris\OpenIdeas\AutomatedJobs\AdHoc\CreateStruct.txt" -Value ([String]::Format(
+                "{0}`t{1}`t{2}`t{3}`t{4}",
+                $NamedSQLScript.Sequence,
+                $NamedSQLScript.Order,
+                $NamedSQLScript.Mode,
+                $NamedSQLScript.Type,
+                $NamedSQLScript.Name
+            ));
+        }
+
+        If ($IncludeDrops)
+        {
+            ForEach ($NamedSQLScript In ($NamedSQLScripts |
+                                            Where-Object -FilterScript { $_.Mode -eq "Drop" } |
+                                            Sort-Object -Property "Sequence"
+            ))
+            {
+                Write-Host ([String]::Format(
+                    "{0} - {1} - {2}",
+                    $NamedSQLScript.Mode,
+                    $NamedSQLScript.Type,
+                    $NamedSQLScript.Name
+                ));
+                [void] $Global:Job.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+            }
+        }
+        [void] $Global:Job.Databases.ExecuteScript(
+            $Instance, $Database,
+            "IF NOT EXISTS (SELECT 1 FROM [sys].[schemas] WHERE [name] = N'`$(Schema)') EXECUTE(N'CREATE SCHEMA [`$(Schema)]')",
+            @{ "Schema" = $Schema }
+        );
+        ForEach ($NamedSQLScript In ($NamedSQLScripts |
+                                        Where-Object -FilterScript { $_.Mode -eq "Create" } |
+                                        Sort-Object -Property "Sequence"
+        ))
+        {
+            Write-Host ([String]::Format(
+                "{0} - {1} - {2}",
+                $NamedSQLScript.Mode,
+                $NamedSQLScript.Type,
+                $NamedSQLScript.Name
+            ));
+            [void] $Global:Job.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+        }
+    }
+Add-Member `
+    -InputObject $Global:Job.ScriptSQLServerDatabase `
     -Name "GenerateTableScript" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -803,7 +1025,7 @@ Add-Member `
                 "`t`tPRIMARY KEY{0}",
                 ($TableInfo.PrimaryKey.IsClustered ? " CLUSTERED" : "")
             );
-            If ($TableInfo.PrimaryKey.Columns -eq 1)
+            If ($TableInfo.PrimaryKey.Columns.Count -eq 1)
             {
                 $ReturnValue += [String]::Format(
                     " ([{0}] {1})`r`n",
@@ -832,7 +1054,7 @@ Add-Member `
     
             }
             $ReturnValue += "`t`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $ReturnValue += [String]::Format("FILLFACTOR = {0}, ", $TableInfo.PrimaryKey.FillFactor);
+            $ReturnValue += [String]::Format("FILLFACTOR = {0}, ", ($TableInfo.PrimaryKey.FillFactor -eq 0 ? 100 : $TableInfo.PrimaryKey.FillFactor));
             $ReturnValue += [String]::Format("PAD_INDEX = {0}, ", ($TableInfo.PrimaryKey.IsPadded ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($TableInfo.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($TableInfo.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
@@ -955,7 +1177,7 @@ Add-Member `
                 $ReturnValue += "`t)`r`n"
             }
             $ReturnValue += "`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $ReturnValue += [String]::Format("FILLFACTOR = {0}, ", $Index.FillFactor);
+            $ReturnValue += [String]::Format("FILLFACTOR = {0}, ", ($Index.FillFactor -eq 0 ? 100 : $Index.FillFactor));
             $ReturnValue += [String]::Format("PAD_INDEX = {0}, ", ($Index.IsPadded ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
@@ -982,7 +1204,9 @@ Add-Member `
         )
         [String] $ReturnValue = [String]::Format("CREATE OR ALTER View [{0}].[{1}]`r`n", $ViewInfo.Schema, $ViewInfo.Name);
         $ReturnValue += "`r`nAS`r`n";
-        $ReturnValue += [IO.File]::ReadAllText($ModuleBodyFilePath);
+        [String] $Body = [IO.File]::ReadAllText($ModuleBodyFilePath);
+        $Body = $Body.Replace("_SCHEMANAME_", $ViewInfo.Schema);
+        $ReturnValue += $Body
         Return $ReturnValue;
     };
 Add-Member `
@@ -1005,7 +1229,7 @@ Add-Member `
         {
             $ReturnValue += "(`r`n";
             $CurrentLoopIndex = 0;
-            ForEach ($Parameter In ($Parameters | Sort-Object -Property "Sequence"))
+            ForEach ($Parameter In ($FunctionInfo.Parameters | Sort-Object -Property "Sequence"))
             {
                 $CurrentLoopIndex ++;
                 $ReturnValue += [String]::Format("`t{0} {1}", $Parameter.Name, $Parameter.CondensedType);
@@ -1023,7 +1247,9 @@ Add-Member `
         }
         $ReturnValue += [String]::Format("RETURNS {0}", $FunctionInfo.Returns.CondensedType);
         $ReturnValue += "`r`nAS`r`n";
-        $ReturnValue += [IO.File]::ReadAllText($ModuleBodyFilePath);
+        [String] $Body = [IO.File]::ReadAllText($ModuleBodyFilePath);
+        $Body = $Body.Replace("_SCHEMANAME_", $FunctionInfo.Schema);
+        $ReturnValue += $Body
         Return $ReturnValue;
     };
 Add-Member `
@@ -1063,6 +1289,8 @@ Add-Member `
             $ReturnValue += ")`r`n";
         }
         $ReturnValue += "`r`nAS`r`n";
-        $ReturnValue += [IO.File]::ReadAllText($ModuleBodyFilePath);
+        [String] $Body = [IO.File]::ReadAllText($ModuleBodyFilePath);
+        $Body = $Body.Replace("_SCHEMANAME_", $ProcedureInfo.Schema);
+        $ReturnValue += $Body
         Return $ReturnValue;
     }

@@ -1,3 +1,4 @@
+BEGIN
 	INSERT INTO [_SCHEMANAME_].[ActivityLog]
 	(
 		[ActivityLogStateId], [RunContextTypeId],

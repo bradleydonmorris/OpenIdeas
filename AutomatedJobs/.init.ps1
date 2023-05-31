@@ -3,7 +3,6 @@ Param
     [Parameter(Position=1, Mandatory=$false)]
     [String[]] $RequiredModules
 )
-[IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".jobs-config.json");
 [String] $JobsConfigFilePath = [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".jobs-config.json");
 If (![IO.File]::Exists($JobsConfigFilePath))
 {
@@ -34,7 +33,6 @@ If ([IO.File]::Exists($ConfigFilePath))
         -NotePropertyName "Config" `
         -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText($ConfigFilePath)));
 }
-
 Add-Member `
     -InputObject $Global:Job `
     -TypeName "String" `

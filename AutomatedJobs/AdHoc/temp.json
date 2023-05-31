@@ -1,0 +1,40 @@
+{
+    "Schema": "IICS",
+    "Name": "PostStagedAssetFile",
+    "Parameters": [
+        {
+            "Sequence": 1,
+            "Name": "@FederatedId",
+            "CondensedType": "[varchar](50)",
+            "Type": "varchar",
+            "Length": 50,
+            "IsOutput": false
+        },
+        {
+            "Sequence": 2,
+            "Name": "@FileName",
+            "CondensedType": "[nvarchar](400)",
+            "Type": "nvarchar",
+            "Length": 400,
+            "IsOutput": false
+        },
+        {
+            "Sequence": 3,
+            "Name": "@FileType",
+            "CondensedType": "[varchar](10)",
+            "Type": "varchar",
+            "Length": 10,
+            "IsOutput": false
+        },
+        {
+            "Sequence": 4,
+            "Name": "@Content",
+            "CondensedType": "[nvarchar](MAX)",
+            "Type": "nvarchar",
+            "Length": -1,
+            "IsOutput": false
+        }
+    ],
+    "CreateScript": "CREATE   PROCEDURE [IICS].[PostStagedAssetFile]\r\n(\r\n\t@FederatedId [varchar](50),\r\n\t@FileName [nvarchar](400),\r\n\t@FileType [varchar](10),\r\n\t@Content [nvarchar](MAX)\r\n)\r\nAS\r\nBEGIN\r\n\tINSERT INTO [IICS].[StagedAssetFile]([FederatedId], [FileName], [FileType], [Content])\r\n\t\tVALUES(@FederatedId, @FileName, @FileType, @Content)\r\nEND\r\n",
+    "DropScript": "DROP PROCEDURE IF EXISTS [IICS].[PostStagedAssetFile]"
+}

@@ -1,3 +1,4 @@
+BEGIN
 	INSERT INTO [_SCHEMANAME_].[AssetConnection]
 		SELECT DISTINCT
 			[Asset].[AssetId],

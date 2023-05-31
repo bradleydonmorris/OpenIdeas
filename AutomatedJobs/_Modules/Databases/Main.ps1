@@ -7,6 +7,30 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Job.Databases `
+    -Name "GetConnectionString" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Instance,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Database
+        )
+        Return [String]::Format(
+            "Server={0};Database={1};Trusted_Connection=True;Workstation ID={2}Application Name={3}/{4}",
+            $Instance,
+            $Database,
+            [System.Net.Dns]::GetHostName(),
+            $Global:Job.Collection,
+            $Global:Job.Script
+        );
+    };
+
+Add-Member `
+    -InputObject $Global:Job.Databases `
     -Name "ClearSQLServerTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -399,9 +423,7 @@ Add-Member `
         {
             $CommandText = $CommandText.Replace("`$($ParameterKey)", $Parameters[$ParameterKey].ToString());
         }
-
-        [String] $ConnectionString = "Server=$Instance;Database=$Database;Trusted_Connection=True;Application Name=" + [IO.Path]::GetFileName($PSCommandPath);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
     
         If (![String]::IsNullOrEmpty($CommandText.Trim()))
@@ -419,4 +441,40 @@ Add-Member `
         [void] $SqlConnection.Close();
         [void] $SqlConnection.Dispose();
         Return $ReturnValue;
+    };
+Add-Member `
+    -InputObject $Global:Job.Databases `
+    -Name "ExecuteScript" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Instance,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Database,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $CommandText,
+    
+            [Parameter(Mandatory=$false)]
+            [Collections.Hashtable] $Parameters
+        )
+        ForEach ($ParameterKey In $Parameters.Keys)
+        {
+            $CommandText = $CommandText.Replace("`$($ParameterKey)", $Parameters[$ParameterKey].ToString());
+        }
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [void] $SqlConnection.Open();
+        If (![String]::IsNullOrEmpty($CommandText.Trim()))
+        {
+            [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
+            $SqlCommand.CommandType = [Data.CommandType]::Text
+            $SqlCommand.CommandTimeout = 0;
+            [void] $SqlCommand.ExecuteNonQuery();
+            [void] $SqlCommand.Dispose();
+        }
+        [void] $SqlConnection.Close();
+        [void] $SqlConnection.Dispose();
     };
