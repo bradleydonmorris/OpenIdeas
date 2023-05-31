@@ -6,6 +6,8 @@ SELECT
 			SELECT
 				[schemas].[name] AS [Schema],
 				[objects].[name] AS [Name],
+				'Function' AS [SimpleType],
+				[objects].[type_desc] AS [Type],
 				JSON_QUERY((
 					SELECT
 						(
@@ -354,14 +356,7 @@ SELECT
 						ORDER BY [parameters].[parameter_id]
 						FOR JSON PATH
 				)) AS [Parameters],
-				[sql_modules].[definition] AS [CreateScript],
-				CONCAT
-				(
-					N'DROP FUNCTION IF EXISTS ',
-					QUOTENAME([schemas].[name]),
-					N'.',
-					QUOTENAME([objects].[name])
-				) AS [DropScript]
+				[sql_modules].[definition] AS [CreateScript]
 				FROM [sys].[objects]
 					INNER JOIN [sys].[schemas] WITH (NOLOCK)
 						ON [objects].[schema_id] = [schemas].[schema_id]

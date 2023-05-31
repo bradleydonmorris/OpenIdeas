@@ -84,10 +84,7 @@ Add-Member `
             [String] $OverrideGetDependenciesFilePath,
     
             [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Parameters,
-
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IncludeDetails
+            [Collections.Hashtable] $Parameters
         )
         [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
     
@@ -127,26 +124,14 @@ Add-Member `
         [Data.SqlClient.SqlDataReader] $SqlDataReader =  $SqlCommand.ExecuteReader();
         While ($SqlDataReader.Read())
         {
-            [SQLObjectInfo] $SQLObjectInfo = [SQLObjectInfo]::new(
-                $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("CreateOrder")),
-                $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("DropOrder")),
-                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Schema")),
-                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Name")),
-                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("SimpleType")),
-                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Type")),
-                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("QualifiedName"))
-            );
-            If ($IncludeDetails)
-            {
-                Switch ($SQLObjectInfo.SimpleType)
-                {
-                    "Table" { $SQLObjectInfo.Details = $Global:Job.ScriptSQLServerDatabase.GetTableInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name); }
-                    "View" { $SQLObjectInfo.Details = $Global:Job.ScriptSQLServerDatabase.GetViewInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name); }
-                    "Function" { $SQLObjectInfo.Details = $Global:Job.ScriptSQLServerDatabase.GetFunctionInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name); }
-                    "Procedure" { $SQLObjectInfo.Details = $Global:Job.ScriptSQLServerDatabase.GetProcedureInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name); }
-                }
-            }
-            [void] $ReturnValue.Add($SQLObjectInfo);
+            [void] $ReturnValue.Add(@{
+                "CreateOrder" = $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("CreateOrder"));
+                "DropOrder" = $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("DropOrder"));
+                "Schema" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Schema"));
+                "Name" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Name"));
+                "SimpleType" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("SimpleType"));
+                "Type" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Type"));
+            });
         }
         [void] $SqlDataReader.Close();
         [void] $SqlDataReader.Dispose();
@@ -208,222 +193,6 @@ Add-Member `
         [void] $SqlConnection.Dispose();
 
         $ReturnValue = $Json | ConvertFrom-Json -Depth 100;
-        [String] $CreateScript = [String]::Format("CREATE TABLE [{0}].[{1}]`r`n", $ReturnValue.Schema, $ReturnValue.Name);
-        [Int32] $CurrentLoopIndex = 0;
-        [Boolean] $HasPrimaryKey = $false;
-        [Boolean] $HasForeignKeys = $false;
-        If ($ReturnValue.PrimaryKey)
-        {
-            $HasPrimaryKey = $true;
-        }
-        If ($ReturnValue.ForeignKeys.Count -gt 0)
-        {
-            $HasForeignKeys = $true;
-        }
-        $CurrentLoopIndex = 0;
-        $CreateScript += "(`r`n"
-        ForEach ($Column In ($ReturnValue.Columns | Sort-Object -Property "Ordinal"))
-        {
-            $CurrentLoopIndex ++;
-            $CreateScript += [String]::Format("`t[{0}] {1}", $Column.Name, $Column.CondensedType);
-            If ($Column.IsIdentity)
-            {
-                $CreateScript += " IDENTITY(1, 1)";
-            }
-            If (![String]::IsNullOrEmpty($Column.Computation.Definition))
-            {
-                $CreateScript += [String]::Format("`r`n`t`tAS {0}", $Column.Computation.Definition);
-            }
-            Else
-            {
-                $CreateScript += [String]::Format(" {0}", ($Column.IsNullable ? "NULL" : "NOT NULL"));
-            }
-            If (![String]::IsNullOrEmpty($Column.Default.Definition))
-            {
-                $CreateScript += [String]::Format("`r`n`t`tCONSTRAINT [DF_{0}_{1}] DEFAULT {2}", $ReturnValue.Name, $Column.Name, $Column.Default.Definition);
-            }
-            If ($Column.IsRowGUID)
-            {
-                $CreateScript += " ROWGUIDCOL";
-            }
-            If (
-                ($CurrentLoopIndex -lt $ReturnValue.Columns.Count) -or
-                $HasPrimaryKey -or $HasForeignKeys
-            )
-            {
-                $CreateScript += ",";
-            }
-            $CreateScript += "`r`n"
-        }
-        If ($HasPrimaryKey)
-        {
-            $CreateScript += [String]::Format("`tCONSTRAINT [{0}]`r`n", $ReturnValue.PrimaryKey.Name);
-            $CreateScript += [String]::Format(
-                "`t`tPRIMARY KEY{0}",
-                ($ReturnValue.PrimaryKey.IsClustered ? " CLUSTERED" : "")
-            );
-            If ($ReturnValue.PrimaryKey.Columns.Count -eq 1)
-            {
-                $CreateScript += [String]::Format(
-                    " ([{0}] {1})`r`n",
-                    $ReturnValue.PrimaryKey.Columns[0].Name,
-                    ($ReturnValue.PrimaryKey.Columns[0].SortDirection -eq "Descending" ? "DESC" : "ASC")
-                );
-            }
-            ElseIf ($ReturnValue.PrimaryKey.Columns.Count -gt 1)
-            {
-                $CreateScript += "`r`n`t`t(`r`n";
-                $CurrentLoopIndex = 0;
-                ForEach ($Column In ($ReturnValue.PrimaryKey.Columns | Sort-Object -Property "Ordinal"))
-                {
-                    $CreateScript += [String]::Format(
-                        "`t`t`t[{0}] {1}",
-                        $Column.Name,
-                        ($Column.SortDirection -eq "Descending" ? "DESC" : "ASC")
-                    );
-                    If ($CurrentLoopIndex -lt $ReturnValue.PrimaryKey.Columns.Count)
-                    {
-                        $CreateScript += ",";
-                    }
-                    $CreateScript += "`r`n";
-                }
-                $CreateScript += "`t`t)`r`n";
-    
-            }
-            $CreateScript += "`t`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", ($ReturnValue.PrimaryKey.FillFactor -eq 0 ? 100 : $ReturnValue.PrimaryKey.FillFactor));
-            $CreateScript += [String]::Format("PAD_INDEX = {0}, ", ($ReturnValue.PrimaryKey.IsPadded ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($ReturnValue.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($ReturnValue.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("ALLOW_ROW_LOCKS = {0}, ", ($ReturnValue.PrimaryKey.AllowRowLocks ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("ALLOW_PAGE_LOCKS = {0} ", ($ReturnValue.PrimaryKey.AllowPageLocks ? "ON" : "OFF"));
-            $CreateScript += ")`r`n";
-            $CreateScript += [String]::Format("`t`tON [{0}]", $ReturnValue.PrimaryKey.FileGroup);
-            If ($HasForeignKeys)
-            {
-                $CreateScript += ",";
-            }
-            $CreateScript += "`r`n"
-        }
-        If ($HasForeignKeys)
-        {
-            [Int32] $ForeignKeyCurrentLoopIndex = 0;
-            ForEach ($ForeignKey In $ReturnValue.ForeignKeys)
-            {
-                $ForeignKeyCurrentLoopIndex ++;
-                $CreateScript += [String]::Format("`tCONSTRAINT [{0}]`r`n", $ForeignKey.KeyName);
-                $CreateScript += "`t`tFOREIGN KEY";
-                If ($ForeignKey.Columns.Count -eq 1)
-                {
-                    $CreateScript += [String]::Format(" ([{0}])`r`n", $ForeignKey.Columns[0].ForeignColumn);
-                }
-                ElseIf ($ForeignKey.Columns.Count -gt 1)
-                {
-                    $CreateScript += "`r`n`t`t(`r`n";
-                    $CurrentLoopIndex = 0;
-                    ForEach ($Column In ($ForeignKey.Columns | Sort-Object -Property "Ordinal"))
-                    {
-                        $CreateScript += [String]::Format("`t`t`t[{0}]", $Column.ForeignColumn);
-                        If ($CurrentLoopIndex -lt $ForeignKey.Columns.Count)
-                        {
-                            $CreateScript += ",";
-                        }
-                        $CreateScript += "`r`n";
-                    }
-                    $CreateScript += "`t`t)`r`n";
-                }
-                $CreateScript += [String]::Format("`t`tREFERENCES [{0}].[{1}]", $ForeignKey.ReferencedSchema, $ForeignKey.ReferencedTable);
-                If ($ForeignKey.Columns.Count -eq 1)
-                {
-                    $CreateScript += [String]::Format(" ([{0}])", $ForeignKey.Columns[0].ReferencedColumn);
-                }
-                ElseIf ($ForeignKey.Columns.Count -gt 1)
-                {
-                    $CreateScript += "`r`n`t`t(`r`n";
-                    $CurrentLoopIndex = 0;
-                    ForEach ($Column In ($ForeignKey.Columns | Sort-Object -Property "Ordinal"))
-                    {
-                        $CreateScript += [String]::Format("`t`t`t[{0}]", $Column.ReferencedColumn);
-                        If ($CurrentLoopIndex -lt $ForeignKey.Columns.Count)
-                        {
-                            $CreateScript += ",";
-                        }
-                        $CreateScript += "`r`n";
-                    }
-                    $CreateScript += "`t`t)";
-                }
-                If ($ForeignKeyCurrentLoopIndex -lt $ReturnValue.ForeignKeys.Count)
-                {
-                    $CreateScript += ",";
-                }
-                $CreateScript += "`r`n";
-            }
-        }
-        $CreateScript += [String]::Format(") ON [{0}]", $ReturnValue.HeapFileGroupName);
-        If (![String]::IsNullOrEmpty($ReturnValue.LobFileGroupName))
-        {
-            $CreateScript += [String]::Format(" TEXTIMAGE_ON [{0}]", $ReturnValue.LobFileGroupName);
-        }
-        ForEach ($Index In $ReturnValue.Indexes)
-        {
-            $CreateScript += [String]::Format(
-                "`r`nCREATE{0}{1} INDEX [{2}]",
-                ($Index.IsUnique ? " UNIQUE" : ""),
-                ($Index.IsClustered ? " CLUSTERED" : " NONCLUSTERED"),
-                $Index.Name
-            );
-            $CreateScript += [String]::Format("`tON [{0}].[{1}]", $ReturnValue.Schema, $ReturnValue.Name);
-            If ($Index.Columns.Count -eq 1)
-            {
-                $CreateScript += [String]::Format(" ([{0}] {1})`r`n", $Index.Columns[0].Name, ($Index.Columns[0].SortDirection -eq "Descending" ? "DESC" : "ASC"));
-            }
-            ElseIf ($Index.Columns.Count -gt 1)
-            {
-                $CurrentLoopIndex = 0;
-                $CreateScript += "`r`n`t(`r`n"
-                ForEach ($Column In $Index.Columns)
-                {
-                    $CreateScript += [String]::Format("`t`t[{0}] {1}", $Column.Name, ($Column.SortDirection -eq "Descending" ? "DESC" : "ASC"));
-                    $CurrentLoopIndex ++;
-                    If ($CurrentLoopIndex -lt $Index.Columns.Count)
-                    {
-                        $CreateScript += ",";
-                    }
-                    $CreateScript += "`r`n";
-                }
-                $CreateScript += "`t)`r`n"
-            }
-            If ($Index.IncludeColumns.Count -eq 1)
-            {
-                $CreateScript += [String]::Format("`tINCLUDE ([{0}])`r`n", $Index.IncludeColumns[0].Name);
-            }
-            ElseIf  ($Index.IncludeColumns.Count -gt 1)
-            {
-                $CurrentLoopIndex = 0;
-                $CreateScript += "`r`n`tINCLUDE`r`n`t(`r`n"
-                ForEach ($Column In $Index.IncludeColumns)
-                {
-                    $CurrentLoopIndex ++;
-                    $CreateScript += [String]::Format("`t`t[{0}]", $Column.Name);
-                    If ($CurrentLoopIndex -lt $Index.IncludeColumns.Count)
-                    {
-                        $CreateScript += ",";
-                    }
-                    $CreateScript += "`r`n";
-                }
-                $CreateScript += "`t)`r`n"
-            }
-            $CreateScript += "`tWITH ( STATISTICS_NORECOMPUTE = OFF, ";
-            $CreateScript += [String]::Format("FILLFACTOR = {0}, ", ($Index.FillFactor -eq 0 ? 100 : $Index.FillFactor));
-            $CreateScript += [String]::Format("PAD_INDEX = {0}, ", ($Index.IsPadded ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($Index.IgnoreDuplicateKey ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("ALLOW_ROW_LOCKS = {0}, ", ($Index.AllowRowLocks ? "ON" : "OFF"));
-            $CreateScript += [String]::Format("ALLOW_PAGE_LOCKS = {0} ", ($Index.AllowPageLocks ? "ON" : "OFF"));
-            $CreateScript += ")`r`n";
-            $CreateScript += [String]::Format("`tON [{0}]", $Index.FileGroup);
-        }
-        $ReturnValue.CreateScript = $CreateScript;
         Return $ReturnValue;
     }
 Add-Member `
@@ -622,31 +391,78 @@ Add-Member `
             $Parameters,
             $true
         );
-        [Int32] $PadLength = $SQLObjectInfos.Count.ToString().Length;
-        [String] $JSONpOutputFilePath = [IO.Path]::Combine($OutputDirectoryPath, ("".PadLeft($PadLength, "0") + "-Objects.json"));
-        [String] $DropOutputFilePath = [IO.Path]::Combine($OutputDirectoryPath, ("".PadLeft($PadLength, "0") + "-Drop.sql"));
-        $SQLObjectInfos |
-            Sort-Object -Property "CreateOrder" |
-            ConvertTo-Json -Depth 100 |
-            Out-File $JSONpOutputFilePath;
+        [Collections.ArrayList] $OutputArray = [Collections.ArrayList]::new();
+        [String] $DatabaseObjectsDefinitionsDirectoryPath = [IO.Path]::Combine($OutputDirectoryPath, "DatabaseObjectsDefinitions");
+        If (![IO.Directory]::Exists($DatabaseObjectsDefinitionsDirectoryPath))
+        {
+            [void] [IO.Directory]::CreateDirectory($DatabaseObjectsDefinitionsDirectoryPath);
+        }
         ForEach ($SQLObjectInfo In ($SQLObjectInfos | Sort-Object -Property "CreateOrder"))
         {
-            [String] $OutputFilePath = [IO.Path]::Combine(
-                $OutputDirectoryPath,
-                [String]::Format(
-                    "{0}-{1}-{2}.sql",
-                    $SQLObjectInfo.CreateOrder.ToString().PadLeft($PadLength, "0"),
-                    $SQLObjectInfo.SimpleType,
-                    $SQLObjectInfo.QualifiedName
-                )
-            );
-            [void] [IO.File]::WriteAllText($OutputFilePath, $SQLObjectInfo.Details.CreateScript);
+            Switch ($SQLObjectInfo.SimpleType)
+            {
+                "Table"
+                {
+                    $TableInfo = $Global:Job.ScriptSQLServerDatabase.GetTableInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    [void] $SQLObjectInfo.Add("HeapFileGroupName", $TableInfo.HeapFileGroupName);
+                    [void] $SQLObjectInfo.Add("LobFileGroupName", $TableInfo.LobFileGroupName);
+                    [void] $SQLObjectInfo.Add("Columns", $TableInfo.Columns);
+                    [void] $SQLObjectInfo.Add("PrimaryKey", $TableInfo.PrimaryKey);
+                    [void] $SQLObjectInfo.Add("ForeignKeys", $TableInfo.ForeignKeys);
+                    [void] $SQLObjectInfo.Add("Indexes", $TableInfo.Indexes);
+                }
+                "View"
+                {
+                    $ViewInfo = $Global:Job.ScriptSQLServerDatabase.GetViewInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    [void] $SQLObjectInfo.Add("Columns", $ViewInfo.Columns);
+                    [void] [IO.File]::WriteAllText(
+                        [IO.Path]::Combine(
+                            $DatabaseObjectsDefinitionsDirectoryPath,
+                            [String]::Format(
+                                "{0}.sql",
+                                $SQLObjectInfo.Name
+                            )
+                        ),
+                        ("--SHOULD ONLY CONTAIN MODULE BODY--`r`n" + $ViewInfo.CreateScript)
+                    );
+                }
+                "Function"
+                {
+                    $FunctionInfo = $Global:Job.ScriptSQLServerDatabase.GetFunctionInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    [void] $SQLObjectInfo.Add("Returns", $FunctionInfo.Returns);
+                    [void] $SQLObjectInfo.Add("Parameters", $FunctionInfo.Parameters);
+                    [void] [IO.File]::WriteAllText(
+                        [IO.Path]::Combine(
+                            $DatabaseObjectsDefinitionsDirectoryPath,
+                            [String]::Format(
+                                "{0}.sql",
+                                $SQLObjectInfo.Name
+                            )
+                        ),
+                        ("--SHOULD ONLY CONTAIN MODULE BODY--`r`n" + $FunctionInfo.CreateScript)
+                    );
+                }
+                "Procedure"
+                {
+                    $ProcedureInfo = $Global:Job.ScriptSQLServerDatabase.GetProcedureInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    [void] $SQLObjectInfo.Add("Parameters", $ProcedureInfo.Parameters);
+                    [void] [IO.File]::WriteAllText(
+                        [IO.Path]::Combine(
+                            $DatabaseObjectsDefinitionsDirectoryPath,
+                            [String]::Format(
+                                "{0}.sql",
+                                $SQLObjectInfo.Name
+                            )
+                        ),
+                        ("--SHOULD ONLY CONTAIN MODULE BODY--`r`n" + $ProcedureInfo.CreateScript)
+                    );
+                }
+            }
+            [void] $OutputArray.Add($SQLObjectInfo);
         }
-        [void] [IO.File]::WriteAllText($DropOutputFilePath, "");
-        ForEach ($SQLObjectInfo In ($SQLObjectInfos | Sort-Object -Property "DropOrder"))
-        {
-            [void] [IO.File]::AppendAllText($DropOutputFilePath, [String]::Format("{0}`r`n", $SQLObjectInfo.Details.DropScript));
-        }
+        $OutputArray |
+            ConvertTo-Json -Depth 100 |
+                Out-File -FilePath ([IO.Path]::Combine($OutputDirectoryPath, "DatabaseObjects.json"));
     }
 Add-Member `
     -InputObject $Global:Job.ScriptSQLServerDatabase `
@@ -912,19 +728,6 @@ Add-Member `
         [Collections.ArrayList] $NamedSQLScripts = $Global:Job.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
-        Set-Content -Path "C:\Users\bmorris\source\repos\bradleydonmorris\OpenIdeas\AutomatedJobs\AdHoc\CreateStruct.txt" -Value "Sequence`tOrder`tMode`tType`tName";
-        ForEach ($NamedSQLScript In ($NamedSQLScripts | Sort-Object -Property "Sequence"))
-        {
-            Add-Content -Path "C:\Users\bmorris\source\repos\bradleydonmorris\OpenIdeas\AutomatedJobs\AdHoc\CreateStruct.txt" -Value ([String]::Format(
-                "{0}`t{1}`t{2}`t{3}`t{4}",
-                $NamedSQLScript.Sequence,
-                $NamedSQLScript.Order,
-                $NamedSQLScript.Mode,
-                $NamedSQLScript.Type,
-                $NamedSQLScript.Name
-            ));
-        }
-
         If ($IncludeDrops)
         {
             ForEach ($NamedSQLScript In ($NamedSQLScripts |

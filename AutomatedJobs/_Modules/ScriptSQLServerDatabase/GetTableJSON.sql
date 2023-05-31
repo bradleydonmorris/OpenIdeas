@@ -8,6 +8,8 @@ SELECT
 				[filegroups_LOB].[name] AS [LobFileGroupName],
 				[schemas].[name] AS [Schema],
 				[tables].[name] AS [Name],
+				'Table' AS [SimpleType],
+				[tables].[type_desc] AS [Type],
 				JSON_QUERY((
 					SELECT
 						COLUMNPROPERTY([columns].[object_id], [columns].[name], 'ordinal') AS [Ordinal],
@@ -426,14 +428,7 @@ SELECT
 						ORDER BY [indexes].[index_id] ASC
 						FOR JSON PATH
 				)) AS [Indexes],
-                N'GENERATE IN POWERSHELL' AS [CreateScript],
-                CONCAT
-				(
-					N'DROP TABLE IF EXISTS ',
-					QUOTENAME([schemas].[name]),
-					N'.',
-					QUOTENAME([tables].[name])
-				) AS [DropScript]
+                N'GENERATE IN POWERSHELL' AS [CreateScript]
 				FROM [sys].[tables] WITH (NOLOCK)
 					INNER JOIN [sys].[schemas] WITH (NOLOCK)
 						ON [tables].[schema_id] = [schemas].[schema_id]
