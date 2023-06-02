@@ -1,8 +1,5 @@
-If (!$Global:Job.NuGet.IsPackageInstalled("Microsoft.Data.Sqlite"))
-{
-    [void] $Global:Job.NuGet.InstallPackage("Microsoft.Data.Sqlite");
-}
-$Global:Job.NuGet.AddAssembly("Stub.System.Data.Sqlite.Core.NetFramework.1.0.117.0\lib\net451\System.Data.Sqlite.dll");
+[void] $Global:Job.NuGet.InstallPackageIfMissing("System.Data.Sqlite");
+[void] $Global:Job.NuGet.AddAssembly("System.Data.Sqlite", "Stub.System.Data.Sqlite.Core.NetFramework.1.0.117.0\lib\net451\System.Data.Sqlite.dll");
 
 Add-Member `
     -InputObject $Global:Job `

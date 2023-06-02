@@ -3,7 +3,7 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "NuGet" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-    Add-Member `
+Add-Member `
     -InputObject $Global:Job.NuGet `
     -TypeName "String" `
     -NotePropertyName "ExecPath" `
@@ -13,6 +13,74 @@ Add-Member `
     -TypeName "String" `
     -NotePropertyName "PackagesDirectoryPath" `
     -NotePropertyValue ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath))), "_Packages"));
+Add-Member `
+    -InputObject $Global:Job.NuGet `
+    -Name "InstallPackageVersion" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $PackageName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Version
+        )
+        Start-Process `
+            -FilePath $Global:Job.NuGet.ExecPath `
+            -ArgumentList @(
+                "install",
+                $PackageName,
+                "-DependencyVersion Highest",
+                [String]::Format("-Version {0}", $Version),
+                [String]::Format("-OutputDirectory {0}", $Global:Job.NuGet.PackagesDirectoryPath)
+            ) `
+            -NoNewWindow;
+    }
+Add-Member `
+    -InputObject $Global:Job.NuGet `
+    -Name "IsPackageVersionInstalled" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Boolean])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $PackageName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Version
+        )
+        [Boolean] $ReturnValue = $false;
+        [Object] $Package = $null;
+        Try
+        {
+            $Package = Get-Package -Name $PackageName -Destination $Global:Job.NuGet.PackagesDirectoryPath -AllVersions -ErrorAction SilentlyContinue |
+                Where-Object -FilterScript {$_.Version -eq $Version };
+        }
+        Finally { }
+        If ($Package)
+            { $ReturnValue = $true; }
+        Return $ReturnValue;
+    }
+Add-Member `
+    -InputObject $Global:Job.NuGet `
+    -Name "InstallPackageVersionIfMissing" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $PackageName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Version
+        )
+        If (!$Global:Job.NuGet.IsPackageVersionInstalled($PackageName, $Version))
+        {
+            [void] $Global:Job.NuGet.InstallPackageVersion($PackageName, $Version);
+        }
+    }
 Add-Member `
     -InputObject $Global:Job.NuGet `
     -Name "InstallPackage" `
@@ -57,16 +125,39 @@ Add-Member `
     }
 Add-Member `
     -InputObject $Global:Job.NuGet `
+    -Name "InstallPackageIfMissing" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $PackageName
+        )
+        If (!$Global:Job.NuGet.IsPackageInstalled($PackageName))
+        {
+            [void] $Global:Job.NuGet.InstallPackage($PackageName);
+        }
+    }
+Add-Member `
+    -InputObject $Global:Job.NuGet `
     -Name "AddAssembly" `
     -MemberType "ScriptMethod" `
     -Value {
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $AssemblyRelativePath
+            [String] $Name,
+
+            [Parameter(Mandatory=$true)]
+            [String] $RelativePath
         )
-        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Job.NuGet.PackagesDirectoryPath, $AssemblyRelativePath);
-        Add-Type -Path $AssemblyFilePath;
+        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Job.NuGet.PackagesDirectoryPath, $RelativePath);
+        [Object] $Assembly = [System.AppDomain]::CurrentDomain.GetAssemblies() |
+            Where-Object -FilterScript { $_.GetName().Name -eq $Name}
+        If (-not $Assembly)
+        {
+            Add-Type -Path $AssemblyFilePath;
+        }
     }
 If (![IO.File]::Exists($Global:Job.NuGet.ExecPath))
 {
