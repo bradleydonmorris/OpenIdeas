@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-164c" database="Sqlite" >
+	<schema name="Default" >
+		<table name="Item" spec="" >
+			<column name="ItemId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="MetalTypeId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="ItemGUID" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Purity" type="NUMERIC" jt="2" mandatory="y" />
+			<column name="Ounces" type="NUMERIC" jt="2" mandatory="y" />
+			<index name="PK_Item" unique="PRIMARY_KEY" >
+				<column name="ItemId" />
+			</index>
+			<index name="UX_Item_ItemId" unique="UNIQUE_INDEX" >
+				<column name="ItemId" options=" ASC" />
+			</index>
+			<index name="UX_Item_ItemGUID" unique="UNIQUE_INDEX" >
+				<column name="ItemGUID" options=" ASC" />
+			</index>
+			<index name="IX_Item_MetalTypeId" unique="NORMAL" >
+				<column name="MetalTypeId" options=" ASC" />
+			</index>
+			<fk name="FK_Item_MetalType" to_schema="Default" to_table="MetalType" options="" >
+				<fk_column name="MetalTypeId" pk="MetalTypeId" />
+			</fk>
+		</table>
+		<table name="ItemTransaction" spec="" >
+			<column name="ItemTransactionId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="ItemId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="TransactionId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="Price" type="NUMERIC" jt="2" mandatory="y" />
+			<index name="PK_ItemTransaction" unique="PRIMARY_KEY" >
+				<column name="ItemTransactionId" />
+			</index>
+			<index name="UX_ItemTransaction_ItemTransactionId" unique="UNIQUE_INDEX" >
+				<column name="ItemTransactionId" options=" ASC" />
+			</index>
+			<index name="UX_ItemTransaction_Key" unique="UNIQUE_INDEX" >
+				<column name="ItemId" options=" ASC" />
+				<column name="TransactionId" options=" ASC" />
+			</index>
+			<fk name="FK_ItemTransaction_Item" to_schema="Default" to_table="Item" options="" >
+				<fk_column name="ItemId" pk="ItemId" />
+			</fk>
+			<fk name="FK_ItemTransaction_Transaction" to_schema="Default" to_table="Transaction" options="" >
+				<fk_column name="TransactionId" pk="TransactionId" />
+			</fk>
+		</table>
+		<table name="ItemVendor" spec="" >
+			<column name="ItemVendorId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="ItemId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="VendorId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="SKU" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Description" type="TEXT" jt="-1" mandatory="y" />
+			<index name="PK_ItemVendor" unique="PRIMARY_KEY" >
+				<column name="ItemVendorId" />
+			</index>
+			<index name="UX_ItemVendor_ItemVendorId" unique="UNIQUE_INDEX" >
+				<column name="ItemVendorId" options=" ASC" />
+			</index>
+			<index name="UX_ItemVendor_Key" unique="UNIQUE_INDEX" >
+				<column name="ItemId" options=" ASC" />
+				<column name="VendorId" options=" ASC" />
+			</index>
+			<fk name="FK_ItemVendor_Item" to_schema="Default" to_table="Item" options="" >
+				<fk_column name="ItemId" pk="ItemId" />
+			</fk>
+			<fk name="FK_ItemVendor_Vendor" to_schema="Default" to_table="Vendor" options="" >
+				<fk_column name="VendorId" pk="VendorId" />
+			</fk>
+		</table>
+		<table name="MetalType" spec="" >
+			<column name="MetalTypeId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<index name="PK_MetalType" unique="PRIMARY_KEY" >
+				<column name="MetalTypeId" />
+			</index>
+			<index name="UX_MetalType_MetalTypeId" unique="UNIQUE_INDEX" >
+				<column name="MetalTypeId" options=" ASC" />
+			</index>
+			<index name="UX_MetalType_Name" unique="UNIQUE_INDEX" >
+				<column name="Name" options=" ASC" />
+			</index>
+		</table>
+		<table name="Transaction" spec="" >
+			<column name="TransactionId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="VendorId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="TransactionGUID" type="TEXT" jt="-1" mandatory="y" />
+			<column name="PurchaseDate" type="TEXT" jt="-1" mandatory="y" />
+			<column name="ReceiveDate" type="TEXT" jt="-1" mandatory="y" />
+			<column name="OrderNumber" type="TEXT" jt="-1" />
+			<index name="PK_Transaction" unique="PRIMARY_KEY" >
+				<column name="TransactionId" />
+			</index>
+			<index name="UX_Transaction_TransactionId" unique="UNIQUE_INDEX" >
+				<column name="TransactionId" options=" ASC" />
+			</index>
+			<index name="UX_Transaction_TransactionGUID" unique="UNIQUE_INDEX" >
+				<column name="TransactionGUID" options=" ASC" />
+			</index>
+			<index name="IX_Transaction_VendorId" unique="NORMAL" >
+				<column name="VendorId" options=" ASC" />
+			</index>
+			<fk name="FK_Transaction_Vendor" to_schema="Default" to_table="Vendor" options="" >
+				<fk_column name="VendorId" pk="VendorId" />
+			</fk>
+		</table>
+		<table name="TransactionSpotPrice" spec="" >
+			<column name="TransactionSpotPriceId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="TransactionId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="MetalTypeId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="Price" type="NUMERIC" jt="2" mandatory="y" />
+			<index name="PK_TransactionSpotPrice" unique="PRIMARY_KEY" >
+				<column name="TransactionSpotPriceId" />
+			</index>
+			<index name="UX_TransactionSpotPrice_TransactionSpotPriceId" unique="UNIQUE_INDEX" >
+				<column name="TransactionSpotPriceId" options=" ASC" />
+			</index>
+			<index name="UX_TransactionSpotPrice_Key" unique="UNIQUE_INDEX" >
+				<column name="TransactionId" options=" ASC" />
+				<column name="MetalTypeId" options=" ASC" />
+			</index>
+			<fk name="FK_TransactionSpotPrice_Transaction" to_schema="Default" to_table="Transaction" options="" >
+				<fk_column name="TransactionId" pk="TransactionId" />
+			</fk>
+			<fk name="FK_TransactionSpotPrice_MetalType" to_schema="Default" to_table="MetalType" options="" >
+				<fk_column name="MetalTypeId" pk="MetalTypeId" />
+			</fk>
+		</table>
+		<table name="Vendor" spec="" >
+			<column name="VendorId" type="INTEGER" jt="4" mandatory="y" />
+			<column name="VendorGUID" type="TEXT" jt="-1" mandatory="y" />
+			<column name="Name" type="TEXT" jt="-1" mandatory="y" />
+			<column name="WebSite" type="TEXT" jt="-1" />
+			<index name="PK_Vendor" unique="PRIMARY_KEY" >
+				<column name="VendorId" />
+			</index>
+			<index name="UX_Vendor_VendorId" unique="UNIQUE_INDEX" >
+				<column name="VendorId" options=" ASC" />
+			</index>
+			<index name="UX_Vendor_VendorGUID" unique="UNIQUE_INDEX" >
+				<column name="VendorGUID" options=" ASC" />
+			</index>
+			<index name="UX_Vendor_Name" unique="UNIQUE_INDEX" >
+				<column name="Name" options=" ASC" />
+			</index>
+		</table>
+	</schema>
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.40.0.0.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:\Users\bmorris\source\repos\bradleydonmorris\OpenIdeas\AutomatedJobs\AdHoc\Data.sqlite3" useSystemProxy="false" />
+	<layout name="Main Layout" id="Layout-857" show_relation="columns" >
+		<entity schema="Default" name="Item" color="BED3F4" x="272" y="304" />
+		<entity schema="Default" name="ItemTransaction" color="BED3F4" x="272" y="96" />
+		<entity schema="Default" name="ItemVendor" color="BED3F4" x="64" y="80" />
+		<entity schema="Default" name="MetalType" color="BED3F4" x="480" y="304" />
+		<entity schema="Default" name="Transaction" color="BED3F4" x="48" y="304" />
+		<entity schema="Default" name="TransactionSpotPrice" color="BED3F4" x="272" y="544" />
+		<entity schema="Default" name="Vendor" color="BED3F4" x="48" y="544" />
+		<group name="Transaction" color="ECF0F7" >
+			<entity schema="Default" name="Transaction" />
+			<entity schema="Default" name="Item" />
+			<entity schema="Default" name="MetalType" />
+			<entity schema="Default" name="TransactionSpotPrice" />
+			<entity schema="Default" name="Vendor" />
+			<entity schema="Default" name="ItemVendor" />
+			<entity schema="Default" name="ItemTransaction" />
+		</group>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-1e39" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="Item" color="BED3F4" x="304" y="272" />
+		<entity schema="Default" name="ItemTransaction" color="BED3F4" x="304" y="64" />
+		<entity schema="Default" name="ItemVendor" color="BED3F4" x="48" y="48" />
+		<entity schema="Default" name="MetalType" color="BED3F4" x="560" y="272" />
+		<entity schema="Default" name="Transaction" color="BED3F4" x="48" y="272" />
+		<entity schema="Default" name="TransactionSpotPrice" color="BED3F4" x="304" y="512" />
+		<entity schema="Default" name="Vendor" color="BED3F4" x="48" y="512" />
+		<script name="SQL Editor" id="Editor-220b" language="SQL" >
+			<string><![CDATA[SELECT
+	ItemId, MetalTypeId, ItemGUID, Purity, Ounces
+FROM
+	Item m;]]></string>
+		</script>
+		<browser id="Browse-1cae" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="Item" x="20" y="20" width="400" height="300" >
+				<browse_table schema="Default" entity="ItemTransaction" fk="FK_ItemTransaction_Item" x="440" y="20" width="500" height="350" >
+					<browse_table schema="Default" entity="Transaction" fk="FK_ItemTransaction_Transaction" x="960" y="20" width="500" height="350" record_view="y" />
+				</browse_table>
+			</browse_table>
+		</browser>
+		<query id="Query-1505" name="Query Builder" >
+			<query_table schema="Default" name="Item" alias="i" x="48" y="48" >
+				<column name="ItemId" />
+				<column name="MetalTypeId" />
+				<column name="ItemGUID" />
+				<column name="Purity" />
+				<column name="Ounces" />
+				<query_table schema="Default" name="ItemTransaction" alias="i1" x="256" y="48" fk="FK_ItemTransaction_Item" type="Inner Join" >
+					<column name="ItemTransactionId" />
+					<column name="ItemId" />
+					<column name="TransactionId" />
+					<column name="Price" />
+					<query_table schema="Default" name="Transaction" alias="t" x="496" y="48" fk="FK_ItemTransaction_Transaction" type="Inner Join" >
+						<column name="TransactionId" />
+						<column name="VendorId" />
+						<column name="TransactionGUID" />
+						<column name="PurchaseDate" />
+						<column name="ReceiveDate" />
+						<column name="OrderNumber" />
+					</query_table>
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Report" id="Report-24de" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Item Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="ItemId" type="4" />
+						<var name="MetalTypeId" type="4" />
+						<var name="ItemGUID" type="-1" />
+						<var name="Purity" type="2" />
+						<var name="Ounces" type="2" />
+						<script ><![CDATA[SELECT * FROM Item]]></script>
+					</form_script>
+					<param name="i0" value="ItemGUID" />
+					<param name="width" value="100%" />
+					<param name="v0" value="Ounces" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="ItemId" type="4" />
+						<var name="MetalTypeId" type="4" />
+						<var name="ItemGUID" type="-1" />
+						<var name="Purity" type="2" />
+						<var name="Ounces" type="2" />
+						<script ><![CDATA[SELECT * FROM Item]]></script>
+					</form_script>
+					<cell type="label" name="ItemId" pos="0,0,0,0,c,c" />
+					<cell type="label" name="MetalTypeId" pos="1,0,1,0,c,c" />
+					<cell type="label" name="ItemGUID" pos="2,0,2,0,c,c" />
+					<cell type="label" name="Purity" pos="3,0,3,0,c,c" />
+					<cell type="label" name="Ounces" pos="4,0,4,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="5,0,5,0,c,c" />
+					<cell type="label" name="${ItemId}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${MetalTypeId}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${ItemGUID}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${Purity}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${Ounces}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="5,1,5,1,c,c" ref_id="Report-24de" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-24de" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-24de" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-24de" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

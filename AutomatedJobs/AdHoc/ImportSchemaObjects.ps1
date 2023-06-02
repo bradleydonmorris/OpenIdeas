@@ -47,26 +47,43 @@ $Global:Job.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
 
 If ($WhatIf)
 {
-    $Global:Job.Logging.Execute("ImportFromJSONWhatIf", {
-        [String] $WhatIfFilePath = [IO.Path]::Combine(
-            [IO.Path]::GetDirectoryName($JSONFilePath),
-            "WhatIf.tsv"
-        );
-        $Global:Job.ScriptSQLServerDatabase.ImportFromJSONWhatIf(
-            $JSONFilePath,
-            $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true,
-            $WhatIfFilePath
-        );
-        Write-Host -Object "What If file created:`r`n`t$WhatIfFilePath";
-    });
+    Try
+    {
+        $Global:Job.Logging.TimedExecute("ImportFromJSONWhatIf", {
+            $Global:Job.Logging.WriteEntry("Information", [String]::Format("Building What If for JSON File {0}", $JSONFilePath));
+            [String] $WhatIfFilePath = [IO.Path]::Combine(
+                [IO.Path]::GetDirectoryName($JSONFilePath),
+                "WhatIf.tsv"
+            );
+            $Global:Job.ScriptSQLServerDatabase.ImportFromJSONWhatIf(
+                $JSONFilePath,
+                $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true,
+                $WhatIfFilePath
+            );
+            $Global:Job.Logging.WriteEntry("Information", [String]::Format("What If file built {0}", $WhatIfFilePath));
+            Write-Host -Object "What If file created:`r`n`t$WhatIfFilePath";
+        });
+    }
+    Catch
+    {
+        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
+    }
 }
 Else
 {
-    $Global:Job.Logging.Execute("ImportFromJSON", {
-        $Global:Job.ScriptSQLServerDatabase.ImportFromJSON(
-            $JSONFilePath,
-            $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true
-        );
+    $Global:Job.Logging.TimedExecute("ImportFromJSON", {
+        Try
+        {
+            $Global:Job.Logging.WriteEntry("Information", [String]::Format("Importing JSON File {0}", $JSONFilePath));
+            $Global:Job.ScriptSQLServerDatabase.ImportFromJSON(
+                $JSONFilePath,
+                $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true
+            );
+        }
+        Catch
+        {
+            $Global:Job.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
+        }
     });
 }
 

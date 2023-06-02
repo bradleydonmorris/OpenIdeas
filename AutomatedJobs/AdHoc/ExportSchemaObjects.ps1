@@ -29,7 +29,7 @@ $Global:Job.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
     "Output Folder Path" = $OutputDirectoryPath;
 });
 
-$Global:Job.Logging.Execute("GenerateScriptsByDependency", {
+$Global:Job.Logging.TimedExecute("GenerateScriptsByDependency", {
     $Global:Job.ScriptSQLServerDatabase.GenerateScriptsByDependency(
         $SQLInstance,
         $Database,

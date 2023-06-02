@@ -596,7 +596,7 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Job.Logging `
-    -Name "Execute" `
+    -Name "TimedExecute" `
     -MemberType "ScriptMethod" `
     -Value {
         [CmdletBinding()]
@@ -615,7 +615,7 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Job.Logging `
-    -Name "ExecuteAll" `
+    -Name "TimedExecuteAll" `
     -MemberType "ScriptMethod" `
     -Value {
         [CmdletBinding()]

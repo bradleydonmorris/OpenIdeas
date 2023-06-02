@@ -776,7 +776,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeDrops
         )
-        [Collections.ArrayList] $RetrunValue = [Collections.ArrayList]::new();
+        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
         If (![IO.File]::Exists($JSONFilePath))
         {
             Throw [IO.FileNotFoundException]::new("File specified by `$JSONFilePath was not found.", $JSONFilePath)
@@ -902,7 +902,7 @@ Add-Member `
             }
             If ($IncludeDrops -and ![String]::IsNullOrEmpty($DropScript))
             {
-                [void] $RetrunValue.Add(@{
+                [void] $ReturnValue.Add(@{
                     "Mode" = "Drop";
                     "Sequence" = [Int32]$ObjectInfo.DropOrder;
                     "Type" = $ObjectInfo.SimpleType;
@@ -913,7 +913,7 @@ Add-Member `
             }
             If (![String]::IsNullOrEmpty($CreateScript))
             {
-                [void] $RetrunValue.Add(@{
+                [void] $ReturnValue.Add(@{
                     "Mode" = "Create";
                     "Sequence" = [Int32]($IncludeDrops ? ($ObjectInfos.Count + $ObjectInfo.CreateOrder) : $ObjectInfo.CreateOrder);
                     "Type" = $ObjectInfo.SimpleType;
@@ -923,7 +923,7 @@ Add-Member `
                 });
             }
         }
-        Return $RetrunValue | Sort-Object -Property "Sequence";
+        Return $ReturnValue | Sort-Object -Property "Sequence";
     }
 Add-Member `
     -InputObject $Global:Job.ScriptSQLServerDatabase `
