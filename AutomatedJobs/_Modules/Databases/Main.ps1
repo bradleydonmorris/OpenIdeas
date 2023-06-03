@@ -6,6 +6,34 @@ Add-Member `
     -NotePropertyName "Databases" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
+    -InputObject $Global:Job.Connections `
+    -Name "GetSQLServerConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        [String] $Result = $null;
+        $Values = $Global:Job.Connections.Get($Name);
+        If ($Values.AuthType -eq "UserNameAndPassword")
+        {
+            $Result = "Server=tcp:" + $Values.Instance + ";" +
+                "Database=" + $Values.Database + ";" +
+                "User ID=" + $Values.UserName + ";" +
+                "Password=" + $Values.Password + ";";
+        }
+        If ($Values.AuthType -eq "Integrated")
+        {
+            $Result = "Server=tcp:" + $Values.Instance + ";" +
+                "Database=" + $Values.Database + ";" +
+                "Trusted_Connection=True;";
+        }
+        Return $Result;
+    };
+Add-Member `
     -InputObject $Global:Job.Databases `
     -Name "GetConnectionString" `
     -MemberType "ScriptMethod" `
@@ -45,7 +73,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand_Truncate = [Data.SqlClient.SqlCommand]::new("TRUNCATE TABLE [$Schema].[$Table]", $SqlConnection);
         [void] $SqlCommand_Truncate.ExecuteNonQuery();
@@ -74,7 +102,7 @@ Add-Member `
             [String] $Table
         )
         [Int64] $Results = (-1);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand_RowCount = [Data.SqlClient.SqlCommand]::new("SELECT COUNT(*) FROM [$Schema].[$Table] WHERE [_SourceFilePath_] = @FilePath", $SqlConnection);
         [Data.SqlClient.SqlParameter] $SqlParameter_FilePath = $SqlCommand_RowCount.CreateParameter();
@@ -191,7 +219,7 @@ Add-Member `
         $DataColumn.DefaultValue = $FilePath;
         $DataTable.Columns.Add($DataColumn);
         [void] $DataColumn.SetOrdinal(0);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlBulkCopy] $SqlBulkCopy = [Data.SqlClient.SqlBulkCopy]::new($SqlConnection);
         $SqlBulkCopy.BatchSize = $BatchSize;
@@ -244,7 +272,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand_Delete = [Data.SqlClient.SqlCommand]::new("DELETE FROM [$Schema].[$Table] WHERE [_SourceFilePath_] = @FilePath", $SqlConnection);
         [Data.SqlClient.SqlParameter] $SqlParameter_FilePath = $SqlCommand_Delete.CreateParameter();
@@ -277,7 +305,7 @@ Add-Member `
         )
         [String] $Results = [String]::Empty;
         [Boolean] $HasDateTimeColumn = $Global:Job.Databases.GetSQLServerTableHasColumn($Global:Job.Config.DatabaseConnectionName, "TravelPort", "StagedFile", "_SourceFileDateTime_");
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [String] $CommandText = [String]::Empty;
         If ($HasDateTimeColumn)
@@ -332,7 +360,7 @@ Add-Member `
             [String] $Table
         )
         [DateTime] $Results = [DateTime]::MinValue;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("SELECT MAX([_SourceFileDateTime_]) AS [_SourceFileDateTime_] FROM [$Schema].[$Table]", $SqlConnection);
         [Object] $ScalarObject = $SqlCommand.ExecuteScalar();
@@ -366,7 +394,7 @@ Add-Member `
             [String] $Column
         )
         [Boolean] $Results = $false;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($SQLConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($SQLConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new(@"
             SELECT

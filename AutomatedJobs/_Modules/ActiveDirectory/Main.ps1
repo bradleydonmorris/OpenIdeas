@@ -3,7 +3,22 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ActiveDirectory" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectory `
+    -Name "GetLDAPConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        [String] $Result = $null;
+        $Values = $Global:Job.Connections.Get($Name);
+        $Result = $Values.RootLDIF;
+        Return $Result;
+    };
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -Name "GetChangedUsers" `
@@ -19,7 +34,7 @@ Add-Member `
             [DateTime] $ChangedSince
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.Connections.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(objectCategory=user)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
         [System.DirectoryServices.DirectorySearcher] $DirectorySearcher = [System.DirectoryServices.DirectorySearcher]::new($RootDirectoryEntry, $Filter, $PropertiesToLoad, [System.DirectoryServices.SearchScope]::Subtree);
@@ -62,7 +77,7 @@ Add-Member `
             "uSNCreated": null, "uSNChanged": null, "whenCreated": null, "whenChanged": null
         }
 "@;
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.Connections.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(distinguishedName={@DistinguishedName}))".Replace("{@DistinguishedName}", $DistinguishedName);
         [System.String[]] $PropertiesToLoad = @(
             "objectGuid", "objectSid", "objectClass", "objectCategory",
@@ -230,7 +245,7 @@ Add-Member `
             [DateTime] $ChangedSince
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.Connections.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(objectCategory=group)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
         [System.DirectoryServices.DirectorySearcher] $DirectorySearcher = [System.DirectoryServices.DirectorySearcher]::new($RootDirectoryEntry, $Filter, $PropertiesToLoad, [System.DirectoryServices.SearchScope]::Subtree);
@@ -267,7 +282,7 @@ Add-Member `
             "members": null
         }
 "@;
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.Connections.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(distinguishedName={@DistinguishedName}))".Replace("{@DistinguishedName}", $DistinguishedName);
         [System.String[]] $PropertiesToLoad = @(
             "objectSid", "objectGuid", "objectClass", "objectCategory", "groupType"

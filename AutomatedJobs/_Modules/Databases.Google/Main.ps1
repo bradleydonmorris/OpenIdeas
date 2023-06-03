@@ -18,7 +18,7 @@ Add-Member `
             [String] $OrgUnitJSON
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportOrganizationalUnit]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -51,7 +51,7 @@ Add-Member `
             [String] $UserJSON
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportUser]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -84,7 +84,7 @@ Add-Member `
             [String] $GroupJSON
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportGroup]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -112,7 +112,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessManagerialChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -132,7 +132,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessGroupMembershipChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -152,7 +152,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessGroupManagerChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -172,7 +172,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[RebuildIndexes]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;

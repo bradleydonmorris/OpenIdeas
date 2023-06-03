@@ -11,11 +11,14 @@ Add-Member `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
     -InputObject $Global:Job.SSHTunnel `
-    -Name "CreateKeyAuthTunnel" `
+    -Name "SetKeyAuthTunnelConnection" `
     -MemberType "ScriptMethod" `
     -Value {
         Param
         (
+            [Parameter(Mandatory=$true)]
+            [String] $Name,
+
             [Parameter(Mandatory=$true)]
             [String] $SSHServerAddress,
 
@@ -41,22 +44,74 @@ Add-Member `
             [String] $RemoteAddress,
 
             [Parameter(Mandatory=$true)]
-            [Int32] $RemotePort
+            [Int32] $RemotePort,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $Comments
+        )
+        If (![IO.File]::Exists($KeyFilePath))
+        {
+            Throw [System.IO.FileNotFoundException]::new("Key File not found", $KeyFilePath);
+        }
+        $Global:Job.Connections.Set(
+            $Name,
+            [PSCustomObject]@{
+                "SSHServerAddress" = $SSHServerAddress;
+                "SSHServerPort" = $SSHServerPort;
+                "UserName" = $UserName;
+                "KeyFilePath" = $KeyFilePath;
+                "KeyFilePassphrase" = $KeyFilePassphrase;
+                "LocalAddress" = $LocalAddress;
+                "LocalPort" = $LocalPort;
+                "RemoteAddress" = $RemoteAddress;
+                "RemotePort" = $RemotePort;
+                "Comments" = $Comments;
+            }
+        );
+    };
+Add-Member `
+    -InputObject $Global:Job.SSHTunnel `
+    -Name "GetKeyAuthTunnelConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        $ReturnValue = $Global:Job.Connections.Get($Name);
+        If (![IO.File]::Exists($ReturnValue.KeyFilePath))
+        {
+            Throw [System.IO.FileNotFoundException]::new("Key File not found", $ReturnValue.KeyFilePath);
+        }
+        Return $ReturnValue;
+    };
+Add-Member `
+    -InputObject $Global:Job.SSHTunnel `
+    -Name "CreateKeyAuthTunnel" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
         )
         $Global:Job.SSHTunnel.Internals = [Collections.Hashtable]::new();
         $Global:Job.SSHTunnel.Internals.Clear();
-        If (![String]::IsNullOrEmpty($KeyFilePassphrase))
+
+        $Connection = $Global:Job.SSHTunnel.GetKeyAuthTunnelConnection($ConnectionName);
+        If (![String]::IsNullOrEmpty($Connection.KeyFilePassphrase))
         {
             [void] $Global:Job.SSHTunnel.Internals.Add(
                 "PrivateKeyFile",
-                [Renci.SshNet.PrivateKeyFile]::new($KeyFilePath, $KeyFilePassphrase)
+                [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath, $Connection.KeyFilePassphrase)
             );
         }
         Else
         {
             [void] $Global:Job.SSHTunnel.Internals.Add(
                 "PrivateKeyFile",
-                [Renci.SshNet.PrivateKeyFile]::new($KeyFilePath)
+                [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath)
             );
         }
         If ($Global:Job.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
@@ -64,9 +119,9 @@ Add-Member `
             [void] $Global:Job.SSHTunnel.Internals.Add(
                 "ConnectionInfo",
                 [Renci.SshNet.PrivateKeyConnectionInfo]::new(
-                    $SSHServerAddress,
-                    $SSHServerPort,
-                    $UserName,
+                    $Connection.SSHServerAddress,
+                    [Int32]$Connection.SSHServerPort,
+                    $Connection.UserName,
                     $Global:Job.SSHTunnel.Internals["PrivateKeyFile"]
                 )
             );
@@ -86,10 +141,10 @@ Add-Member `
                 [void] $Global:Job.SSHTunnel.Internals.Add(
                     "ForwardedPortLocal",
                     [Renci.SshNet.ForwardedPortLocal]::new(
-                        $LocalAddress,
-                        $LocalPort,
-                        $RemoteAddress,
-                        $RemotePort
+                        $Connection.LocalAddress,
+                        $Connection.LocalPort,
+                        $Connection.RemoteAddress,
+                        $Connection.RemotePort
                     )
                 );
                 [void] $Global:Job.SSHTunnel.Internals["SshClient"].AddForwardedPort($Global:Job.SSHTunnel.Internals["ForwardedPortLocal"]);

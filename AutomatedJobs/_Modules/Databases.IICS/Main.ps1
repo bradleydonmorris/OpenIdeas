@@ -22,7 +22,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $ClearActivityLog
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -68,7 +68,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $Assets
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -103,7 +103,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $AssetFiles
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         ForEach ($AssetFile In $AssetFiles)
@@ -165,7 +165,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $JSON
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -197,7 +197,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -221,7 +221,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -246,7 +246,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -282,7 +282,7 @@ Add-Member `
         )
         If ($KeepLogsForDays -gt 0)
         {
-            [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+            [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
             [void] $SqlConnection.Open();
 
             [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -321,7 +321,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $JSON
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();

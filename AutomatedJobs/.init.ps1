@@ -103,9 +103,9 @@ If (![IO.Directory]::Exists($Global:Job.DataDirectory))
 #These modules must always be loaded.
 [void] $Global:Job.LoadModule("Logging");
 [void] $Global:Job.LoadModule("Utilities");
+[void] $Global:Job.LoadModule("NuGet");
 [void] $Global:Job.LoadModule("Connections");
 [void] $Global:Job.LoadModule("Databases");
-[void] $Global:Job.LoadModule("NuGet");
 
 #Load additional modules that may be required
 ForEach ($Module In $RequiredModules)

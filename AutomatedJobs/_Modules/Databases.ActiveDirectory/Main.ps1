@@ -15,7 +15,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [DateTime] $Results = [DateTime]::new(1970, 1, 1, 0, 0, 0);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[GetUserLastWhenChangedTime]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -45,7 +45,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [DateTime] $Results = [DateTime]::new(1970, 1, 1, 0, 0, 0);
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[GetGroupLastWhenChangedTime]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -78,7 +78,7 @@ Add-Member `
             [String] $UserJSON
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ImportUser]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -111,7 +111,7 @@ Add-Member `
             [String] $GroupJSON
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ImportGroup]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -139,7 +139,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessManagerialChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -159,7 +159,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessGroupMembershipChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -179,7 +179,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessGroupManagerChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
@@ -199,7 +199,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Connections.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[RebuildIndexes]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;

@@ -1,6 +1,7 @@
 . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
     "Prompts",
-    "SSHTunnel"
+    "SSHTunnel",
+    "PostgreSQL"
 );
 
 [void] $Global:Job.NuGet.InstallPackageIfMissing("SSH.NET")
@@ -9,124 +10,51 @@
 [void] $Global:Job.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
 
 <#
+#MAKE SURE THE CONNECTION FILES EXISTS
+#Some of these values are set to $null here, so they don't get stored in GitHub.
+#Set the values prior to running these method, then change them back to $null.
+
+$Global:Job.SSHTunnel.SetKeyAuthTunnelConnection(
+    $null, #Name - Name of the Connection file
+    $null, #SSHServerAddress - SSH Server Address
+    22, #SSHServerPost - SSH Server Port
+    $null, #UserName - SSH User Name
+    $null, #KeyFilePath - SSH Private Key File
+    $null, #KeyFilePassphrase - SSH Key File Pashphrase
+    $null, #LocalAddress - Local address for tunnel. This will be what is used in a Postgre Connection
+    $null, #LocalPort - Local port for tunnel. This will be what is used in a Postgre Connection
+    $null, #RemoteAddress - The actual PostgreSQL server name
+    $null, #RemotePort - The actual PostgreSQL server port
+
+    #Comments
+    "This is for tunneling the datamanagement_read account on GoldPlus. The local PostgreSQL connection info will be stored in a separatePostgreSQL Connection file."
+)
+$Global:Job.PostgreSQL.SetConnection(
+    "GoldPlusTunnel-PostgreSQL-datamanagment_read", #Name - Name of the Connection file
+    "localhost", #Server - PostgreSQL server address. In this case it's the local address, as this will be done through an SSH Tunnel.
+    15432, #Port - PostgreSQL server port. In this case it's the local port, as this will be done through an SSH Tunnel.
+    $null, #Database - PostgreSQL database
+    $null, #UserName - PostgreSQL user name
+    $null, #Password - PostgreSQL password
+
+    #Comment
+    "This is for tunneling the datamanagement_read account on GoldPlus. The actual server and port should be stored in the separate SSH Tunnel Connection file."
+);
+#>
+
+<#
 If error is "Invalid private key file.",
     try to load the key file in PuttyGen.
     Then ecport to OpenSSH
         Conversions > Export OpenSSH key
         (not the "force new file format" option)
 #>
-[String] $SSHServerAddress = "ec2-50-18-210-155.us-west-1.compute.amazonaws.com";
-[Int32] $SSHServerPort = 22
-[String] $UserName = "bmorris";
-[String] $KeyFilePath = "C:\Users\bmorris\.ssh\rsa_auth_bmorris.temp.openssh";
-[String] $KeyFilePassphrase = $null;
-[String] $LocalAddress = "127.0.0.1";
-[Int32] $LocalPort = 15432;
-[String] $RemoteAddress = "tigoldplusdb15.ceayxqg8ja64.us-west-1.rds.amazonaws.com";
-[Int32] $RemotePort = 5432
-
-$Global:Job.SSHTunnel.CreateKeyAuthTunnel(
-    $SSHServerAddress, $SSHServerPort,
-    $UserName, $KeyFilePath, $KeyFilePassphrase,
-    $LocalAddress, $LocalPort,
-    $RemoteAddress, $RemotePort
+[void] $Global:Job.SSHTunnel.CreateKeyAuthTunnel("GoldPlusTunnel-SSH");
+$Global:Job.PostgreSQL.GetRecords(
+    "GoldPlusTunnel-PostgreSQL-datamanagment_read", #ConnectionName - Connection file name
+    "SELECT code, name FROM public.t_language WHERE code = @Code", #CommandText - SQL command, use "@" prefix for parameters
+    @{ "Code" = "en"; }, #Parameters - The name can be prefixed with "@" or not. The code checks for this
+    @( "code", "name" ) #Fields - The fileds to return in the array.
+                         #          If all fields should be returned, then use @("*").
 );
-If ($Global:Job.SSHTunnel.IsTunnelEstablished())
-{
-
-    [String] $PostgreDatabase = "just_share_it";
-    [String] $PostgreUserName = ;
-    [String] $PostgrePassword = ;
-    [String] $ConnectionString = (
-        [String]::Format("Server={0};", $LocalAddress) +
-        [String]::Format("Port={0};", $LocalPort) +
-        [String]::Format("Database={0};", $PostgreDatabase) + 
-        [String]::Format("User Id={0};", $PostgreUserName) +
-        [String]::Format("Password={0};", $PostgrePassword)
-    );
-    [Npgsql.NpgsqlConnection] $NpgsqlConnection = [Npgsql.NpgsqlConnection]::new($ConnectionString);
-    Try
-    {
-        [void] $NpgsqlConnection.Open();
-        [Npgsql.NpgsqlCommand] $NpgsqlCommand = [Npgsql.NpgsqlCommand]::new("SELECT code, name FROM public.t_language", $NpgsqlConnection);
-        $NpgsqlCommand.CommandType = [Data.CommandType]::Text;
-        [Npgsql.NpgsqlDataReader] $NpgsqlDataReader = $NpgsqlCommand.ExecuteReader();
-        While ($NpgsqlDataReader.Read())
-        {
-            Write-Host -Object ([String]::Format(
-                "{0}, {1}",
-                $NpgsqlDataReader.GetString($NpgsqlDataReader.GetOrdinal("code")),
-                $NpgsqlDataReader.GetString($NpgsqlDataReader.GetOrdinal("name"))
-            ));
-        }
-    }
-    Finally {}
-    If ($NpgsqlConnection.State -ne [Data.ConnectionState]::Closed)
-        { [void] $NpgsqlConnection.Close(); }
-    [void] $NpgsqlConnection.Dispose();
-}
 [void] $Global:Job.SSHTunnel.DestroyTunnel();
-
-# [Renci.SshNet.PrivateKeyFile] $PrivateKeyFile = $null;
-# [Renci.SshNet.PrivateKeyConnectionInfo] $PrivateKeyConnectionInfo = $null;
-# [Renci.SshNet.PrivateKeyFile] $PrivateKeyFile = $null;
-# If ([String]::IsNullOrEmpty($KeyFilePassphrase))
-# {
-#     $PrivateKeyFile = [Renci.SshNet.PrivateKeyFile]::new($KeyFilePath);
-# }
-# Else
-# {
-#     $PrivateKeyFile = [Renci.SshNet.PrivateKeyFile]::new($KeyFilePath, $KeyFilePassphrase);
-# }
-# If ($PrivateKeyFile)
-# {
-#     [Renci.SshNet.PrivateKeyConnectionInfo] $PrivateKeyConnectionInfo = [Renci.SshNet.PrivateKeyConnectionInfo]::new($SSHServerAddress, $SSHServerPort, $UserName, $PrivateKeyFile);
-# }
-# [Renci.SshNet.SshClient] $SshClient = [Renci.SshNet.SshClient]::new($PrivateKeyConnectionInfo);
-# [void] $SshClient.Connect();
-# If ($SshClient.IsConnected)
-# {
-    
-#     [Renci.SshNet.ForwardedPortLocal] $ForwardedPortLocal = [Renci.SshNet.ForwardedPortLocal]::new($LocalAddress, $LocalPort, $RemoteAddress, $RemotePort);
-#     [void] $SshClient.AddForwardedPort($ForwardedPortLocal);
-#     [void] $ForwardedPortLocal.Start();
-#     If ($ForwardedPortLocal.IsStarted)
-#     {
-#         [String] $ConnectionString = (
-#             [String]::Format("Server={0};", $LocalAddress) +
-#             [String]::Format("Port={0};", $LocalPort) +
-#             "Database=just_share_it;" +
-#             "User Id=datamanagment_read;" +
-#             "Password=IA7Vus4bRq17!A6Agjv#;"
-#         );
-#         [Npgsql.NpgsqlConnection] $NpgsqlConnection = [Npgsql.NpgsqlConnection]::new($ConnectionString);
-#         Try
-#         {
-#             [void] $NpgsqlConnection.Open();
-#             [Npgsql.NpgsqlCommand] $NpgsqlCommand = [Npgsql.NpgsqlCommand]::new("SELECT code, name FROM public.t_language", $NpgsqlConnection);
-#             $NpgsqlCommand.CommandType = [Data.CommandType]::Text;
-#             [Npgsql.NpgsqlDataReader] $NpgsqlDataReader = $NpgsqlCommand.ExecuteReader();
-#             While ($NpgsqlDataReader.Read())
-#             {
-#                 Write-Host -Object ([String]::Format(
-#                     "{0}, {1}",
-#                     $NpgsqlDataReader.GetString($NpgsqlDataReader.GetOrdinal("code")),
-#                     $NpgsqlDataReader.GetString($NpgsqlDataReader.GetOrdinal("name"))
-#                 ));
-#             }
-#         }
-#         Finally {}
-#         If ($NpgsqlConnection.State -ne [Data.ConnectionState]::Closed)
-#             { [void] $NpgsqlConnection.Close(); }
-#         [void] $NpgsqlConnection.Dispose();
-#         [void] $ForwardedPortLocal.Stop();
-#     }
-#     [void] $ForwardedPortLocal.Dispose();
-#     [void] $SshClient.Disconnect();
-# }
-# [void] $SshClient.Dispose();
-# [void] $PrivateKeyConnectionInfo.Dispose();
-# [void] $PrivateKeyFile.Dispose();
-
-# #ssh -i "C:\Users\bmorris\.ssh\rsa_auth_bmorris.id_rsa" bmorris@ec2-50-18-210-155.us-west-1.compute.amazonaws.com
-# #PrivateKeyConnectionInfo(string host, int port, string username, params PrivateKeyFile[] keyFiles)
