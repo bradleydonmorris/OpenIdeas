@@ -4,10 +4,10 @@
     "PostgreSQL"
 );
 
-[void] $Global:Job.NuGet.InstallPackageIfMissing("SSH.NET")
-[void] $Global:Job.NuGet.AddAssembly("Renci.SshNet", "SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll");
-[void] $Global:Job.NuGet.InstallPackageVersionIfMissing("Npgsql", "5.0.0");
-[void] $Global:Job.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
+# [void] $Global:Job.NuGet.InstallPackageIfMissing("SSH.NET")
+# [void] $Global:Job.NuGet.AddAssembly("Renci.SshNet", "SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll");
+# [void] $Global:Job.NuGet.InstallPackageVersionIfMissing("Npgsql", "5.0.0");
+# [void] $Global:Job.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
 
 <#
 #MAKE SURE THE CONNECTION FILES EXISTS
@@ -49,6 +49,8 @@ If error is "Invalid private key file.",
         Conversions > Export OpenSSH key
         (not the "force new file format" option)
 #>
+
+
 [void] $Global:Job.SSHTunnel.CreateKeyAuthTunnel("GoldPlusTunnel-SSH");
 $Global:Job.PostgreSQL.GetRecords(
     "GoldPlusTunnel-PostgreSQL-datamanagment_read", #ConnectionName - Connection file name

@@ -10,11 +10,6 @@ Add-Member `
     -NotePropertyValue ([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "nuget.exe"));
 Add-Member `
     -InputObject $Global:Job.NuGet `
-    -TypeName "String" `
-    -NotePropertyName "PackagesDirectoryPath" `
-    -NotePropertyValue ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath))), "_Packages"));
-Add-Member `
-    -InputObject $Global:Job.NuGet `
     -Name "InstallPackageVersion" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -33,7 +28,7 @@ Add-Member `
                 $PackageName,
                 "-DependencyVersion Highest",
                 [String]::Format("-Version {0}", $Version),
-                [String]::Format("-OutputDirectory {0}", $Global:Job.NuGet.PackagesDirectoryPath)
+                [String]::Format("-OutputDirectory {0}", $Global:Job.Directories.Packages)
             ) `
             -NoNewWindow;
     }
@@ -55,7 +50,7 @@ Add-Member `
         [Object] $Package = $null;
         Try
         {
-            $Package = Get-Package -Name $PackageName -Destination $Global:Job.NuGet.PackagesDirectoryPath -AllVersions -ErrorAction SilentlyContinue |
+            $Package = Get-Package -Name $PackageName -Destination $Global:Job.Directories.Packages -AllVersions -ErrorAction SilentlyContinue |
                 Where-Object -FilterScript {$_.Version -eq $Version };
         }
         Finally { }
@@ -97,7 +92,7 @@ Add-Member `
                 "install",
                 $PackageName,
                 "-DependencyVersion Highest",
-                [String]::Format("-OutputDirectory {0}", $Global:Job.NuGet.PackagesDirectoryPath)
+                [String]::Format("-OutputDirectory {0}", $Global:Job.Directories.Packages)
             ) `
             -NoNewWindow;
     }
@@ -116,7 +111,7 @@ Add-Member `
         [Object] $Package = $null;
         Try
         {
-            $Package = Get-Package -Name $PackageName -Destination $Global:Job.NuGet.PackagesDirectoryPath -ErrorAction SilentlyContinue;
+            $Package = Get-Package -Name $PackageName -Destination $Global:Job.Directories.Packages -ErrorAction SilentlyContinue;
         }
         Finally { }
         If ($Package)
@@ -151,7 +146,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $RelativePath
         )
-        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Job.NuGet.PackagesDirectoryPath, $RelativePath);
+        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Job.Directories.Packages, $RelativePath);
         [Object] $Assembly = [System.AppDomain]::CurrentDomain.GetAssemblies() |
             Where-Object -FilterScript { $_.GetName().Name -eq $Name}
         If (-not $Assembly)

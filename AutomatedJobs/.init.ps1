@@ -15,6 +15,7 @@ If (![IO.File]::Exists($JobsConfigFilePath))
         "Directories" = @{
             "CodeRoot" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs"
             "Modules" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Modules"
+            "Packages" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Packages"
             "DataRoot" = "C:\JobsWorkspace\Data"
             "LogsRoot" = "C:\JobsWorkspace\Logs"
             "ConnectionsRoot" = "C:\JobsWorkspace\Connections"
@@ -105,7 +106,7 @@ If (![IO.Directory]::Exists($Global:Job.DataDirectory))
 [void] $Global:Job.LoadModule("Utilities");
 [void] $Global:Job.LoadModule("NuGet");
 [void] $Global:Job.LoadModule("Connections");
-[void] $Global:Job.LoadModule("Databases");
+[void] $Global:Job.LoadModule("SQLServerDatabases");
 
 #Load additional modules that may be required
 ForEach ($Module In $RequiredModules)

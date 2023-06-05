@@ -1,7 +1,4 @@
-If (!$Global:Job.IsModuleLoaded("Sqlite"))
-{
-    [void] $Global:Job.LoadModule("Sqlite");
-}
+[void] $Global:Job.LoadModule("Sqlite");
 Add-Member `
     -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `
