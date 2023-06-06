@@ -3,28 +3,53 @@
     "Sqlite",
     "PreciousMetalsTracking"
 );
-#[String] $DatabasePath = [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3");
-#$Global:Job.PreciousMetalsTracking.VerifyDatabase($DatabasePath);
-#$Global:Job.PreciousMetalsTracking.GetVendorByName($DatabasePath, "APMEX");
 
-$Global:Job.SQLite.SetConnection(
-    "PreciousMetalsTracking",
-    [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3"),
-    "In memory only",
-    $false
-);
 
-#$Global:Job.SQLite.GetConnection("PreciousMetalsTracking");
 
-#$Global:Job.PreciousMetalsTracking.GetVendorByName("PreciousMetalsTracking", "APMEXw");
-#$Global:Job.PreciousMetalsTracking.GetVendorByGUID("PreciousMetalsTracking", [Guid]::Parse("48011eee-6d05-450f-8480-8e7cce94fc1b"));
-#$Global:Job.PreciousMetalsTracking.AddVendor("PreciousMetalsTracking", "APMEXw", "httpddddd");
+$Global:Job.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3"));
+# $Global:Job.PreciousMetalsTracking.VerifyDatabase();
 
-$Global:Job.PreciousMetalsTracking.RemoveVendor("PreciousMetalsTracking",
-[Guid]::Parse("cf5e888f-1e2f-4849-9f6a-5549d11f243a"));
+# $Global:Job.PreciousMetalsTracking.GetVendorByName("APMEX");
+# $Global:Job.PreciousMetalsTracking.GetVendorByGUID([Guid]::Parse("48011eee-6d05-450f-8480-8e7cce94fc1b"));
 
-#
-#$Global:Job.Sqlite.ConvertParameter([DateTime]::MaxValue);
-#$Global:Job.Sqlite.ConvertParameter([Guid]::NewGuid());
-#[Guid]::Parse("6d94c03367b34d7aa1ba1c076ce30f9d")
+# $Vendor = $Global:Job.PreciousMetalsTracking.AddVendor("APMEXsadf", "asdfasdfasdfasdf");
+# $Global:Job.PreciousMetalsTracking.GetVendorByGUID($Vendor.VendorGUID);
+# $Global:Job.PreciousMetalsTracking.RemoveVendor($Vendor.VendorGUID);
 
+# $Global:Job.PreciousMetalsTracking.AddMetalType("Copper");
+
+# Clear-Host;
+# [String] $MenuResponse = $Global:Job.Prompts.ShowMenu(0,
+#     @(
+#         @{ "Selector" = "V"; "Name" = "Vendors"; "Text" = "Vendors"; },
+#         @{ "Selector" = "I"; "Name" = "Items"; "Text" = "Items"; },
+#         @{ "Selector" = "T"; "Name" = "Transactions"; "Text" = "Transactions"; }
+#     )
+# )
+# Switch ($MenuResponse)
+# {
+#     "Vendors"
+#     {
+#         [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0,
+#             @(
+#                 @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Vendor"; },
+#                 @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Vendor"; },
+#                 @{ "Selector" = "M"; "Name" = "Modify"; "Text" = "Modify Vendor"; },
+#                 @{ "Selector" = "R"; "Name" = "Remove"; "Text" = "Remove Vendor"; }
+#             )
+#         );
+#         Switch ($VendorMenuResponse)
+#         {
+#             "Get"
+#             {
+#                 Clear-Host;
+#                 [String] $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
+
+#                 $Global:Job.PreciousMetalsTracking.GetVendorByName($VendorName);
+#             }
+#         }
+#     }
+#     "Items" {}
+#     "Transactions" {}
+#     Default {}
+# }

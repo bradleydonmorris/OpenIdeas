@@ -29,7 +29,7 @@ Add-Member `
         }
         $Result = $Response;
         Return $Result;
-    };
+    }
 Add-Member `
     -InputObject $Global:Job.Prompts `
     -Name "BooleanResponse" `
@@ -53,7 +53,7 @@ Add-Member `
         Else
             { $Result = $false; }
         Return $Result;
-    };
+    }
 Add-Member `
     -InputObject $Global:Job.Prompts `
     -Name "DisplayHashTable" `
@@ -71,7 +71,7 @@ Add-Member `
             [Collections.Specialized.OrderedDictionary] $Values
         )
         Write-Host -Object ($Global:Job.Prompts.OutputHashTableToText($SetName, $MaximumLineLength, $Values));
-    };
+    }
 Add-Member `
     -InputObject $Global:Job.Prompts `
     -Name "OutputHashTableToText" `
@@ -92,7 +92,7 @@ Add-Member `
         [String] $ReturnValue = $null;
         $SetName = ([String]::IsNullOrEmpty($SetName)) ? "" : $SetName;
         $MaximumLineLength = (($MaximumLineLength -eq 0) ? 180 : $MaximumLineLength);
-        [Int32] $MaximumNameLength = 3
+        [Int32] $MaximumNameLength = 3;
         ForEach ($Key In $Values.Keys)
         {
             If ($Key.Length -gt $MaximumNameLength)
@@ -134,4 +134,81 @@ Add-Member `
         $ReturnValue += ("*".PadRight($MaximumLineLength - 1) + "*`r`n");
         $ReturnValue += ("".PadRight($MaximumLineLength, "*"));
         Return $ReturnValue;
-    };
+    }
+Add-Member `
+    -InputObject $Global:Job.Prompts `
+    -Name "ShowMenu" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$false)]
+            [Int32] $MaximumLineLength = 0,
+
+            [Parameter(Mandatory=$true)]
+            [Boolean] $ShowInvalidChoiceMessage,
+
+            [Parameter(Mandatory=$true)]
+            [Collections.ArrayList] $Options
+            <#
+                Array of...
+                    @{
+                        "Selector" = "AA"; # What the user enters to select this option
+                        "Name" = "WhatGetsRetruned";
+                        "Text" = "What gets displayed"
+                    }
+            #>
+        )
+        [String] $ReturnValue = $null;
+        [Int32] $MaximumSelectorLength = 6;
+        ForEach ($Option In $Options)
+        {
+            If ($Option.Selector.Length -gt $MaximumOrderLength)
+            {
+                $MaximumOrderLength = $Option.Selector.Length;
+            }
+        }
+        #$MaximumSelectorLength += 1;
+        $MaximumLineLength = (($MaximumLineLength -eq 0) ? 180 : $MaximumLineLength);
+        [Int32] $MaximumValueLength = (($MaximumLineLength - $MaximumSelectorLength) - 4);
+        [String] $Prompt = ("*".PadRight($MaximumLineLength - 1, "*") + "*`r`n");
+        $Prompt += (
+            "*  Option".PadRight(($MaximumSelectorLength + 3), " ") +
+            " Description".PadRight($MaximumValueLength, " ") +
+            "*`r`n"
+        );
+        $Prompt += (
+            "*  -".PadRight(($MaximumSelectorLength + 3), "-") + 
+            "  -".PadRight(($MaximumValueLength - 2), "-") +
+            "  *`r`n"
+        );
+        ForEach ($Option In $Options)
+        {
+            $Prompt += (
+                "*  " +
+                $Option.Selector.PadLeft($MaximumSelectorLength) +
+                "  " +
+                $Option.Text.PadRight($MaximumValueLength - 4) +
+                "  *`r`n"
+            );
+        }
+        $Prompt += (
+            "*  ".PadRight($MaximumLineLength - 1) +
+            "*`r`n"
+        );
+        $Prompt += ("*".PadRight($MaximumLineLength - 1, "*") + "*");
+        Clear-Host;
+        Write-Host -Object $Prompt;
+        If ($ShowInvalidChoiceMessage)
+        {
+            Write-Host -Object "Previos choice was invalid. Please try again." -ForegroundColor Red;
+        }
+        [String] $Response = Read-Host -Prompt "Choose Option";
+        $SelectedOption = $Options | Where-Object -FilterScript { $_.Selector -eq $Response } | Select-Object -First 1;
+        If ($SelectedOption)
+        {
+            $ReturnValue = $SelectedOption["Name"];
+        }
+        Return $ReturnValue;
+    }

@@ -319,7 +319,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [void] $Global:Job.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM {0}", $Table));
+        [void] $Global:Job.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM ``{0}``", $Table));
     };
 Add-Member `
     -InputObject $Global:Job.Sqlite `
@@ -352,8 +352,8 @@ Add-Member `
                     $WhereClause += [String]::Format(
                         (
                             ($FilterIndex -eq 0) ?    
-                                "{0} = @Param{1}" :
-                                " AND {0} = @Param{1}"
+                                "``{0}`` = @Param{1}" :
+                                " AND ``{0}`` = @Param{1}"
                         ),
                         $FilterKey,
                         $FilterIndex
@@ -367,7 +367,7 @@ Add-Member `
         }
         [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
             $ConnectionName,
-            [String]::Format("SELECT COUNT(*) FROM {0}{1}",
+            [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",
                 $Table,
                 $WhereClause # May be an empty string if $Filters is null or empty
             ),
