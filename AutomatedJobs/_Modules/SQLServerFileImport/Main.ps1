@@ -1,4 +1,4 @@
-[void] $Global:Job.LoadModule("SQLServerDatabases");
+[void] $Global:Job.LoadModule("SQLServer");
 
 Add-Member `
     -InputObject $Global:Job `
@@ -50,7 +50,7 @@ Add-Member `
                 }
             }
         }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServerDatabases.GetConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new(
             [String]::Format("DELETE FROM [{0}].[{1}]{2}",
@@ -175,7 +175,7 @@ Add-Member `
                 }
             }
         }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServerDatabases.GetConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlBulkCopy] $SqlBulkCopy = [Data.SqlClient.SqlBulkCopy]::new($SqlConnection);
         $SqlBulkCopy.BatchSize = $BatchSize;

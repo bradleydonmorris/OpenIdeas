@@ -24,6 +24,11 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Job.Connections `
+    -TypeName "System.Management.Automation.PSObject" `
+    -NotePropertyName "InMemory" `
+    -NotePropertyValue ([Collections.Hashtable]::new());
+Add-Member `
+    -InputObject $Global:Job.Connections `
     -Name "Exists" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -53,21 +58,29 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        [PSCustomObject] $Result = $null;
-        If (!$Name.EndsWith(".json"))
+        [PSCustomObject] $ReturnValue = $null;
+        If ($Name.EndsWith(".json"))
         {
-            $Name += ".json";
+            $Name = $Name.Substring(0, ($Name.Length - 5));
         }
-        [String] $FilePath = [IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, $Name);
-        If (![IO.File]::Exists($FilePath))
+        If ($Global:Job.Connections.InMemory.ContainsKey($Name))
         {
-            Throw [System.IO.FileNotFoundException]::new("Connection File not found", $FilePath);
+            $ReturnValue = $Global:Job.Connections.InMemory[$Name];
         }
         Else
         {
-            $Result = Get-Content -Path $FilePath | ConvertFrom-Json;
+            [String] $FilePath = [IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, [String]::Format("{0}.json", $Name));
+            If ([IO.File]::Exists($FilePath))
+            {
+                $ReturnValue = Get-Content -Path $FilePath | ConvertFrom-Json;
+                [void] $Global:Job.Connections.InMemory.Add($Name, $ReturnValue);
+            }
         }
-        Return $Result;
+        If (-not $ReturnValue)
+        {
+            Throw [System.Exception]::new("Connection not found");
+        }
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.Connections `
@@ -80,12 +93,11 @@ Add-Member `
             [String] $Name,
     
             [Parameter(Mandatory=$true)]
-            [PSCustomObject] $Connection
+            [PSCustomObject] $Connection,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted
         )
-        If (!$Name.EndsWith(".json"))
-        {
-            $Name += ".json";
-        }
         If (-not $Connection.Comments)
         {
             Add-Member `
@@ -98,11 +110,25 @@ Add-Member `
         {
             $Connection.Comments = $null;
         }
-        ConvertTo-Json -InputObject $Connection |
-            Set-Content -Path ([IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, $Name));
+        If ($Name.EndsWith(".json"))
+        {
+            $Name = $Name.Substring(0, ($Name.Length - 5));
+        }
+        If ($Global:Job.Connections.InMemory.ContainsKey($Name))
+        {
+            $Global:Job.Connections.InMemory[$Name] = $Connection;
+        }
+        Else
+        {
+            [void] $Global:Job.Connections.InMemory.Add($Name, $Connection);
+        }
+        If ($IsPersisted)
+        {
+            [String] $FilePath = [IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, [String]::Format("{0}.json", $Name));
+            ConvertTo-Json -InputObject $Connection |
+                Set-Content -Path $FilePath;
+        }
     };
-
-
 
 #### NEED TO DEPRECATE THINGS BELOW HERE
 # Add-Member `

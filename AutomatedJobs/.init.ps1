@@ -106,11 +106,9 @@ If (![IO.Directory]::Exists($Global:Job.DataDirectory))
 [void] $Global:Job.LoadModule("Utilities");
 [void] $Global:Job.LoadModule("NuGet");
 [void] $Global:Job.LoadModule("Connections");
-[void] $Global:Job.LoadModule("SQLServerDatabases");
 
 #Load additional modules that may be required
 ForEach ($Module In $RequiredModules)
 {
     [void] $Global:Job.LoadModule($Module);
 }
-

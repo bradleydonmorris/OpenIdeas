@@ -1,3 +1,5 @@
+[void] $Global:Job.LoadModule("SQLServer");
+
 #region Gather from SQL Server
 Add-Member `
     -InputObject $Global:Job `
@@ -27,7 +29,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetTableJSON.sql"));
         [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
