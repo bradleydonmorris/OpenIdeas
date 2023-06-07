@@ -67,6 +67,55 @@ Add-Member `
             $IsPersisted
         );
     };
+Add-Member `
+    -InputObject $Global:Job.Sqlite `
+    -Name "CreateIfNotFound" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $CommandText,
+    
+            [Parameter(Mandatory=$false)]
+            [Collections.Hashtable] $Parameters
+        )
+        $ConnectionValues = $Global:Job.Connections.Get($ConnectionName);
+        If (![IO.File]::Exists($ConnectionValues.FilePath))
+        {
+            [Data.Sqlite.SqliteConnection] $Connection = $null;
+            [Data.Sqlite.SqliteCommand] $Command = $null;
+            Try
+            {
+                $Connection = [Data.Sqlite.SqliteConnection]::new([String]::Format("Data Source={0}", $ConnectionValues.FilePath));
+                $Connection.Open();
+                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
+                $Command.CommandType = [Data.CommandType]::Text;
+                ForEach ($ParameterKey In $Parameters.Keys)
+                {
+                    [String] $Name = $ParameterKey;
+                    If (!$Name.StartsWith("@"))
+                        { $Name = "@" + $Name}
+                    [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                }
+                [void] $Command.ExecuteNonQuery();
+            }
+            Finally
+            {
+                If ($Command)
+                    { [void] $Command.Dispose(); }
+                If ($Connection)
+                {
+                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
+                        { [void] $Connection.Close(); }
+                    [void] $Connection.Dispose();
+                }
+            }
+        }
+    }
 #endregion Connection Methods
 
 #region Base Methods
@@ -168,7 +217,7 @@ Add-Member `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -181,15 +230,16 @@ Add-Member `
             [Collections.Hashtable] $Parameters,
 
             [Parameter(Mandatory=$true)]
-            [Collections.ArrayList] $Fields,
+            [Collections.Generic.List[String]] $Fields,
 
             [Parameter(Mandatory=$true)]
             [Collections.Hashtable] $FieldConversion
         )
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [Data.Sqlite.SqliteConnection] $Connection = $null;
         [Data.Sqlite.SqliteCommand] $Command = $null;
         [Data.Sqlite.SqliteDataReader] $DataReader = $null;
+        $FieldConversion = (($FieldConversion -ne $null) ? $FieldConversion : [Collections.Hashtable]::new());
         Try
         {
             $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
@@ -207,28 +257,31 @@ Add-Member `
             If ($Fields.Contains("*"))
             {
                 [void] $Fields.Clear();
-                For ($FieldIndex = 0; $FieldIndex -lt $NpgsqlDataReader.FieldCount; $FieldIndex ++)
+                For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
                 {
-                    [void] $Fields.Add($NpgsqlDataReader.GetName($FieldIndex));
+                    [void] $Fields.Add($DataReader.GetName($FieldIndex));
                 }
             }
             While ($DataReader.Read())
             {
-                [Collections.Hashtable] $Record = [Collections.Hashtable]::new();
+                [PSObject] $Record = [PSObject]::new();
                 ForEach ($Field In $Fields)
                 {
-                    [void] $Record.Add(
-                        $Field,
-                        ($FieldConversion.ContainsKey($Field) ?
+                    [Object] $Value = (
+                        $FieldConversion.ContainsKey($Field) ?
                             $Global:Job.Sqlite.ConvertFromDBValue(
                                 $DataReader.GetValue($DataReader.GetOrdinal($Field)),
                                 $FieldConversion[$Field]
                             ) :
                             $DataReader.GetValue($DataReader.GetOrdinal($Field))
-                        )
                     );
+                    Add-Member `
+                        -InputObject $Record `
+                        -TypeName ($Value.GetType().Name) `
+                        -NotePropertyName $Field `
+                        -NotePropertyValue $Value;
                 }
-                [void] $ReturnValue.Add($Record);
+                [void] $ReturnValue.Add([PSObject]$Record);
             }
         }
         Finally
@@ -250,7 +303,7 @@ Add-Member `
                 [void] $Connection.Dispose();
             }
         }
-        Return ,$ReturnValue;
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Job.Sqlite `
@@ -365,6 +418,7 @@ Add-Member `
                 }
             }
         }
+Write-Host $Parameters;
         [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
             $ConnectionName,
             [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",

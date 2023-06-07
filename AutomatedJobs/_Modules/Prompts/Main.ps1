@@ -5,6 +5,13 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Job.Prompts `
+    -Name "PressEnter" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Read-Host -Prompt "Press ENTER to continue";
+    }
+Add-Member `
+    -InputObject $Global:Job.Prompts `
     -Name "StringResponse" `
     -MemberType "ScriptMethod" `
     -Value {

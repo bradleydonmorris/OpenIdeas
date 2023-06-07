@@ -18,38 +18,16 @@ $Global:Job.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirecto
 
 # $Global:Job.PreciousMetalsTracking.AddMetalType("Copper");
 
-# Clear-Host;
-# [String] $MenuResponse = $Global:Job.Prompts.ShowMenu(0,
-#     @(
-#         @{ "Selector" = "V"; "Name" = "Vendors"; "Text" = "Vendors"; },
-#         @{ "Selector" = "I"; "Name" = "Items"; "Text" = "Items"; },
-#         @{ "Selector" = "T"; "Name" = "Transactions"; "Text" = "Transactions"; }
-#     )
-# )
-# Switch ($MenuResponse)
-# {
-#     "Vendors"
-#     {
-#         [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0,
-#             @(
-#                 @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Vendor"; },
-#                 @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Vendor"; },
-#                 @{ "Selector" = "M"; "Name" = "Modify"; "Text" = "Modify Vendor"; },
-#                 @{ "Selector" = "R"; "Name" = "Remove"; "Text" = "Remove Vendor"; }
-#             )
-#         );
-#         Switch ($VendorMenuResponse)
-#         {
-#             "Get"
-#             {
-#                 Clear-Host;
-#                 [String] $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
 
-#                 $Global:Job.PreciousMetalsTracking.GetVendorByName($VendorName);
-#             }
-#         }
-#     }
-#     "Items" {}
-#     "Transactions" {}
-#     Default {}
-# }
+
+#SELECT COUNT(*) FROM `MetalType` WHERE `Name` = @Param0
+
+# $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName
+# $Global:Job.Sqlite.GetScalar(
+#     $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+#     [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",
+#         "MetalType",
+#         " WHERE `Name` = @Param0"
+#     ),
+#     @{ "Param0" = "Silver"}
+# );
