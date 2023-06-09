@@ -418,7 +418,6 @@ Add-Member `
                 }
             }
         }
-Write-Host $Parameters;
         [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
             $ConnectionName,
             [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",

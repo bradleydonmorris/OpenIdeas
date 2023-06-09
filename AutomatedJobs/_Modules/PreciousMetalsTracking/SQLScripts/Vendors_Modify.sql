@@ -1,4 +1,4 @@
-UPDATE `Vendor`(`VendorGUID`, `Name`, `WebSite`)
+UPDATE `Vendor`
     SET
         `Name` = @Name,
         `WebSite` = @WebSite
