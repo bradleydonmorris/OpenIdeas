@@ -8,7 +8,12 @@ Add-Member `
     -Name "PressEnter" `
     -MemberType "ScriptMethod" `
     -Value {
-        Read-Host -Prompt "Press ENTER to continue";
+        Write-Host -Object "Press ENTER to continue";
+        [Int32] $VirtualKeyCode = 0;
+        While ($VirtualKeyCode -ne 13)
+        {
+            $VirtualKeyCode = $host.UI.RawUI.ReadKey().VirtualKeyCode;
+        }
     }
 Add-Member `
     -InputObject $Global:Job.Prompts `
