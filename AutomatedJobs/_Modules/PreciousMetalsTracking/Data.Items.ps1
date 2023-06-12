@@ -1,10 +1,10 @@
 Add-Member `
     -InputObject $Global:Job.PreciousMetalsTracking.Data `
     -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "Vendors" `
+    -NotePropertyName "Items" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "Exists" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -17,7 +17,7 @@ Add-Member `
         [Boolean] $ReturnValue = $false;
         [Int64] $Count = $Global:Job.SQLite.GetTableRowCount(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            "Vendor",
+            "Item",
             @{ "Name" = $Name}
         );
         If ($Count -gt 0)
@@ -27,7 +27,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "IsInUse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -40,7 +40,7 @@ Add-Member `
         [Boolean] $ReturnValue = $false;
         [Int64] $Count = $Global:Job.SQLite.GetScalar(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "IsInUse.sql")),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "IsInUse.sql")),
             @{ "Name" = $Name; }
         );
         If ($Count -gt 0)
@@ -50,7 +50,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "GetByName" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -58,14 +58,14 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $VendorName
+            [String] $ItemName
         )
         [Collections.Generic.List[PSObject]] $Records = $Global:Job.SQLite.GetRecords(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "GetByName.sql")),
-            @{ "VendorName" = $VendorName },
-            @( "VendorGUID", "Name", "WebSite" ),
-            @{ "VendorGUID" = "Guid" }
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "GetByName.sql")),
+            @{ "ItemName" = $ItemName },
+            @( "ItemGUID", "Name", "MetalType", "Purity", "Ounces" ),
+            @{ "ItemGUID" = "Guid"; "Purity" = "Double"; "Ounces" = "Double"; }
         );
         If ($Records.Count -eq 1)
         {
@@ -77,7 +77,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "GetByGUID" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -85,14 +85,14 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [Guid] $VendorGUID
+            [Guid] $ItemGUID
         )
         [Collections.Generic.List[PSObject]] $Records = $Global:Job.SQLite.GetRecords(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "GetByGUID.sql")),
-            @{ "VendorGUID" = $VendorGUID},
-            @( "VendorGUID", "Name", "WebSite" ),
-            @{ "VendorGUID" = "Guid" }
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "GetByGUID.sql")),
+            @{ "ItemGUID" = $ItemGUID},
+            @( "ItemGUID", "Name", "MetalType", "Purity", "Ounces" ),
+            @{ "ItemGUID" = "Guid"; "Purity" = "Double"; "Ounces" = "Double"; }
         );
         If ($Records.Count -eq 1)
         {
@@ -104,7 +104,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "Add" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -115,27 +115,35 @@ Add-Member `
             [String] $Name,
 
             [Parameter(Mandatory=$true)]
-            [String] $WebSite
+            [String] $MetalType,
+
+            [Parameter(Mandatory=$true)]
+            [Double] $Purity,
+
+            [Parameter(Mandatory=$true)]
+            [Double] $Ounces
         )
-        [PSObject] $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
+        [PSObject] $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Items.GetByName($Name);
         If (-not $ReturnValue)
         {
-            [Guid] $VendorGUID = [Guid]::NewGuid();
+            [Guid] $ItemGUID = [Guid]::NewGuid();
             $Global:Job.SQLite.Execute(
                 $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-                [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Add.sql")),
+                [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "Add.sql")),
                 @{
-                    "VendorGUID" = $VendorGUID;
+                    "ItemGUID" = $ItemGUID;
                     "Name" = $Name;
-                    "WebSite" = $WebSite;
+                    "MetalType" = $MetalType;
+                    "Purity" = $Purity;
+                    "Ounces" = $Ounces;
                 }
             );
-            $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
+            $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Items.GetByName($Name);
         }
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "Modify" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -143,38 +151,46 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [Guid] $VendorGUID,
+            [Guid] $ItemGUID,
 
             [Parameter(Mandatory=$true)]
             [String] $Name,
 
             [Parameter(Mandatory=$true)]
-            [String] $WebSite
+            [String] $MetalType,
+
+            [Parameter(Mandatory=$true)]
+            [Double] $Purity,
+
+            [Parameter(Mandatory=$true)]
+            [Double] $Ounces
         )
         $Global:Job.SQLite.Execute(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Modify.sql")),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "Modify.sql")),
             @{
-                "VendorGUID" = $VendorGUID;
+                "ItemGUID" = $ItemGUID;
                 "Name" = $Name;
-                "WebSite" = $WebSite;
-            }
+                "MetalType" = $MetalType;
+                "Purity" = $Purity;
+                "Ounces" = $Ounces;
+        }
         );
-        Return $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByGUID($VendorGUID);
+        Return $Global:Job.PreciousMetalsTracking.Data.Items.GetByGUID($ItemGUID);
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Job.PreciousMetalsTracking.Data.Items `
     -Name "Remove" `
     -MemberType "ScriptMethod" `
     -Value {
         Param
         (
             [Parameter(Mandatory=$true)]
-            [Guid] $VendorGUID
+            [Guid] $ItemGUID
         )
         $Global:Job.SQLite.Execute(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Remove.sql")),
-            @{ "VendorGUID" = $VendorGUID; }
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Items", "Remove.sql")),
+            @{ "ItemGUID" = $ItemGUID; }
         );
     }

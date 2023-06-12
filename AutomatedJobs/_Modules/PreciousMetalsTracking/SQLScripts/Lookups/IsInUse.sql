@@ -11,5 +11,5 @@ SELECT `LookupUse`.`Count`
 			GROUP BY `MetalType`.`Name`
 	) AS `LookupUse`
 	WHERE
-		`LookupUse`.`Lookup` = @Lookup
-		`LookupUse`.`Name` = @Name
+		`LookupUse`.`Lookup` = @Lookup COLLATE NOCASE
+		AND `LookupUse`.`Name` = @Name COLLATE NOCASE

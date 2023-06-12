@@ -2,4 +2,4 @@ UPDATE `Vendor`
     SET
         `Name` = @Name,
         `WebSite` = @WebSite
-    WHERE `VendorGUID` = @VendorGUID
+    WHERE `VendorGUID` = @VendorGUID COLLATE NOCASE

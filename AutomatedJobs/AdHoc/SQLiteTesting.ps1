@@ -1,12 +1,9 @@
 . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
-    "Prompts",
-    "Sqlite",
     "PreciousMetalsTracking"
 );
 
-
-
 $Global:Job.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3"));
+
 # $Global:Job.PreciousMetalsTracking.VerifyDatabase();
 
 # $Global:Job.PreciousMetalsTracking.GetVendorByName("APMEX");

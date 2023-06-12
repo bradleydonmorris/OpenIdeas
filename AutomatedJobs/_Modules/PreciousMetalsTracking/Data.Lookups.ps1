@@ -44,9 +44,9 @@ Add-Member `
             [String] $Name
         )
         [Boolean] $ReturnValue = $false;
-        [Int641] $Count = $Global:Job.SQLite.GetScalar(
+        [Int64] $Count = $Global:Job.SQLite.GetScalar(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups_IsInUse.sql")),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "IsInUse.sql")),
             @{
                 "Lookup" = $Lookup;
                 "Name" = $Name;
@@ -71,7 +71,7 @@ Add-Member `
         )
         Return $Global:Job.SQLite.GetRecords(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups_GetAll.sql")).Replace("`$(Lookup)", $Lookup),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "GetAll.sql")).Replace("`$(Lookup)", $Lookup),
             $null,
             @( "Name" ),
             $null
@@ -92,7 +92,7 @@ Add-Member `
         )
         $Global:Job.SQLite.Execute(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups_Add.sql")).Replace("`$(Lookup)", $Lookup),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Add.sql")).Replace("`$(Lookup)", $Lookup),
             @{ "Name" = $Name; }
         );
     }
@@ -114,7 +114,7 @@ Add-Member `
         )
         $Global:Job.SQLite.Execute(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups_Rename.sql")).Replace("`$(Lookup)", $Lookup),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Rename.sql")).Replace("`$(Lookup)", $Lookup),
             @{
                 "OldName" = $OldName;
                 "NewName" = $NewName;
@@ -136,7 +136,7 @@ Add-Member `
         )
         $Global:Job.SQLite.Execute(
             $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
-            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups_Remove.sql")).Replace("`$(Lookup)", $Lookup),
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Remove.sql")).Replace("`$(Lookup)", $Lookup),
             @{ "Name" = $Name; }
         );
     }

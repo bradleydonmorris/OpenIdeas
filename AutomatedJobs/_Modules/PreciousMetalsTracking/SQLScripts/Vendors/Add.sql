@@ -11,5 +11,5 @@ INSERT INTO `Vendor`(`VendorGUID`, `Name`, `WebSite`)
                 @WebSite AS `WebSite`
         ) AS `Source`
             LEFT OUTER JOIN `Vendor` AS `Target`
-                ON `Source`.`Name` = `Target`.`Name`
+                ON `Source`.`Name` = `Target`.`Name` COLLATE NOCASE
         WHERE `Target`.`VendorId` IS NULL

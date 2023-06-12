@@ -402,14 +402,21 @@ Add-Member `
                 [Int32] $FilterIndex = 0;
                 ForEach ($FilterKey In $Filters.Keys)
                 {
+
                     $WhereClause += [String]::Format(
+                        "{0}``{1}`` = @Param{2}{3}",
                         (
                             ($FilterIndex -eq 0) ?    
-                                "``{0}`` = @Param{1}" :
-                                " AND ``{0}`` = @Param{1}"
+                                "" :
+                                " AND "
                         ),
                         $FilterKey,
-                        $FilterIndex
+                        $FilterIndex,
+                        (
+                            ($Filters[$FilterKey] -is [String]) ?
+                                " COLLATE NOCASE" :
+                                ""
+                        )
                     );
                     [void] $Parameters.Add(
                         [String]::Format("@Param{0}", $FilterIndex),
