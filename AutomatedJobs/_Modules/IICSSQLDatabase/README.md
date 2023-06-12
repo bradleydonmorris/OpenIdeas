@@ -1,51 +1,39 @@
-# SQLServer
+# IICSSQLDatabase
 ## 
 
-- ### ClearTable
+- ### ClearStaged
       
     - ArgName (System.String)  
         
-- ### DoesTableHaveColumn
+- ### GetActivityLogLastStartTime
       
     - ArgName (System.String)  
         
-- ### Execute
+- ### Parse
       
     - ArgName (System.String)  
         
-- ### GetConnection
+- ### ParseActivityLogs
       
     - ArgName (System.String)  
         
-- ### GetConnectionString
+- ### PostStagedActivityLogs
       
     - ArgName (System.String)  
         
-- ### GetRecords
+- ### PostStagedAssetFiles
       
     - ArgName (System.String)  
         
-- ### GetScalar
+- ### PostStagedAssets
       
     - ArgName (System.String)  
         
-- ### GetTableRowCount
+- ### PostTempBDM
       
     - ArgName (System.String)  
         
-- ### ProcExecute
-      
-    - ArgName (System.String)  
-        
-- ### ProcGetRecords
-      
-    - ArgName (System.String)  
-        
-- ### ProcGetScalar
-      
-    - ArgName (System.String)  
-        
-- ### SetConnection
+- ### RemoveOldActivityLogs
       
     - ArgName (System.String)  
         

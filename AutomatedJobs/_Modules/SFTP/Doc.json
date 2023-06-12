@@ -1,0 +1,67 @@
+{
+  "Name": "SFTP",
+  "Description": "",
+  "Properties": [],
+  "Methods": [
+    {
+      "Name": "GetFile",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetFileList",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetFilesNewerThan",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetSession",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "WriteFile",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

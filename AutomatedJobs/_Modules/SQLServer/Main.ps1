@@ -25,7 +25,7 @@ Add-Member `
             $Values.Password,
             [System.Net.Dns]::GetHostName(),
             [String]::Format("{0}/{1}",
-                    $Global:Job.Collection,
+                    $Global:Job.Project,
                     $Global:Job.Script
                 )
         );
@@ -68,7 +68,7 @@ Add-Member `
             ![String]::IsNullOrEmpty($ApplicationName) ?
                 $ApplicationName :
                 [String]::Format("{0}/{1}",
-                    $Global:Job.Collection,
+                    $Global:Job.Project,
                     $Global:Job.Script
                 )
         );
@@ -90,7 +90,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Job.SQLServer `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -137,7 +137,7 @@ Add-Member `
 
 #region Base Methods
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "Execute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -182,7 +182,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -262,7 +262,7 @@ Add-Member `
         Return ,$ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "GetScalar" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -314,7 +314,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "ProcExecute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -363,7 +363,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "ProcGetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -447,7 +447,7 @@ Add-Member `
         Return ,$ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Job.SQLServer `
     -Name "ProcGetScalar" `
     -MemberType "ScriptMethod" `
     -Value {

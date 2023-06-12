@@ -1,0 +1,115 @@
+{
+  "Name": "IICSSQLDatabase",
+  "Description": "",
+  "Properties": [],
+  "Methods": [
+    {
+      "Name": "ClearStaged",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetActivityLogLastStartTime",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Parse",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "ParseActivityLogs",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "PostStagedActivityLogs",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "PostStagedAssetFiles",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "PostStagedAssets",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "PostTempBDM",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "RemoveOldActivityLogs",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

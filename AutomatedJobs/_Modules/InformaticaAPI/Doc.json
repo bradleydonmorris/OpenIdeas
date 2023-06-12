@@ -1,0 +1,79 @@
+{
+  "Name": "InformaticaAPI",
+  "Description": "",
+  "Properties": [],
+  "Methods": [
+    {
+      "Name": "ExportAssets",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "ExportLogs",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetAssets",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetSchedules",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetSession",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "SetConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

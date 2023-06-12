@@ -1,23 +1,31 @@
-# SFTP
+# WebServer
 ## 
 
-- ### GetFile
+- ### Listener
+    
+- ### RouteFunctions
+    
+- ### AddRouteCommand
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### GetRouteCommand
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### HasRouteCommand
       
     - ArgName (System.String)  
         
-- ### GetSession
+- ### InvokeRouteCommand
       
     - ArgName (System.String)  
         
-- ### WriteFile
+- ### IsListening
+      
+    - ArgName (System.String)  
+        
+- ### Start
       
     - ArgName (System.String)  
         

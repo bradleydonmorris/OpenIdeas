@@ -1,0 +1,73 @@
+{
+  "Name": "SSHTunnel",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "Internals",
+      "Type": "hashtable",
+      "Description": ""
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "CreateKeyAuthTunnel",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "DestroyTunnel",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetKeyAuthTunnelConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "IsTunnelEstablished",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "SetKeyAuthTunnelConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

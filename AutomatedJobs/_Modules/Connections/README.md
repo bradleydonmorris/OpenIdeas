@@ -1,30 +1,17 @@
-# automated-jobs/_Modules/Connections.ps1
+# Connections
+## 
 
-
+- ### InMemory
+    
 - ### Exists
-
+      
+    - ArgName (System.String)  
+        
 - ### Get
-
+      
+    - ArgName (System.String)  
+        
 - ### Set
-
-- ### GetBasicCredential
-
-- ### SetBasicCredential
-
-- ### GetSMTPConnection
-
-- ### SetSMTPConnection
-
-- ### GetSFTPConnection
-
-- ### SetSFTPConnectionNormal
-
-- ### GetSQLServerConnection
-
-- ### SetSQLServerConnection
-
-- ### SetThumbItAPIConnection
-
-- ### GetLDAPConnection
-
-- ### SetLDAPConnection
+      
+    - ArgName (System.String)  
+        

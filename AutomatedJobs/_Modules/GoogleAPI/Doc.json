@@ -1,0 +1,79 @@
+{
+  "Name": "GoogleAPI",
+  "Description": "",
+  "Properties": [],
+  "Methods": [
+    {
+      "Name": "GetGroupMembers",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetGroups",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetOrgUnits",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetRefreshedToken",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetUsers",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "NewConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,47 +1,75 @@
+[void] $Global:Job.LoadModule("SQLServer");
+
 Add-Member `
-    -InputObject $Global:Job.Databases `
+    -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "Google" `
+    -NotePropertyName "ActiveDirectorySQLDatabase" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-    Add-Member `
-    -InputObject $Global:Job.Databases.Google `
-    -Name "ImportOrganizationalUnit" `
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
+    -Name "GetUserLastWhenChangedTime" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([DateTime])]
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $ConnectionName,
-
-            [Parameter(Mandatory=$true)]
-            [String] $OrgUnitJSON
+            [String] $ConnectionName
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
+        [DateTime] $Results = [DateTime]::new(1970, 1, 1, 0, 0, 0);
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportOrganizationalUnit]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[GetUserLastWhenChangedTime]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
-        [Data.SqlClient.SqlParameter] $SqlParameter_OrgUnitJSON = $SqlCommand.CreateParameter();
-        $SqlParameter_OrgUnitJSON.ParameterName = "OrgUnitJSON";
-        $SqlParameter_OrgUnitJSON.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_OrgUnitJSON.Size = (-1);
-        $SqlParameter_OrgUnitJSON.SqlValue = $OrgUnitJSON;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_OrgUnitJSON);
 
-        [void] $SqlCommand.ExecuteNonQuery();
-
+        [Data.SqlClient.SqlDataReader] $SqlDataReader = $SqlCommand.ExecuteReader();
+        While ($SqlDataReader.Read())
+        {
+            $Results = $SqlDataReader.GetDateTime(0);
+            $Results = [DateTime]::SpecifyKind($Results, [System.DateTimeKind]::Utc);
+        }
+        [void] $SqlDataReader.Close();
+        [void] $SqlDataReader.Dispose();
         [void] $SqlCommand.Dispose();
         [void] $SqlConnection.Close();
         [void] $SqlConnection.Dispose();
         Return $Results;
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
+    -Name "GetGroupLastWhenChangedTime" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([DateTime])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
+        )
+        [DateTime] $Results = [DateTime]::new(1970, 1, 1, 0, 0, 0);
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [void] $SqlConnection.Open();
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[GetGroupLastWhenChangedTime]", $SqlConnection);
+        $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
+
+        [Data.SqlClient.SqlDataReader] $SqlDataReader = $SqlCommand.ExecuteReader();
+        While ($SqlDataReader.Read())
+        {
+            $Results = $SqlDataReader.GetDateTime(0);
+            $Results = [DateTime]::SpecifyKind($Results, [System.DateTimeKind]::Utc);
+        }
+        [void] $SqlDataReader.Close();
+        [void] $SqlDataReader.Dispose();
+        [void] $SqlCommand.Dispose();
+        [void] $SqlConnection.Close();
+        [void] $SqlConnection.Dispose();
+        Return $Results;
+    };
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "ImportUser" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -50,10 +78,9 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $UserJSON
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportUser]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ImportUser]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         [Data.SqlClient.SqlParameter] $SqlParameter_UserJSON = $SqlCommand.CreateParameter();
         $SqlParameter_UserJSON.ParameterName = "UserJSON";
@@ -67,14 +94,12 @@ Add-Member `
         [void] $SqlCommand.Dispose();
         [void] $SqlConnection.Close();
         [void] $SqlConnection.Dispose();
-        Return $Results;
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "ImportGroup" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -83,10 +108,9 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $GroupJSON
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ImportGroup]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ImportGroup]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         [Data.SqlClient.SqlParameter] $SqlParameter_GroupJSON = $SqlCommand.CreateParameter();
         $SqlParameter_GroupJSON.ParameterName = "GroupJSON";
@@ -100,10 +124,9 @@ Add-Member `
         [void] $SqlCommand.Dispose();
         [void] $SqlConnection.Close();
         [void] $SqlConnection.Dispose();
-        Return $Results;
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "ProcessManagerialChanges" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -114,7 +137,7 @@ Add-Member `
         )
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessManagerialChanges]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessManagerialChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         $SqlCommand.CommandTimeout = 0;
         [void] $SqlCommand.ExecuteNonQuery();
@@ -123,7 +146,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "ProcessGroupMembershipChanges" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -134,7 +157,7 @@ Add-Member `
         )
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessGroupMembershipChanges]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessGroupMembershipChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         $SqlCommand.CommandTimeout = 0;
         [void] $SqlCommand.ExecuteNonQuery();
@@ -143,7 +166,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "ProcessGroupManagerChanges" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -154,7 +177,7 @@ Add-Member `
         )
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[ProcessGroupManagerChanges]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[ProcessGroupManagerChanges]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         $SqlCommand.CommandTimeout = 0;
         [void] $SqlCommand.ExecuteNonQuery();
@@ -163,7 +186,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.Google `
+    -InputObject $Global:Job.ActiveDirectorySQLDatabase `
     -Name "RebuildIndexes" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -174,7 +197,7 @@ Add-Member `
         )
         [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[Google].[RebuildIndexes]", $SqlConnection);
+        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new("[ActiveDirectory].[RebuildIndexes]", $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::StoredProcedure;
         $SqlCommand.CommandTimeout = 0;
         [void] $SqlCommand.ExecuteNonQuery();

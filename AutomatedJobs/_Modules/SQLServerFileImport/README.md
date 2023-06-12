@@ -1,23 +1,19 @@
-# SFTP
+# SQLServerFileImport
 ## 
 
-- ### GetFile
+- ### CSVToDataTable
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### DeleteTableRows
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### GetCSVRowCount
       
     - ArgName (System.String)  
         
-- ### GetSession
-      
-    - ArgName (System.String)  
-        
-- ### WriteFile
+- ### ImportCSV
       
     - ArgName (System.String)  
         

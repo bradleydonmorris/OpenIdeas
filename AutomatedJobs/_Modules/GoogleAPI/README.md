@@ -1,23 +1,27 @@
-# SFTP
+# GoogleAPI
 ## 
 
-- ### GetFile
+- ### GetGroupMembers
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### GetGroups
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### GetOrgUnits
       
     - ArgName (System.String)  
         
-- ### GetSession
+- ### GetRefreshedToken
       
     - ArgName (System.String)  
         
-- ### WriteFile
+- ### GetUsers
+      
+    - ArgName (System.String)  
+        
+- ### NewConnection
       
     - ArgName (System.String)  
         

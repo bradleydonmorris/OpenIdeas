@@ -5,6 +5,21 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
+    -TypeName "System.String" `
+    -NotePropertyName "TEst" `
+    -NotePropertyValue "ASDF";
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectory `
+    -TypeName "Int64" `
+    -NotePropertyName "TEst2" `
+    -NotePropertyValue 1212331225652;
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectory `
+    -TypeName "System.Management.Automation.PSObject" `
+    -NotePropertyName "Doc" `
+    -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Doc.json"))));
+Add-Member `
+    -InputObject $Global:Job.ActiveDirectory `
     -Name "GetLDAPConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -229,7 +244,6 @@ Add-Member `
         [void] $SearchResultCollection.Dispose();
         Return $Results;
     };
-
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -Name "GetChangedGroups" `

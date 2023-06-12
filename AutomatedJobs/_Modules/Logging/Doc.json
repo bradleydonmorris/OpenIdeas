@@ -1,0 +1,213 @@
+{
+  "Name": "Logging",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "CloseLogTime",
+      "Type": "datetime",
+      "Description": ""
+    },
+    {
+      "Name": "Config",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "ConfigFilePath",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "CurrentLogFilePath",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "DirectoryPath",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "ElapsedLogTime",
+      "Type": "datetime",
+      "Description": ""
+    },
+    {
+      "Name": "Entries",
+      "Type": "ArrayList",
+      "Description": ""
+    },
+    {
+      "Name": "JSONFilePath",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "LastEntryNumber",
+      "Type": "System.Int32",
+      "Description": ""
+    },
+    {
+      "Name": "LastLogFileNumber",
+      "Type": "System.Int32",
+      "Description": ""
+    },
+    {
+      "Name": "LevelCounts",
+      "Type": "System.Int32",
+      "Description": ""
+    },
+    {
+      "Name": "LogFileNameTemplate",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "LogFilePathTemplate",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "LogFileTimestamp",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "OpenLogTime",
+      "Type": "datetime",
+      "Description": ""
+    },
+    {
+      "Name": "Timers",
+      "Type": "System.String",
+      "Description": ""
+    },
+    {
+      "Name": "Variables",
+      "Type": "hashtable",
+      "Description": ""
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "ClearLogs",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Close",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetNextLogFile",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Send",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "TimedExecute",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "TimedExecuteAll",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "WriteEntry",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "WriteException",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "WriteExceptionWithData",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "WriteVariables",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

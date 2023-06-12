@@ -1,0 +1,49 @@
+{
+  "Name": "Connections",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "InMemory",
+      "Type": "hashtable",
+      "Description": ""
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "Exists",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Get",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Set",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

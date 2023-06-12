@@ -1,23 +1,27 @@
-# SFTP
+# Prompts
 ## 
 
-- ### GetFile
+- ### BooleanResponse
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### DisplayHashTable
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### OutputHashTableToText
       
     - ArgName (System.String)  
         
-- ### GetSession
+- ### PressEnter
       
     - ArgName (System.String)  
         
-- ### WriteFile
+- ### ShowMenu
+      
+    - ArgName (System.String)  
+        
+- ### StringResponse
       
     - ArgName (System.String)  
         

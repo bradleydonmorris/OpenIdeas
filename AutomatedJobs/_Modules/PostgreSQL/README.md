@@ -1,4 +1,4 @@
-# SQLServer
+# PostgreSQL
 ## 
 
 - ### ClearTable
@@ -30,18 +30,6 @@
     - ArgName (System.String)  
         
 - ### GetTableRowCount
-      
-    - ArgName (System.String)  
-        
-- ### ProcExecute
-      
-    - ArgName (System.String)  
-        
-- ### ProcGetRecords
-      
-    - ArgName (System.String)  
-        
-- ### ProcGetScalar
       
     - ArgName (System.String)  
         

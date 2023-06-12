@@ -1,0 +1,47 @@
+{
+    "Name": "ActiveDirectory",
+    "Description": "",
+    "Requires": [],
+    "Properties": [],
+    "Methods": [
+		{
+            "Name": "GetChangedGroups",
+            "Description": "",
+            "Arguments": [
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
+                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "" }
+            ]
+		},
+		{
+			"Name": "GetChangedUsers",
+            "Description": "",
+            "Arguments": [
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
+                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "" }
+            ]
+		},
+		{
+			"Name": "GetGroup",
+            "Description": "",
+            "Arguments": [
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
+                { "Name": "DistinguishedName", "Type": "System.String", "Description": "" }
+            ]
+		},
+		{
+			"Name": "GetLDAPConnection",
+            "Description": "",
+            "Arguments": [
+                { "Name": "Name", "Type": "System.String", "Description": "" }
+            ]
+		},
+		{
+			"Name": "GetUser",
+            "Description": "",
+            "Arguments": [
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
+                { "Name": "DistinguishedName", "Type": "System.String", "Description": "" }
+            ]
+		}
+    ]
+}

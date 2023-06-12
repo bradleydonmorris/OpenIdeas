@@ -1,15 +1,19 @@
-# SFTP
+# InformaticaAPI
 ## 
 
-- ### GetFile
+- ### ExportAssets
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### ExportLogs
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### GetAssets
+      
+    - ArgName (System.String)  
+        
+- ### GetSchedules
       
     - ArgName (System.String)  
         
@@ -17,7 +21,7 @@
       
     - ArgName (System.String)  
         
-- ### WriteFile
+- ### SetConnection
       
     - ArgName (System.String)  
         

@@ -1,10 +1,12 @@
+[void] $Global:Job.LoadModule("SQLServer");
+
 Add-Member `
-    -InputObject $Global:Job.Databases `
+    -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "IICS" `
+    -NotePropertyName "IICSSQLDatabase" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "ClearStaged" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -56,7 +58,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "PostStagedAssets" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -91,7 +93,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "PostStagedAssetFiles" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -153,7 +155,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "PostStagedActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -188,7 +190,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "Parse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -212,7 +214,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "ParseActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -236,7 +238,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "GetActivityLogLastStartTime" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -268,7 +270,7 @@ Add-Member `
         }
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "RemoveOldActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -309,7 +311,7 @@ Add-Member `
 
 #[IICS].[PostTempBDM]
 Add-Member `
-    -InputObject $Global:Job.Databases.IICS `
+    -InputObject $Global:Job.IICSSQLDatabase `
     -Name "PostTempBDM" `
     -MemberType "ScriptMethod" `
     -Value {

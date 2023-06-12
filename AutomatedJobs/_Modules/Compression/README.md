@@ -1,5 +1,9 @@
-# automated-jobs/_Modules/Compression.ps1
+# Compression
+## 
 
 - ### ExecutablePath
-
+    
 - ### ExtractAsset
+      
+    - ArgName (System.String)  
+        

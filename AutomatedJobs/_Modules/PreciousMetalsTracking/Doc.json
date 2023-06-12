@@ -1,0 +1,47 @@
+{
+  "Name": "PreciousMetalsTracking",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "Data",
+      "Type": "System.Management.Automation.PSObject",
+      "Description": ""
+    },
+    {
+      "Name": "Menus",
+      "Type": "System.Boolean",
+      "Description": ""
+    },
+    {
+      "Name": "Messages",
+      "Type": "System.Management.Automation.PSCustomObject",
+      "Description": ""
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "Exit",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Open",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

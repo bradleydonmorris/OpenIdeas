@@ -15,9 +15,7 @@ $Global:Job.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirecto
 
 # $Global:Job.PreciousMetalsTracking.AddMetalType("Copper");
 
-
-
-#SELECT COUNT(*) FROM `MetalType` WHERE `Name` = @Param0
+# SELECT COUNT(*) FROM `MetalType` WHERE `Name` = @Param0
 
 # $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName
 # $Global:Job.Sqlite.GetScalar(

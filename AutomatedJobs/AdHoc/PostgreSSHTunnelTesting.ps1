@@ -45,11 +45,10 @@ $Global:Job.PostgreSQL.SetConnection(
 <#
 If error is "Invalid private key file.",
     try to load the key file in PuttyGen.
-    Then ecport to OpenSSH
+    Then export to OpenSSH
         Conversions > Export OpenSSH key
         (not the "force new file format" option)
 #>
-
 
 [void] $Global:Job.SSHTunnel.CreateKeyAuthTunnel("GoldPlusTunnel-SSH");
 $Global:Job.PostgreSQL.GetRecords(

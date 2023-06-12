@@ -1,0 +1,25 @@
+{
+  "Name": "Compression",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "ExecutablePath",
+      "Type": "System.String",
+      "Description": ""
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "ExtractAsset",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

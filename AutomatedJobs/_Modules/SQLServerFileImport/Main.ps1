@@ -188,7 +188,7 @@ Add-Member `
         [void] $DataTable.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.Databases.FileImport `
+    -InputObject $Global:Job.SQLServerFileImport `
     -Name "GetCSVRowCount" `
     -MemberType "ScriptMethod" `
     -Value {

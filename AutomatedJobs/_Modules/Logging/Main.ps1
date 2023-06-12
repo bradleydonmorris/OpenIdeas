@@ -6,7 +6,7 @@ If (![IO.Directory]::Exists($Global:Job.Directories.LogsRoot))
 {
     [void] [IO.Directory]::CreateDirectory($Global:Job.Directories.LogsRoot);
 }
-[String] $DirectoryPath = [IO.Path]::Combine($Global:Job.Directories.LogsRoot, $Global:Job.Collection, $Global:Job.Script);
+[String] $DirectoryPath = [IO.Path]::Combine($Global:Job.Directories.LogsRoot, $Global:Job.Project, $Global:Job.Script);
 [String] $ConfigFilePath = [IO.Path]::Combine($DirectoryPath, ".config.json");
 If (![IO.Directory]::Exists($DirectoryPath))
 {

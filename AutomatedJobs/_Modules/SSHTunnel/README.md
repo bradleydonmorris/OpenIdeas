@@ -1,23 +1,25 @@
-# SFTP
+# SSHTunnel
 ## 
 
-- ### GetFile
+- ### Internals
+    
+- ### CreateKeyAuthTunnel
       
     - ArgName (System.String)  
         
-- ### GetFileList
+- ### DestroyTunnel
       
     - ArgName (System.String)  
         
-- ### GetFilesNewerThan
+- ### GetKeyAuthTunnelConnection
       
     - ArgName (System.String)  
         
-- ### GetSession
+- ### IsTunnelEstablished
       
     - ArgName (System.String)  
         
-- ### WriteFile
+- ### SetKeyAuthTunnelConnection
       
     - ArgName (System.String)  
         

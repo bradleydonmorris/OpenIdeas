@@ -1,51 +1,55 @@
-# SQLServer
+# ScriptSQLServerDatabase
 ## 
 
-- ### ClearTable
+- ### CreateScriptArrayFromJSON
       
     - ArgName (System.String)  
         
-- ### DoesTableHaveColumn
+- ### GenerateFunctionScript
       
     - ArgName (System.String)  
         
-- ### Execute
+- ### GenerateProcedureScript
       
     - ArgName (System.String)  
         
-- ### GetConnection
+- ### GenerateScriptsByDependency
       
     - ArgName (System.String)  
         
-- ### GetConnectionString
+- ### GenerateTableScript
       
     - ArgName (System.String)  
         
-- ### GetRecords
+- ### GenerateViewScript
       
     - ArgName (System.String)  
         
-- ### GetScalar
+- ### GetFunctionInfo
       
     - ArgName (System.String)  
         
-- ### GetTableRowCount
+- ### GetObjectsByDependency
       
     - ArgName (System.String)  
         
-- ### ProcExecute
+- ### GetProcedureInfo
       
     - ArgName (System.String)  
         
-- ### ProcGetRecords
+- ### GetTableInfo
       
     - ArgName (System.String)  
         
-- ### ProcGetScalar
+- ### GetViewInfo
       
     - ArgName (System.String)  
         
-- ### SetConnection
+- ### ImportFromJSON
+      
+    - ArgName (System.String)  
+        
+- ### ImportFromJSONWhatIf
       
     - ArgName (System.String)  
         

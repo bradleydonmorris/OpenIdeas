@@ -1,39 +1,77 @@
-# automated-jobs/_Modules/Logging.ps1
+# Logging
+## 
 
-
-- ### ExtractAsset
-On initialization a new log file is started
-
-- ### OpenLogTime
 - ### CloseLogTime
-- ### ElapsedLogTime
-- ### DirectoryPath
-- ### ConfigFilePath
-- ### CurrentLogFilePath
-- ### LastExceptionFileNumber
+    
 - ### Config
-    - ### RetentionDays
-    - ### EmailRecipients
-    - ### SMTPConnectionName
-    - ### Save
+    
+- ### ConfigFilePath
+    
+- ### CurrentLogFilePath
+    
+- ### DirectoryPath
+    
+- ### ElapsedLogTime
+    
+- ### Entries
+    
+- ### JSONFilePath
+    
+- ### LastEntryNumber
+    
+- ### LastLogFileNumber
+    
 - ### LevelCounts
-    - ### Information
-    - ### Warning
-    - ### Error
-    - ### Debug
-    - ### Fatal
+    
+- ### LogFileNameTemplate
+    
+- ### LogFilePathTemplate
+    
+- ### LogFileTimestamp
+    
+- ### OpenLogTime
+    
 - ### Timers
-    - ### TimerCollection
-    - ### Add
-    - ### Start
-    - ### Stop
-    - ### Get
-- ### WriteEntry
-- ### WriteException
-- ### WriteExceptionWithData
-- ### WriteVariables
-- ### Close
+    
+- ### Variables
+    
 - ### ClearLogs
-- ### Depricated: Send
-
-
+      
+    - ArgName (System.String)  
+        
+- ### Close
+      
+    - ArgName (System.String)  
+        
+- ### GetNextLogFile
+      
+    - ArgName (System.String)  
+        
+- ### Send
+      
+    - ArgName (System.String)  
+        
+- ### TimedExecute
+      
+    - ArgName (System.String)  
+        
+- ### TimedExecuteAll
+      
+    - ArgName (System.String)  
+        
+- ### WriteEntry
+      
+    - ArgName (System.String)  
+        
+- ### WriteException
+      
+    - ArgName (System.String)  
+        
+- ### WriteExceptionWithData
+      
+    - ArgName (System.String)  
+        
+- ### WriteVariables
+      
+    - ArgName (System.String)  
+        

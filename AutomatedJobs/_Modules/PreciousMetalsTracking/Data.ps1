@@ -20,7 +20,7 @@ Add-Member `
         )
         $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName = [String]::Format(
             "{0}_{1}_{2}",
-            $Global:Job.Collection,
+            $Global:Job.Project,
             $Global:Job.Script,
             [DateTime]::UtcNow.ToString("yyyyMMddHHmmss")
         )
