@@ -1,3 +1,5 @@
+[void] $Global:Job.LoadModule("Connections");
+
 [void] $Global:Job.NuGet.InstallPackageVersionIfMissing("Npgsql", "5.0.0");
 [void] $Global:Job.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
 

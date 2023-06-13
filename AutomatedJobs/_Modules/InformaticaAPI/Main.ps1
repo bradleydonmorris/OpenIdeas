@@ -1,3 +1,5 @@
+[void] $Global:Job.LoadModule("Connections");
+
 Add-Member `
     -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `

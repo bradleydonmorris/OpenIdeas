@@ -1,3 +1,5 @@
+[void] $Global:Job.LoadModule("Connections");
+
 Add-Member `
     -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `
@@ -9,7 +11,7 @@ Add-Member `
     -MemberType "ScriptMethod" `
     -Value {
         [OutputType([PSCustomObject])]
-        [PSCustomObject] $Result = ConvertFrom-Json -InputObject @"
+        [PSCustomObject] $ReturnValue = ConvertFrom-Json -InputObject @"
             {
                 "Comments": "Connection for Google API",
                 "ClientId": null,
@@ -22,7 +24,7 @@ Add-Member `
                 "CustomerId": "C03vo01mv"
             }
 "@;
-        Return $Result;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.GoogleAPI `
@@ -35,7 +37,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [String] $Result = $null;
+        [String] $ReturnValue = $null;
         $Values = $Global:Job.Connections.Get($ConnectionName);
         [Collections.Hashtable] $TokenRequestBody = @{
             "client_id" = $Values.ClientId;
@@ -44,7 +46,7 @@ Add-Member `
             "grant_type" = "refresh_token";
         };
         $Tokens = Invoke-RestMethod -Uri $Values.TokenURI -Method POST -Body $TokenRequestBody;
-        $Result = $Tokens.access_token;
+        $ReturnValue = $Tokens.access_token;
         If (
             ![String]::IsNullOrEmpty($Tokens.refresh_token) -and
             $Values.RefreshToken -ne $Tokens.refresh_token
@@ -53,20 +55,20 @@ Add-Member `
             $Values.RefreshToken = $Tokens.refresh_token
             $Global:Job.Connections.Set($ConnectionName, $Values);
         }
-        Return $Result;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.GoogleAPI `
     -Name "GetUsers" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Collections.ArrayList] $Result = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [String] $AccessToken = $Global:Job.GoogleAPI.GetRefreshedToken($ConnectionName);
         [String] $URI = "https://admin.googleapis.com/admin/directory/v1/users" +
             "?maxResults=200" +
@@ -79,24 +81,24 @@ Add-Member `
         $Response = Invoke-RestMethod -Uri ($URI.Replace("{@PageToken}", "")) -Method Get;
         If ($Response.users.Count -gt 0)
         {
-            [void] $Result.AddRange($Response.users);
+            [void] $ReturnValue.AddRange($Response.users);
             While (
                 $Response.users.Count -gt 0 -and
                 ![String]::IsNullOrEmpty($Response.nextPageToken)
             )
             {
                 $Response = Invoke-RestMethod -Uri ($URI.Replace("{@PageToken}", $Response.nextPageToken)) -Method Get;
-                [void] $Result.AddRange($Response.users);
+                [void] $ReturnValue.AddRange($Response.users);
             }
         }
-        Return $Result;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.GoogleAPI `
     -Name "GetGroups" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -105,7 +107,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeMembers
         )
-        [Collections.ArrayList] $Result = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [String] $AccessToken = $Global:Job.GoogleAPI.GetRefreshedToken($ConnectionName);
         [String] $URI = "https://admin.googleapis.com/admin/directory/v1/groups" +
             "?maxResults=200" +
@@ -124,28 +126,28 @@ Add-Member `
                         -TypeName "Collections.ArrayList" `
                         -NotePropertyName "Members" `
                         -NotePropertyValue ($Global:Job.GoogleAPI.GetGroupMembers($ConnectionName, $Group.id));
-                    [void] $Result.Add($Group);
+                    [void] $ReturnValue.Add($Group);
                 }
             }
             Else
-            { [void] $Result.AddRange($Response.groups); }
+            { [void] $ReturnValue.AddRange($Response.groups); }
             While (
                 $Response.groups.Count -gt 0 -and
                 ![String]::IsNullOrEmpty($Response.nextPageToken)
             )
             {
                 $Response = Invoke-RestMethod -Uri ($URI.Replace("{@PageToken}", $Response.nextPageToken)) -Method Get;
-                [void] $Result.AddRange($Response.groups);
+                [void] $ReturnValue.AddRange($Response.groups);
             }
         }
-        Return $Result;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.GoogleAPI `
     -Name "GetGroupMembers" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -154,7 +156,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $GroupId
         )
-        [Collections.ArrayList] $Result = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [String] $AccessToken = $Global:Job.GoogleAPI.GetRefreshedToken($ConnectionName);
         [String] $URI = "https://admin.googleapis.com/admin/directory/v1/groups/$GroupId/members" +
             "?maxResults=200" +
@@ -163,30 +165,30 @@ Add-Member `
         $Response = Invoke-RestMethod -Uri ($URI.Replace("{@PageToken}", "")) -Method Get;
         If ($Response.members.Count -gt 0)
         {
-            [void] $Result.AddRange($Response.members);
+            [void] $ReturnValue.AddRange($Response.members);
             While (
                 $Response.members.Count -gt 0 -and
                 ![String]::IsNullOrEmpty($Response.nextPageToken)
             )
             {
                 $Response = Invoke-RestMethod -Uri ($URI.Replace("{@PageToken}", $Response.nextPageToken)) -Method Get;
-                [void] $Result.AddRange($Response.members);
+                [void] $ReturnValue.AddRange($Response.members);
             }
         }
-        Return $Result;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.GoogleAPI `
     -Name "GetOrgUnits" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([String])]
+        [OutputType([Collections.Generic.List[String]])]
         Param
         (
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Collections.ArrayList] $Result = [Collections.ArrayList]::new();
+        [Collections.Generic.List[String]] $ReturnValue = [Collections.Generic.List[String]]::new();
         [String] $AccessToken = $Global:Job.GoogleAPI.GetRefreshedToken($ConnectionName);
         [String] $URI = "https://admin.googleapis.com/admin/directory/v1/customer/my_customer/orgunits" +
             "?type=ALL" +

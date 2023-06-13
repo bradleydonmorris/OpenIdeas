@@ -1,3 +1,4 @@
+[void] $Global:Job.LoadModule("Connections");
 [void] $Global:Job.LoadModule("SQLServer");
 
 Add-Member `

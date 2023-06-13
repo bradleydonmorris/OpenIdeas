@@ -1,272 +1,100 @@
-# . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1"));
-# $Global:Job.LoadModule("SQLServer");
+. ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1"));
+$Global:Job.LoadModule("Compression7Zip");
+#$Global:Job.Compression7Zip.GetAssets("C:\keys\test.zip");
+$Global:Job.Compression7Zip.ExtractAsset("C:\keys\test.zip", "keys\temp.rsa", "C:\keys\trash");
 
-# [String] $ConnectionString = $Global:Job.SQLServer.GetConnectionString("TUL-IT-WL-19", "Integrations", $true, $null, $null, $null, $null);
+# #[OutputType([Collections.Generic.List[PSObject]])]
 
-# [Data.SqlClient.SqlConnection] $Connection = $null;
-# [Data.SqlClient.SqlCommand] $Command = $null;
-# Try
+# [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
+# [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
+# $ProcessStartInfo.FileName = "C:\Program Files\7-Zip\7z.exe"
+# $ProcessStartInfo.RedirectStandardError = $true
+# $ProcessStartInfo.RedirectStandardOutput = $true
+# $ProcessStartInfo.UseShellExecute = $false
+# $ProcessStartInfo.Arguments = @(
+#     "l",
+#     "`"C:\keys\test.zip`"",
+#     "-y"
+# );
+# [System.Diagnostics.Process] $Process = [System.Diagnostics.Process]::new()
+# $Process.StartInfo = $ProcessStartInfo
+# $Process.Start() | Out-Null
+# $Process.WaitForExit()
+# $StandardOutput = $Process.StandardOutput.ReadToEnd()
+# [Boolean] $InList = $false;
+# ForEach ($Line In ($StandardOutput -split "`r`n"))
 # {
-#     $Connection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
-#     $Connection.Open();
-#     $Command = [Data.SqlClient.SqlCommand]::new("SELECT * FROM [dbo].[temp]", $Connection);
-#     $Command.CommandType = [Data.CommandType]::Text;
-#     $DataReader = $Command.ExecuteReader();
-#     While ($DataReader.Read())
+#     If ($Line -eq "------------------- ----- ------------ ------------  ------------------------")
 #     {
-#         For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
+#         If ($InList)
 #         {
-#             $DataReader.GetName($FieldIndex)
-#             $DataReader.GetSqlValue($FieldIndex).GetType().Name
-#             # Write-Host -Object [String]::Format(
-#             #     "{0} - {1}",
-#             #     $DataReader.GetName($FieldIndex),
-#             #     $DataReader.GetSqlValue($FieldIndex).GetType().Name
-#             # );
+#             $InList = $false;
+#         }
+#         Else
+#         {
+#             $InList = $true;
 #         }
 #     }
-# }
-# Finally
-# {
-#     If ($Command)
-#         { [void] $Command.Dispose(); }
-#     If ($Connection)
+#     If (
+#         $InList -and
+#         $Line -ne "------------------- ----- ------------ ------------  ------------------------")
 #     {
-#         If (!$Connection.State -ne [Data.ConnectionState]::Closed)
-#             { [void] $Connection.Close(); }
-#         [void] $Connection.Dispose();
+#         [PSObject] $Asset = [PSObject]::new();
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.String" `
+#             -NotePropertyName "Path" `
+#             -NotePropertyValue $Line.SubString(53);
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Nullable[System.DateTime]" `
+#             -NotePropertyName "FileTime" `
+#             -NotePropertyValue ([DateTime]::Parse($Line.Substring(0, 19)));
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Nullable[System.Int64]" `
+#             -NotePropertyName "Size" `
+#             -NotePropertyValue ([Int64]::Parse($Line.Substring(26).Substring(0, 12)));
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Boolean" `
+#             -NotePropertyName "IsDirectory" `
+#             -NotePropertyValue ($Line.SubString(20, 1) -eq "D");
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Boolean" `
+#             -NotePropertyName "IsReadOnly" `
+#             -NotePropertyValue ($Line.SubString(21, 1) -eq "R");
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Boolean" `
+#             -NotePropertyName "IsHidden" `
+#             -NotePropertyValue ($Line.SubString(22, 1) -eq "H");
+#             Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Boolean" `
+#             -NotePropertyName "IsSystem" `
+#             -NotePropertyValue ($Line.SubString(23, 1) -eq "S");
+#         Add-Member `
+#             -InputObject $Asset `
+#             -TypeName "System.Boolean" `
+#             -NotePropertyName "IsArchived" `
+#             -NotePropertyValue ($Line.SubString(24, 1) -eq "A");
+#         [void] $ReturnValue.Add($Asset);
 #     }
 # }
+# [void] $Process.Dispose();
+
+# #Clear-Host;
+# #$StandardOutput
+# $ReturnValue
+
+# #Remove-Variable -Name "Asset";
 
 
 
-Function Get-TypCrossMatchFromSQLServerType()
-{
-    [CmdletBinding()]
-    [OutputType([PSObject])]
-    Param (
-        [Parameter()]
-        [String] $SQLServerTypeName
-    )
-    [PSObject] $ReturnValue = [PSObject]::new();
-    Switch ($SQLServerTypeName)
-    {
-        "bigint"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "bigint";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlInt64];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Int64];
-        }
-        "binary"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "binary";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlBytes];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte$null];
-        }
-        "bit"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "bit";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlBoolean];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Boolean];
-        }
-        "char"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "char";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlChars];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Char$null];
-        }
-        "cursor"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "cursor";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        "date"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "date";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDateTime];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.DateTime];
-        }
-        "datetime"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "datetime";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDateTime];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.DateTime];
-        }
-        "datetime2"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "datetime2";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDateTime];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.DateTime];
-        }
-        "datetimeoffset"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "datetimeoffset";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.DateTimeOffset];
-        }
-        "decimal"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "decimal";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDecimal];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Decimal];
-        }
-        "float"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "float";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDouble];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Double];
-        }
-        "geography"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "geography";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlGeography];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        "geometry"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "geometry";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlGeometry];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        "hierarchyid"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "hierarchyid";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlHierarchyId];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        "image"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "image";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlBinary];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte$null];
-        }
-        "int"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "int";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlInt32];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Int32];
-        }
-        "money"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "money";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlMoney];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Decimal];
-        }
-        "nchar"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "nchar";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlChars];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Char$null];
-        }
-        "ntext"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "ntext";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlString];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.String];
-        }
-        "numeric"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "numeric";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlDecimal];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Decimal];
-        }
-        "nvarchar"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "nvarchar";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlString];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.String];
-        }
-        "real"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "real";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlSingle];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Single];
-        }
-        "rowversion"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "rowversion";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte$null];
-        }
-        "smallint"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "smallint";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlInt16];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Int16];
-        }
-        "smallmoney"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "smallmoney";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlMoney];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Decimal];
-        }
-        "sql_variant"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "sql_variant";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Object];
-        }
-        "table"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "table";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        "text"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "text";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlString];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.String];
-        }
-        "time"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "time";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value $null;
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.TimeSpan];
-        }
-        "timestamp"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "timestamp";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlBinary];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte$null];
-        }
-        "tinyint"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "tinyint";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlByte];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte];
-        }
-        "uniqueidentifier"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "uniqueidentifier";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlGuid];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Guid];
-        }
-        "varbinary"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "varbinary";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlBytes, SqlBinary];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.Byte$null];
-        }
-        "varchar"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "varchar";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlString];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value [System.String];
-        }
-        "xml"
-        {
-            Add-Member -InputObject $ReturnValue -TypeName "String"  -MemberType NoteProperty -Name "SQLServerType" -Value "xml";
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "SqlType" -Value [System.Data.SqlTypes.SqlXml];
-            Add-Member -InputObject $ReturnValue -TypeName "System.Type"  -MemberType NoteProperty -Name "CLRType" -Value $null;
-        }
-        Default
-        {
-            $ReturnValue = $null;
-        }
-    }
-    Return $ReturnValue;
-}
-Clear-Host;
-Get-TypCrossMatchFromSQLServerType -SQLServerTypeName "nvarchar"
+<#
+
+"C:\Program Files\7-Zip\7z.exe" e "C:\keys\test.zip" -o"C:\keys\trash" "keys\temp.rsa" -y
+
+#>

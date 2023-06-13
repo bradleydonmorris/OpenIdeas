@@ -1,89 +1,104 @@
 {
   "Name": "GoogleSQLDatabase",
-  "Description": "",
+  "Description": "Enteracts with the GoogleAPI schema in a specified SQL Server database.",
   "Properties": [],
   "Methods": [
     {
       "Name": "ImportGroup",
-      "Description": "",
-      "Returns": "",
+      "Description": "Imports a group object into the database",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "ImportOrganizationalUnit",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "Name of the SQL database Connection"
+        },
         {
-          "Name": "ArgName",
+          "Name": "GroupJSON",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The JSON representation of the Group object"
         }
       ]
     },
     {
       "Name": "ImportUser",
-      "Description": "",
-      "Returns": "",
+      "Description": "Imports a user object into the database",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "UserJSON",
+          "Type": "System.String",
+          "Description": "The JSON representation of the User object"
+        }
+      ]
+    },
+    {
+      "Name": "ImportOrganizationalUnit",
+      "Description": "Imports an Organization Unit object into the database",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "OrgUnitJSON",
+          "Type": "System.String",
+          "Description": "The JSON representation of the Organization Unit object"
         }
       ]
     },
     {
       "Name": "ProcessGroupManagerChanges",
-      "Description": "",
-      "Returns": "",
+      "Description": "Processes all the changes related to group managers",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
         }
       ]
     },
     {
       "Name": "ProcessGroupMembershipChanges",
-      "Description": "",
-      "Returns": "",
+      "Description": "Processes all the changes related to group memberships",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
         }
       ]
     },
     {
       "Name": "ProcessManagerialChanges",
-      "Description": "",
-      "Returns": "",
+      "Description": "Processes all the changes related to users' managers",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
         }
       ]
     },
     {
       "Name": "RebuildIndexes",
-      "Description": "",
-      "Returns": "",
+      "Description": "Rebuild all indexes on the database tables",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
         }
       ]
     }

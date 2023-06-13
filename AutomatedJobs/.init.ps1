@@ -205,7 +205,7 @@ Add-Member `
             ForEach ($Property In $Doc.Properties)
             {
                 $README += [String]::Format(
-                    "- ### {0}`n    {1}`n",
+                    "- ### {0} ``[property]```n    {1}`n",
                     $Property.Name,
                     $Property.Description
                 );
@@ -215,7 +215,7 @@ Add-Member `
                 If (![String]::IsNullOrEmpty($Method.Returns) -and $Method.Returns -ne "void")
                 {
                     $README += [String]::Format(
-                        "- ### {0}`n    Returns: {1}  `n    {2}",
+                        "- ### {0} ``[method]```n    Returns: ``{1}``  `n    {2}",
                         $Method.Name,
                         $Method.Returns,
                         $Method.Description
@@ -224,7 +224,7 @@ Add-Member `
                 Else
                 {
                     $README += [String]::Format(
-                        "- ### {0}`n    {1}",
+                        "- ### ``Method`` {0}`n    {1}",
                         $Method.Name,
                         $Method.Description
                     );
@@ -237,7 +237,7 @@ Add-Member `
                         ForEach ($Argument In $Method.Arguments)
                         {
                             $README += [String]::Format(
-                                "    - {0} ({1})  `n        {2}`n",
+                                "    - {0} ``{1}``  `n        {2}`n",
                                 $Argument.Name,
                                 $Argument.Type,
                                 $Argument.Description

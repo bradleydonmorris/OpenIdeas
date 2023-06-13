@@ -1,6 +1,6 @@
 {
   "Name": "ActiveDirectorySQLDatabase",
-  "Description": "",
+  "Description": "Enteracts with the ActiveDirectory schema in a specified SQL Server database.",
   "Properties": [],
   "Methods": [
     {

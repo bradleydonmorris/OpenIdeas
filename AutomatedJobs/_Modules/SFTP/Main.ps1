@@ -1,3 +1,5 @@
+[void] $Global:Job.LoadModule("Connections");
+
 #This script creates methods to manage logs
 # that are stored in the Logs directory
 # which should be specified in the ".jobs-config.json".

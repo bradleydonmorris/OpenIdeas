@@ -5,62 +5,43 @@
   "Methods": [
     {
       "Name": "GetGroupMembers",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets all members of the specified group.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
       "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" },
+        { "Name": "GroupId", "Type": "System.String", "Description": "The Id of the group to retrieve members of" }
       ]
     },
     {
       "Name": "GetGroups",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets All Google groups.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
       "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
       ]
     },
     {
       "Name": "GetOrgUnits",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets all Organizational Units",
+      "Returns": "System.Collections.Generic.List[System.String]",
       "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
       ]
     },
     {
       "Name": "GetRefreshedToken",
-      "Description": "",
-      "Returns": "",
+      "Description": "Attempts to refresh the authentication token and store it in the connection.",
+      "Returns": "System.String",
       "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
       ]
     },
     {
       "Name": "GetUsers",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets All Google users.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
       "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
       ]
     },
     {

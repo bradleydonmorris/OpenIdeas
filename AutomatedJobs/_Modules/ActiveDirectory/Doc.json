@@ -1,46 +1,51 @@
 {
     "Name": "ActiveDirectory",
-    "Description": "",
+    "Description": "Enteracts with ActiveDirectory to manage user and group information.",
     "Requires": [],
     "Properties": [],
     "Methods": [
 		{
             "Name": "GetChangedGroups",
-            "Description": "",
+            "Description": "Gets all ActiveDirectory groups modified sinced the specified time.",
+            "Returns": "System.Collections.Generic.List[System.String]",
             "Arguments": [
-                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
-                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "" }
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
+                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "Time to pull changes from" }
             ]
 		},
 		{
 			"Name": "GetChangedUsers",
-            "Description": "",
+            "Description": "Gets all ActiveDirectory users modified sinced the specified time.",
+            "Returns": "System.Collections.Generic.List[System.String]",
             "Arguments": [
-                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
-                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "" }
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
+                { "Name": "ChangedSince", "Type": "System.DateTime", "Description": "Time to pull changes from" }
             ]
 		},
 		{
 			"Name": "GetGroup",
-            "Description": "",
+            "Description": "Gets an ActiveDirectory Group.",
+            "Returns": "System.Management.Automation.PSCustomObject",
             "Arguments": [
-                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
-                { "Name": "DistinguishedName", "Type": "System.String", "Description": "" }
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
+                { "Name": "DistinguishedName", "Type": "System.String", "Description": "DN of the group to retrieve" }
             ]
 		},
 		{
 			"Name": "GetLDAPConnection",
-            "Description": "",
+            "Description": "Gets LDAP Root LDIF from a named connection.",
+            "Returns": "System.String",
             "Arguments": [
-                { "Name": "Name", "Type": "System.String", "Description": "" }
+                { "Name": "Name", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" }
             ]
 		},
 		{
 			"Name": "GetUser",
-            "Description": "",
+            "Description": "Gets an ActiveDirectory User.",
+            "Returns": "System.Management.Automation.PSCustomObject",
             "Arguments": [
-                { "Name": "ConnectionName", "Type": "System.String", "Description": "" },
-                { "Name": "DistinguishedName", "Type": "System.String", "Description": "" }
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
+                { "Name": "DistinguishedName", "Type": "System.String", "Description": "DN of the user to retrieve" }
             ]
 		}
     ]

@@ -1,18 +1,10 @@
+[void] $Global:Job.LoadModule("Connections");
+
 Add-Member `
     -InputObject $Global:Job `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ActiveDirectory" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
-    -TypeName "System.String" `
-    -NotePropertyName "TEst" `
-    -NotePropertyValue "ASDF";
-Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
-    -TypeName "Int64" `
-    -NotePropertyName "TEst2" `
-    -NotePropertyValue 1212331225652;
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -TypeName "System.Management.Automation.PSObject" `
@@ -29,17 +21,17 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        [String] $Result = $null;
+        [String] $ReturnValue = $null;
         $Values = $Global:Job.Connections.Get($Name);
-        $Result = $Values.RootLDIF;
-        Return $Result;
+        $ReturnValue = $Values.RootLDIF;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -Name "GetChangedUsers" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[String]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -48,7 +40,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [DateTime] $ChangedSince
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
+        [Collections.Generic.List[String]] $ReturnValue = [Collections.Generic.List[String]]::new();
         [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(objectCategory=user)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
@@ -57,10 +49,10 @@ Add-Member `
         [System.DirectoryServices.SearchResultCollection] $SearchResultCollection = $DirectorySearcher.FindAll();
         ForEach ($SearchResult In $SearchResultCollection)
         {
-            [void] $Results.Add($SearchResult.Properties["distinguishedName"][0]);
+            [void] $ReturnValue.Add($SearchResult.Properties["distinguishedName"][0]);
         }
         [void] $SearchResultCollection.Dispose();
-        Return $Results;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
@@ -76,7 +68,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $DistinguishedName
         )
-        [PSCustomObject] $Results = ConvertFrom-Json -InputObject @"
+        [PSCustomObject] $ReturnValue = ConvertFrom-Json -InputObject @"
         {
             "objectGuid": null, "objectSid": null, "objectClass": null, "objectCategory": null,
             "userPrincipalName": null, "distinguishedName": null, "cn": null, "sAMAccountName": null, "displayName": null, "name": null, "parentDistinguishedName": null,
@@ -122,20 +114,20 @@ Add-Member `
                     {
                         [Byte[]] $ObjectSIDBytes = $DirectoryEntry.objectSid.Value;
                         [System.Security.Principal.SecurityIdentifier] $ObjectSecurityIdentifier = [System.Security.Principal.SecurityIdentifier]::new($ObjectSIDBytes, 0);
-                        $Results.objectSid = $ObjectSecurityIdentifier.ToString();
+                        $ReturnValue.objectSid = $ObjectSecurityIdentifier.ToString();
                     }
                 }
             }
             If ($DirectoryEntry.Parent)
             {
                 [System.DirectoryServices.DirectoryEntry] $ParentDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($DirectoryEntry.Parent);
-                $Results.parentDistinguishedName = $ParentDirectoryEntry.distinguishedName[0];
+                $ReturnValue.parentDistinguishedName = $ParentDirectoryEntry.distinguishedName[0];
             }
             If ($DirectoryEntry.Properties.Contains("manager"))
             {
                 If ($DirectoryEntry.Properties["manager"].Value)
                 {
-                    $Results.manager = $DirectoryEntry.Properties["manager"].Value;
+                    $ReturnValue.manager = $DirectoryEntry.Properties["manager"].Value;
                 }
             }
             If ($DirectoryEntry.msExchMailboxGuid)
@@ -144,112 +136,112 @@ Add-Member `
                 {
                     If ($DirectoryEntry.msExchMailboxGuid.Value -is [Byte[]])
                     {
-                        $Results.msExchMailboxGuid = [Guid]::new($DirectoryEntry.msExchMailboxGuid.Value).ToString();
+                        $ReturnValue.msExchMailboxGuid = [Guid]::new($DirectoryEntry.msExchMailboxGuid.Value).ToString();
                     }
                 }
             }
         
-            $Results.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
-            $Results.objectClass = [Collections.ArrayList]::new();
-            $Results.objectClass.AddRange($DirectoryEntry.objectClass);
-            $Results.objectCategory = $DirectoryEntry.objectCategory[0];
-            $Results.UserPrincipalName = $DirectoryEntry.UserPrincipalName[0];
-            $Results.distinguishedName = $DirectoryEntry.distinguishedName[0];
-            $Results.cn = $DirectoryEntry.cn[0];
-            $Results.sAMAccountName = $DirectoryEntry.sAMAccountName[0];
-            $Results.displayName = $DirectoryEntry.displayName[0];
-            $Results.name = $DirectoryEntry.name[0];
-            $Results.givenName = $DirectoryEntry.givenName[0];
-            $Results.middleName = $DirectoryEntry.middleName[0];
-            $Results.sn = $DirectoryEntry.sn[0];
-            $Results.initials = $DirectoryEntry.initials[0];
-            $Results.title = $DirectoryEntry.title[0];
-            $Results.department = $DirectoryEntry.department[0];
-            $Results.company = $DirectoryEntry.company[0];
-            $Results.description = $DirectoryEntry.description[0];
-            $Results.employeeNumber = $DirectoryEntry.employeeNumber[0];
-            $Results.employeeID = $DirectoryEntry.employeeID[0];
-            $Results.extensionAttribute1 = $DirectoryEntry.extensionAttribute1[0];
-            $Results.extensionAttribute2 = $DirectoryEntry.extensionAttribute2[0];
-            $Results.extensionAttribute3 = $DirectoryEntry.extensionAttribute3[0];
-            $Results.mail = $DirectoryEntry.mail[0];
-            $Results.telephoneNumber = $DirectoryEntry.telephoneNumber[0];
-            $Results.mobile = $DirectoryEntry.mobile[0];
-            $Results.pager = $DirectoryEntry.pager[0];
-            $Results.facsimileTelephoneNumber = $DirectoryEntry.facsimileTelephoneNumber[0];
-            $Results.ipPhone = $DirectoryEntry.ipPhone[0];
-            $Results.homePhone = $DirectoryEntry.homePhone[0];
-            $Results.url = $DirectoryEntry.url[0];
-            $Results.wWWHomePage = $DirectoryEntry.wWWHomePage[0];
-            $Results.otherFacsimileTelephoneNumber = $DirectoryEntry.otherFacsimileTelephoneNumber[0];
-            $Results.otherHomePhone = $DirectoryEntry.otherHomePhone[0];
-            $Results.otherIpPhone = $DirectoryEntry.otherIpPhone[0];
-            $Results.otherMobile = $DirectoryEntry.otherMobile[0];
-            $Results.otherPager = $DirectoryEntry.otherPager[0];
-            $Results.otherTelephone = $DirectoryEntry.otherTelephone[0];
-            $Results.physicalDeliveryOfficeName = $DirectoryEntry.physicalDeliveryOfficeName[0];
-            $Results.postalCode = $DirectoryEntry.postalCode[0];
-            $Results.streetAddress = $DirectoryEntry.streetAddress[0];
-            $Results.postOfficeBox = $DirectoryEntry.postOfficeBox[0];
-            $Results.l = $DirectoryEntry.l[0];
-            $Results.st = $DirectoryEntry.st[0];
-            $Results.c = $DirectoryEntry.c[0];
-            $Results.countryCode = $DirectoryEntry.countryCode[0];
-            $Results.co = $DirectoryEntry.co[0];
+            $ReturnValue.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
+            $ReturnValue.objectClass = [Collections.ArrayList]::new();
+            $ReturnValue.objectClass.AddRange($DirectoryEntry.objectClass);
+            $ReturnValue.objectCategory = $DirectoryEntry.objectCategory[0];
+            $ReturnValue.UserPrincipalName = $DirectoryEntry.UserPrincipalName[0];
+            $ReturnValue.distinguishedName = $DirectoryEntry.distinguishedName[0];
+            $ReturnValue.cn = $DirectoryEntry.cn[0];
+            $ReturnValue.sAMAccountName = $DirectoryEntry.sAMAccountName[0];
+            $ReturnValue.displayName = $DirectoryEntry.displayName[0];
+            $ReturnValue.name = $DirectoryEntry.name[0];
+            $ReturnValue.givenName = $DirectoryEntry.givenName[0];
+            $ReturnValue.middleName = $DirectoryEntry.middleName[0];
+            $ReturnValue.sn = $DirectoryEntry.sn[0];
+            $ReturnValue.initials = $DirectoryEntry.initials[0];
+            $ReturnValue.title = $DirectoryEntry.title[0];
+            $ReturnValue.department = $DirectoryEntry.department[0];
+            $ReturnValue.company = $DirectoryEntry.company[0];
+            $ReturnValue.description = $DirectoryEntry.description[0];
+            $ReturnValue.employeeNumber = $DirectoryEntry.employeeNumber[0];
+            $ReturnValue.employeeID = $DirectoryEntry.employeeID[0];
+            $ReturnValue.extensionAttribute1 = $DirectoryEntry.extensionAttribute1[0];
+            $ReturnValue.extensionAttribute2 = $DirectoryEntry.extensionAttribute2[0];
+            $ReturnValue.extensionAttribute3 = $DirectoryEntry.extensionAttribute3[0];
+            $ReturnValue.mail = $DirectoryEntry.mail[0];
+            $ReturnValue.telephoneNumber = $DirectoryEntry.telephoneNumber[0];
+            $ReturnValue.mobile = $DirectoryEntry.mobile[0];
+            $ReturnValue.pager = $DirectoryEntry.pager[0];
+            $ReturnValue.facsimileTelephoneNumber = $DirectoryEntry.facsimileTelephoneNumber[0];
+            $ReturnValue.ipPhone = $DirectoryEntry.ipPhone[0];
+            $ReturnValue.homePhone = $DirectoryEntry.homePhone[0];
+            $ReturnValue.url = $DirectoryEntry.url[0];
+            $ReturnValue.wWWHomePage = $DirectoryEntry.wWWHomePage[0];
+            $ReturnValue.otherFacsimileTelephoneNumber = $DirectoryEntry.otherFacsimileTelephoneNumber[0];
+            $ReturnValue.otherHomePhone = $DirectoryEntry.otherHomePhone[0];
+            $ReturnValue.otherIpPhone = $DirectoryEntry.otherIpPhone[0];
+            $ReturnValue.otherMobile = $DirectoryEntry.otherMobile[0];
+            $ReturnValue.otherPager = $DirectoryEntry.otherPager[0];
+            $ReturnValue.otherTelephone = $DirectoryEntry.otherTelephone[0];
+            $ReturnValue.physicalDeliveryOfficeName = $DirectoryEntry.physicalDeliveryOfficeName[0];
+            $ReturnValue.postalCode = $DirectoryEntry.postalCode[0];
+            $ReturnValue.streetAddress = $DirectoryEntry.streetAddress[0];
+            $ReturnValue.postOfficeBox = $DirectoryEntry.postOfficeBox[0];
+            $ReturnValue.l = $DirectoryEntry.l[0];
+            $ReturnValue.st = $DirectoryEntry.st[0];
+            $ReturnValue.c = $DirectoryEntry.c[0];
+            $ReturnValue.countryCode = $DirectoryEntry.countryCode[0];
+            $ReturnValue.co = $DirectoryEntry.co[0];
             [Int64] $lastLogonInt64 = $SearchResult.Properties["lastLogon"][0];
             If ($lastLogonInt64 -eq 0 -or $lastLogonInt64 -gt [DateTime]::MaxValue.Ticks)
-                { $Results.lastLogon = $null; }
+                { $ReturnValue.lastLogon = $null; }
             Else
-                { $Results.lastLogon = [DateTime]::FromFileTimeUtc($lastLogonInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
+                { $ReturnValue.lastLogon = [DateTime]::FromFileTimeUtc($lastLogonInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
         
             [Int64] $lastLogoffInt64 = $SearchResult.Properties["lastLogoff"][0];
             If ($lastLogoffInt64 -eq 0 -or $lastLogoffInt64 -gt [DateTime]::MaxValue.Ticks)
-                { $Results.lastLogoff = $null; }
+                { $ReturnValue.lastLogoff = $null; }
             Else
-                { $Results.lastLogoff = [DateTime]::FromFileTimeUtc($lastLogoffInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
+                { $ReturnValue.lastLogoff = [DateTime]::FromFileTimeUtc($lastLogoffInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
             
             [Int64] $lastLogonTimestampInt64 = $SearchResult.Properties["lastLogonTimestamp"][0];
             If ($lastLogonTimestampInt64 -eq 0 -or $lastLogonTimestampInt64 -gt [DateTime]::MaxValue.Ticks)
-                { $Results.lastLogonTimestamp = $null; }
+                { $ReturnValue.lastLogonTimestamp = $null; }
             Else
-                { $Results.lastLogonTimestamp = [DateTime]::FromFileTimeUtc($lastLogonTimestampInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
+                { $ReturnValue.lastLogonTimestamp = [DateTime]::FromFileTimeUtc($lastLogonTimestampInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
         
             [Int64] $pwdLastSetInt64 = $SearchResult.Properties["pwdLastSet"][0];
             If ($pwdLastSetInt64 -eq 0 -or $pwdLastSetInt64 -gt [DateTime]::MaxValue.Ticks)
-                { $Results.pwdLastSet = $null; }
+                { $ReturnValue.pwdLastSet = $null; }
             Else
-                { $Results.pwdLastSet = [DateTime]::FromFileTimeUtc($pwdLastSetInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
+                { $ReturnValue.pwdLastSet = [DateTime]::FromFileTimeUtc($pwdLastSetInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
         
             [Int64] $accountExpiresInt64 = $SearchResult.Properties["accountExpires"][0];
             If ($accountExpiresInt64 -eq 0 -or $accountExpiresInt64 -gt [DateTime]::MaxValue.Ticks)
-                { $Results.accountExpires = $null; }
+                { $ReturnValue.accountExpires = $null; }
             Else
-                { $Results.accountExpires = [DateTime]::FromFileTimeUtc($accountExpiresInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
+                { $ReturnValue.accountExpires = [DateTime]::FromFileTimeUtc($accountExpiresInt64).ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"); }
         
-            $Results.homeDrive = $DirectoryEntry.homeDrive[0];
-            $Results.homeDirectory = $DirectoryEntry.homeDirectory[0];
-            $Results.profilePath = $DirectoryEntry.profilePath[0];
-            $Results.scriptPath = $DirectoryEntry.scriptPath[0];
-            $Results.info = $DirectoryEntry.info[0];
-            $Results.userAccountControl = $DirectoryEntry.userAccountControl[0];
+            $ReturnValue.homeDrive = $DirectoryEntry.homeDrive[0];
+            $ReturnValue.homeDirectory = $DirectoryEntry.homeDirectory[0];
+            $ReturnValue.profilePath = $DirectoryEntry.profilePath[0];
+            $ReturnValue.scriptPath = $DirectoryEntry.scriptPath[0];
+            $ReturnValue.info = $DirectoryEntry.info[0];
+            $ReturnValue.userAccountControl = $DirectoryEntry.userAccountControl[0];
         
             [Int64] $uSNCreatedInt64 = $SearchResult.Properties["uSNCreated"][0];
-            $Results.uSNCreated = $uSNCreatedInt64;
+            $ReturnValue.uSNCreated = $uSNCreatedInt64;
             [Int64] $uSNChangedInt64 = $SearchResult.Properties["uSNChanged"][0];
-            $Results.uSNChanged = $uSNChangedInt64;
-            $Results.whenCreated = $DirectoryEntry.whenCreated[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            $Results.whenChanged = $DirectoryEntry.whenChanged[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            $ReturnValue.uSNChanged = $uSNChangedInt64;
+            $ReturnValue.whenCreated = $DirectoryEntry.whenCreated[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            $ReturnValue.whenChanged = $DirectoryEntry.whenChanged[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
             [void] $DirectoryEntry.Dispose();
         }
         [void] $SearchResultCollection.Dispose();
-        Return $Results;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -Name "GetChangedGroups" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[String]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -258,7 +250,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [DateTime] $ChangedSince
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
         [String] $Filter = "(&(objectCategory=group)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
@@ -267,10 +259,10 @@ Add-Member `
         [System.DirectoryServices.SearchResultCollection] $SearchResultCollection = $DirectorySearcher.FindAll();
         ForEach ($SearchResult In $SearchResultCollection)
         {
-            [void] $Results.Add($SearchResult.Properties["distinguishedName"][0]);
+            [void] $ReturnValue.Add($SearchResult.Properties["distinguishedName"][0]);
         }
         [void] $SearchResultCollection.Dispose();
-        Return $Results;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
@@ -286,7 +278,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $DistinguishedName
         )
-        [PSCustomObject] $Results = ConvertFrom-Json -InputObject @"
+        [PSCustomObject] $ReturnValue = ConvertFrom-Json -InputObject @"
         {
             "objectGuid": null, "objectSid": null, "objectClass": null, "objectCategory": null, "GroupCategory": null, "GroupScope": null, "GroupType": null,
             "distinguishedName": null, "cn": null, "sAMAccountName": null, "displayName": null, "name": null, "parentDistinguishedName": null,
@@ -320,84 +312,84 @@ Add-Member `
                     {
                         [Byte[]] $ObjectSIDBytes = $DirectoryEntry.objectSid.Value;
                         [System.Security.Principal.SecurityIdentifier] $ObjectSecurityIdentifier = [System.Security.Principal.SecurityIdentifier]::new($ObjectSIDBytes, 0);
-                        $Results.objectSid = $ObjectSecurityIdentifier.ToString();
+                        $ReturnValue.objectSid = $ObjectSecurityIdentifier.ToString();
                     }
                 }
             }
             If ($DirectoryEntry.Parent)
             {
                 [System.DirectoryServices.DirectoryEntry] $ParentDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($DirectoryEntry.Parent);
-                $Results.parentDistinguishedName = $ParentDirectoryEntry.distinguishedName[0];
+                $ReturnValue.parentDistinguishedName = $ParentDirectoryEntry.distinguishedName[0];
             }
             If ($DirectoryEntry.Properties.Contains("managedBy"))
             {
                 If ($DirectoryEntry.Properties["managedBy"].Value)
                 {
-                    $Results.managedBy = $DirectoryEntry.Properties["managedBy"].Value.ToString();
+                    $ReturnValue.managedBy = $DirectoryEntry.Properties["managedBy"].Value.ToString();
                 }
             }
-            $Results.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
-            $Results.objectClass = [Collections.ArrayList]::new();
-            $Results.objectClass.AddRange($DirectoryEntry.objectClass);
-            $Results.objectCategory = $DirectoryEntry.objectCategory[0];
-            $Results.distinguishedName = $DirectoryEntry.distinguishedName[0];
-            $Results.GroupType = $DirectoryEntry.GroupType[0];
-            Switch ($Results.GroupType)
+            $ReturnValue.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
+            $ReturnValue.objectClass = [Collections.ArrayList]::new();
+            $ReturnValue.objectClass.AddRange($DirectoryEntry.objectClass);
+            $ReturnValue.objectCategory = $DirectoryEntry.objectCategory[0];
+            $ReturnValue.distinguishedName = $DirectoryEntry.distinguishedName[0];
+            $ReturnValue.GroupType = $DirectoryEntry.GroupType[0];
+            Switch ($ReturnValue.GroupType)
             {
                 2
                 {
-                    $Results.GroupCategory = "Distribution";
-                    $Results.GroupScope = "Global";
+                    $ReturnValue.GroupCategory = "Distribution";
+                    $ReturnValue.GroupScope = "Global";
                 }
                 4
                 {
-                    $Results.GroupCategory = "Distribution";
-                    $Results.GroupScope = "Local";
+                    $ReturnValue.GroupCategory = "Distribution";
+                    $ReturnValue.GroupScope = "Local";
                 }
                 8
                 {
-                    $Results.GroupCategory = "Distribution";
-                    $Results.GroupScope = "Universal";
+                    $ReturnValue.GroupCategory = "Distribution";
+                    $ReturnValue.GroupScope = "Universal";
                 }
                 -2147483646
                 {
-                    $Results.GroupCategory = "Security";
-                    $Results.GroupScope = "Global";
+                    $ReturnValue.GroupCategory = "Security";
+                    $ReturnValue.GroupScope = "Global";
                 }
                 -2147483644
                 {
-                    $Results.GroupCategory = "Security";
-                    $Results.GroupScope = "Local";
+                    $ReturnValue.GroupCategory = "Security";
+                    $ReturnValue.GroupScope = "Local";
                 }
                 -2147483640
                 {
-                    $Results.GroupCategory = "Security";
-                    $Results.GroupScope = "Universal";
+                    $ReturnValue.GroupCategory = "Security";
+                    $ReturnValue.GroupScope = "Universal";
                 }
             }
 
-            $Results.cn = $DirectoryEntry.cn[0];
-            $Results.sAMAccountName = $DirectoryEntry.sAMAccountName[0];
-            $Results.displayName = $DirectoryEntry.displayName[0];
-            $Results.name = $DirectoryEntry.name[0];
-            $Results.description = $DirectoryEntry.description[0];
-            $Results.mail = $DirectoryEntry.mail[0];
+            $ReturnValue.cn = $DirectoryEntry.cn[0];
+            $ReturnValue.sAMAccountName = $DirectoryEntry.sAMAccountName[0];
+            $ReturnValue.displayName = $DirectoryEntry.displayName[0];
+            $ReturnValue.name = $DirectoryEntry.name[0];
+            $ReturnValue.description = $DirectoryEntry.description[0];
+            $ReturnValue.mail = $DirectoryEntry.mail[0];
 
             [Int64] $uSNCreatedInt64 = $SearchResult.Properties["uSNCreated"][0];
-            $Results.uSNCreated = $uSNCreatedInt64;
+            $ReturnValue.uSNCreated = $uSNCreatedInt64;
             [Int64] $uSNChangedInt64 = $SearchResult.Properties["uSNChanged"][0];
-            $Results.uSNChanged = $uSNChangedInt64;
-            $Results.whenCreated = $DirectoryEntry.whenCreated[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-            $Results.whenChanged = $DirectoryEntry.whenChanged[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            $ReturnValue.uSNChanged = $uSNChangedInt64;
+            $ReturnValue.whenCreated = $DirectoryEntry.whenCreated[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
+            $ReturnValue.whenChanged = $DirectoryEntry.whenChanged[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
 
-            $Results.Members = [Collections.ArrayList]::new();
+            $ReturnValue.Members = [Collections.ArrayList]::new();
             If ($DirectoryEntry.Properties.Contains("member"))
             {
                 [Int32] $RangeLoop = 0;
                 While ($true)
                 {
                     $RangeLoop ++;
-                    $Results.Members.AddRange($DirectoryEntry.Properties["member"]);
+                    $ReturnValue.Members.AddRange($DirectoryEntry.Properties["member"]);
                     If (($MemberDNs.Count -eq 0) -or ($MemberDNs.Count -lt 1500))
                     {
                         Break;
@@ -416,5 +408,5 @@ Add-Member `
             [void] $DirectoryEntry.Dispose();
         }
         [void] $SearchResultCollection.Dispose();
-        Return $Results;
+        Return $ReturnValue;
     };

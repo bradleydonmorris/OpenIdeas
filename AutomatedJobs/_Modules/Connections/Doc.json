@@ -1,47 +1,57 @@
 {
   "Name": "Connections",
-  "Description": "",
+  "Description": "Manages named connections in files and in memory.",
   "Properties": [
     {
       "Name": "InMemory",
       "Type": "hashtable",
-      "Description": ""
+      "Description": "Contains all connections retreived or created to be in memory only."
     }
   ],
   "Methods": [
     {
       "Name": "Exists",
-      "Description": "",
-      "Returns": "",
+      "Description": "Checks if a file exists for named connection",
+      "Returns": "System.Boolean",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the connection"
         }
       ]
     },
     {
       "Name": "Get",
-      "Description": "",
-      "Returns": "",
+      "Description": "Retrieves a connection either from in memobry of the file system.",
+      "Returns": "System.Management.Automation.PSCustomObject",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the connection"
         }
       ]
     },
     {
       "Name": "Set",
-      "Description": "",
+      "Description": "Saves a connection either in membory or on the file system.",
       "Returns": "",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the connection"
+        },
+        {
+          "Name": "Connection",
+          "Type": "System.String",
+          "Description": "The connection object to store"
+        },
+        {
+          "Name": "IsPersisted",
+          "Type": "System.Boolean",
+          "Description": "If true, the connection will be persisted to a file"
         }
       ]
     }

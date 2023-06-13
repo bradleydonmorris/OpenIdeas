@@ -1,0 +1,47 @@
+{
+  "Name": "Compression7Zip",
+  "Description": "",
+  "Properties": [
+    {
+      "Name": "ExecutablePath",
+      "Type": "System.String",
+      "Description": "Path to 7Zip executable. Typically C:\\Program Files\\7-Zip\\7z.exe"
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "GetAssets",
+      "Description": "Returns a list of all assets in the specified Zip file",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "CompressedFilePath",
+          "Type": "System.String",
+          "Description": "Path to Zip file"
+        }
+      ]
+    },
+    {
+      "Name": "ExtractAsset",
+      "Description": "Extracts the specified asset from the Zip file and returns the path to the asset",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "CompressedFilePath",
+          "Type": "System.String",
+          "Description": "Path to Zip file"
+        },
+        {
+          "Name": "AssetPath",
+          "Type": "System.String",
+          "Description": "Path within the zip file to the asset to extract"
+        },
+        {
+          "Name": "OutputDirectoryPath",
+          "Type": "System.String",
+          "Description": "Path to the folder where the asset should be placed"
+        }
+      ]
+    }
+  ]
+}

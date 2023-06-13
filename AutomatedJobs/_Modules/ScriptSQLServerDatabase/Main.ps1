@@ -1,3 +1,4 @@
+[void] $Global:Job.LoadModule("Connections");
 [void] $Global:Job.LoadModule("SQLServer");
 
 #region Gather from SQL Server
