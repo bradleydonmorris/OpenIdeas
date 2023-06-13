@@ -1,46 +1,4 @@
-# . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1"));
-# $Global:Job.LoadModule("SQLServer");
-
-# [String] $ConnectionString = $Global:Job.SQLServer.GetConnectionString("TUL-IT-WL-19", "Integrations", $true, $null, $null, $null, $null);
-
-# [Data.SqlClient.SqlConnection] $Connection = $null;
-# [Data.SqlClient.SqlCommand] $Command = $null;
-# Try
-# {
-#     $Connection = [Data.SqlClient.SqlConnection]::new($ConnectionString);
-#     $Connection.Open();
-#     $Command = [Data.SqlClient.SqlCommand]::new("SELECT * FROM [dbo].[temp]", $Connection);
-#     $Command.CommandType = [Data.CommandType]::Text;
-#     $DataReader = $Command.ExecuteReader();
-#     While ($DataReader.Read())
-#     {
-#         For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
-#         {
-#             $DataReader.GetName($FieldIndex)
-#             $DataReader.GetSqlValue($FieldIndex).GetType().Name
-#             # Write-Host -Object [String]::Format(
-#             #     "{0} - {1}",
-#             #     $DataReader.GetName($FieldIndex),
-#             #     $DataReader.GetSqlValue($FieldIndex).GetType().Name
-#             # );
-#         }
-#     }
-# }
-# Finally
-# {
-#     If ($Command)
-#         { [void] $Command.Dispose(); }
-#     If ($Connection)
-#     {
-#         If (!$Connection.State -ne [Data.ConnectionState]::Closed)
-#             { [void] $Connection.Close(); }
-#         [void] $Connection.Dispose();
-#     }
-# }
-
-
-
-Function Get-TypCrossMatchFromSQLServerType()
+Function Get-TypeCrossMatchFromSQLServerType()
 {
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -268,5 +226,6 @@ Function Get-TypCrossMatchFromSQLServerType()
     }
     Return $ReturnValue;
 }
+
 Clear-Host;
-Get-TypCrossMatchFromSQLServerType -SQLServerTypeName "nvarchar"
+Get-TypCrossMatchFromSQLServerType -SQLServerTypeName "nvarchar";

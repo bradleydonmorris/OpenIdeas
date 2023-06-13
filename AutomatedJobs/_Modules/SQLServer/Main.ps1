@@ -81,7 +81,7 @@ Add-Member `
                 )
         );
         Return [String]::Format(
-            "Server={0};Database={1};{2};Workstation ID={3}Application Name={4}",
+            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
             $Instance,
             $Database,
             $Authentication,
@@ -222,9 +222,9 @@ Add-Member `
             If ($Fields.Contains("*"))
             {
                 [void] $Fields.Clear();
-                For ($FieldIndex = 0; $FieldIndex -lt $NpgsqlDataReader.FieldCount; $FieldIndex ++)
+                For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
                 {
-                    [void] $Fields.Add($NpgsqlDataReader.GetName($FieldIndex));
+                    [void] $Fields.Add($DataReader.GetName($FieldIndex));
                 }
             }
             While ($DataReader.Read())
@@ -407,9 +407,9 @@ Add-Member `
             If ($Fields.Contains("*"))
             {
                 [void] $Fields.Clear();
-                For ($FieldIndex = 0; $FieldIndex -lt $NpgsqlDataReader.FieldCount; $FieldIndex ++)
+                For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
                 {
-                    [void] $Fields.Add($NpgsqlDataReader.GetName($FieldIndex));
+                    [void] $Fields.Add($DataReader.GetName($FieldIndex));
                 }
             }
             While ($DataReader.Read())
