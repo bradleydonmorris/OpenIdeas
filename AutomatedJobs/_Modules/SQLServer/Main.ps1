@@ -186,7 +186,7 @@ Add-Member `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -201,7 +201,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $Fields
         )
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
@@ -229,15 +229,16 @@ Add-Member `
             }
             While ($DataReader.Read())
             {
-                [Collections.Hashtable] $Record = [Collections.Hashtable]::new();
+                [PSObject] $Record = [PSObject]::new();
                 ForEach ($Field In $Fields)
                 {
-                    [void] $Record.Add(
-                        $Field,
-                        $DataReader.GetValue($DataReader.GetOrdinal($Field))
-                    );
+                    Add-Member `
+                        -InputObject $Record `
+                        -TypeName ($Value.GetType().Name) `
+                        -NotePropertyName $Field `
+                        -NotePropertyValue $DataReader.GetValue($DataReader.GetOrdinal($Field));
                 }
-                [void] $ReturnValue.Add($Record);
+                [void] $ReturnValue.Add([PSObject]$Record);
             }
         }
         Finally
@@ -259,7 +260,7 @@ Add-Member `
                 [void] $Connection.Dispose();
             }
         }
-        Return ,$ReturnValue;
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Job.SQLServer `
@@ -367,7 +368,7 @@ Add-Member `
     -Name "ProcGetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -385,7 +386,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $Fields
         )
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
@@ -414,15 +415,16 @@ Add-Member `
             }
             While ($DataReader.Read())
             {
-                [Collections.Hashtable] $Record = [Collections.Hashtable]::new();
+                [PSObject] $Record = [PSObject]::new();
                 ForEach ($Field In $Fields)
                 {
-                    [void] $Record.Add(
-                        $Field,
-                        $DataReader.GetValue($DataReader.GetOrdinal($Field))
-                    );
+                    Add-Member `
+                        -InputObject $Record `
+                        -TypeName ($Value.GetType().Name) `
+                        -NotePropertyName $Field `
+                        -NotePropertyValue $DataReader.GetValue($DataReader.GetOrdinal($Field));
                 }
-                [void] $ReturnValue.Add($Record);
+                [void] $ReturnValue.Add([PSObject]$Record);
             }
         }
         Finally
@@ -444,7 +446,7 @@ Add-Member `
                 [void] $Connection.Dispose();
             }
         }
-        Return ,$ReturnValue;
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Job.SQLServer `
