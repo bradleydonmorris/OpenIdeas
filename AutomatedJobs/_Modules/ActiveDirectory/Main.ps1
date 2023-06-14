@@ -5,6 +5,123 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ActiveDirectory" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+#region Connection Methods
+Add-Member `
+    -InputObject $Global:Job.SQLServer `
+    -Name "SetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $RootLDIF,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted
+        )
+        $Global:Job.Connections.Set(
+            $Name,
+            [PSCustomObject]@{
+                "RootLDIF" = $RootLDIF;
+                "Comments" = $Comments;
+            },
+            $IsPersisted
+        );
+    };
+Add-Member `
+    -InputObject $Global:Job.SQLServer `
+    -Name "GetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        $Values = $Global:Job.Connections.Get($Name);
+        Return $Global:Job.SQLServer.GetConnectionString(
+            $Values.Instance,
+            $Values.Database,
+            $Values.IntegratedSecurity, #if true then UserName and Password are ignored
+            $Values.UserName,
+            $Values.Password,
+            [System.Net.Dns]::GetHostName(),
+            [String]::Format("{0}/{1}",
+                    $Global:Job.Project,
+                    $Global:Job.Script
+                )
+        );
+    };
+Add-Member `
+    -InputObject $Global:Job.SQLServer `
+    -Name "GetConnectionString" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Instance,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Database,
+    
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IntegratedSecurity,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $UserName,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Password,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $WorkstationName,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $ApplicationName
+        )
+        $WorkstationName = (
+            ![String]::IsNullOrEmpty($WorkstationName) ?
+                $WorkstationName :
+                [System.Net.Dns]::GetHostName()
+        );
+        $ApplicationName = (
+            ![String]::IsNullOrEmpty($ApplicationName) ?
+                $ApplicationName :
+                [String]::Format("{0}/{1}",
+                    $Global:Job.Project,
+                    $Global:Job.Script
+                )
+        );
+        [String] $Authentication = (
+            $IntegratedSecurity ?
+                "Trusted_Connection=True" :
+                [String]::Format("User ID={0};Password={1}",
+                    $UserName,
+                    $Password
+                )
+        );
+        Return [String]::Format(
+            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
+            $Instance,
+            $Database,
+            $Authentication,
+            $WorkstationName,
+            $ApplicationName
+        );
+    };
+#endregion Connection Methods
+
+
+
 Add-Member `
     -InputObject $Global:Job.ActiveDirectory `
     -TypeName "System.Management.Automation.PSObject" `

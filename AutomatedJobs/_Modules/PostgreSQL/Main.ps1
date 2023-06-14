@@ -12,58 +12,6 @@ Add-Member `
 #region Connection Methods
 Add-Member `
     -InputObject $Global:Job.PostgreSQL `
-    -Name "GetConnection" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Name
-        )
-        $Values = $Global:Job.Connections.Get($Name);
-        Return $Global:Job.PostgreSQL.GetConnectionString(
-            $Values.Server,
-            $Values.Port,
-            $Values.Database,
-            $Values.UserName,
-            $Values.Password
-        );
-    };
-Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
-    -Name "GetConnectionString" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Server,
-    
-            [Parameter(Mandatory=$true)]
-            [Int32] $Port,
-
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $UserName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Password
-        )
-        Return [String]::Format(
-            "Server={0};Port={1};Database={2};User ID={3};Password={4};",
-            $Server,
-            $Port,
-            $Database,
-            $UserName,
-            $Password
-        );
-    };
-Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -106,6 +54,40 @@ Add-Member `
             $IsPersisted
         );
     };
+Add-Member `
+    -InputObject $Global:Job.PostgreSQL `
+    -Name "GetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        Return $Global:Job.Connections.Get($Name);
+    };
+Add-Member `
+    -InputObject $Global:Job.PostgreSQL `
+    -Name "GetConnectionString" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        $Connection = $Global:Job.PostgreSQL.GetConnection($Name);
+        Return [String]::Format(
+            "Server={0};Port={1};Database={2};User ID={3};Password={4};",
+            $Connection.Server,
+            $Connection.Port,
+            $Connection.Database,
+            $Connection.UserName,
+            $Connection.Password
+        );
+    };
 #endregion Connection Methods
 
 #region Base Methods
@@ -129,7 +111,7 @@ Add-Member `
         [Npgsql.NpgsqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnection($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -180,7 +162,7 @@ Add-Member `
         [Npgsql.NpgsqlDataReader] $DataReader = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnection($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -258,7 +240,7 @@ Add-Member `
         [Npgsql.NpgsqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnection($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;

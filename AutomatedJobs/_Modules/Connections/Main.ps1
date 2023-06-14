@@ -1,18 +1,3 @@
-#This script creates methods to manage logs
-# that are stored in the Logs directory
-# which should be specified in the ".jobs-config.json".
-
-#These Modules require Posh-SSH
-# On newer Windows machines, SSH is built in.
-If (-not (Get-Module -ListAvailable -Name "Posh-SSH"))
-{
-    Install-Module -Name Posh-SSH
-} 
-If (-not (Get-Module -Name "Posh-SSH"))
-{
-    Import-Module -Name "Posh-SSH"
-} 
-
 If (![IO.Directory]::Exists($Global:Job.Directories.ConnectionsRoot))
 {
     [void] [IO.Directory]::CreateDirectory($Global:Job.Directories.ConnectionsRoot);
@@ -24,7 +9,7 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Job.Connections `
-    -TypeName "System.Management.Automation.PSObject" `
+    -TypeName "System.ollections.Hashtable" `
     -NotePropertyName "InMemory" `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
@@ -38,14 +23,20 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        [Boolean] $Result = $false;
-        If (!$Name.EndsWith(".json"))
+        [Boolean] $ReturnValue = $false;
+        If ($Name.EndsWith(".json"))
         {
-            $Name += ".json";
+            $Name = $Name.Substring(0, ($Name.Length - 5));
         }
-        [String] $FilePath = [IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, $Name);
-        $Result = [IO.File]::Exists($FilePath);
-        Return $Result;
+        If ($Global:Job.Connections.InMemory.ContainsKey($Name))
+        {
+            $ReturnValue = $true;
+        }
+        ElseIf ([IO.File]::Exists([IO.Path]::Combine($Global:Job.Directories.ConnectionsRoot, [String]::Format("{0}.json", $Name))))
+        {
+            $ReturnValue = $true;
+        }
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Job.Connections `

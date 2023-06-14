@@ -12,37 +12,6 @@ Add-Member `
 #region Connection Methods
 Add-Member `
     -InputObject $Global:Job.Sqlite `
-    -Name "GetConnection" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Name
-        )
-        $Values = $Global:Job.Connections.Get($Name);
-        Return $Global:Job.Sqlite.GetConnectionString($Values.FilePath)
-    };
-Add-Member `
-    -InputObject $Global:Job.Sqlite `
-    -Name "GetConnectionString" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $FilePath
-        )
-        If (![IO.File]::Exists($FilePath))
-        {
-            Throw [System.IO.FileNotFoundException]::new("Database File not found", $FilePath);
-        }
-        Return [String]::Format("Data Source={0}", $FilePath);
-    };
-Add-Member `
-    -InputObject $Global:Job.Sqlite `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -71,53 +40,35 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Job.Sqlite `
-    -Name "CreateIfNotFound" `
+    -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
+        [OutputType([String])]
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $ConnectionName,
-
-            [Parameter(Mandatory=$true)]
-            [String] $CommandText,
-    
-            [Parameter(Mandatory=$false)]
-            [Collections.Hashtable] $Parameters
+            [String] $Name
         )
-        $ConnectionValues = $Global:Job.Connections.Get($ConnectionName);
-        If (![IO.File]::Exists($ConnectionValues.FilePath))
+        Return $Global:Job.Connections.Get($Name);
+    };
+Add-Member `
+    -InputObject $Global:Job.Sqlite `
+    -Name "GetConnectionString" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        $Connection = $Global:Job.PostgreSQL.GetConnection($Name);
+        If (![IO.File]::Exists($Connection.FilePath))
         {
-            [Data.Sqlite.SqliteConnection] $Connection = $null;
-            [Data.Sqlite.SqliteCommand] $Command = $null;
-            Try
-            {
-                $Connection = [Data.Sqlite.SqliteConnection]::new([String]::Format("Data Source={0}", $ConnectionValues.FilePath));
-                $Connection.Open();
-                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
-                $Command.CommandType = [Data.CommandType]::Text;
-                ForEach ($ParameterKey In $Parameters.Keys)
-                {
-                    [String] $Name = $ParameterKey;
-                    If (!$Name.StartsWith("@"))
-                        { $Name = "@" + $Name}
-                    [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
-                }
-                [void] $Command.ExecuteNonQuery();
-            }
-            Finally
-            {
-                If ($Command)
-                    { [void] $Command.Dispose(); }
-                If ($Connection)
-                {
-                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
-                        { [void] $Connection.Close(); }
-                    [void] $Connection.Dispose();
-                }
-            }
+            Throw [System.IO.FileNotFoundException]::new("Database File not found", $Connection.FilePath);
         }
-    }
+        Return [String]::Format("Data Source={0}", $Connection.FilePath);
+    };
 #endregion Connection Methods
 
 #region Base Methods
@@ -189,7 +140,7 @@ Add-Member `
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -244,7 +195,7 @@ Add-Member `
         $FieldConversion = (($FieldConversion -ne $null) ? $FieldConversion : [Collections.Hashtable]::new());
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -329,7 +280,7 @@ Add-Member `
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -360,6 +311,55 @@ Add-Member `
         Return $ReturnValue;
     }
 #endregion Base Methods
+Add-Member `
+    -InputObject $Global:Job.Sqlite `
+    -Name "CreateIfNotFound" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $CommandText,
+    
+            [Parameter(Mandatory=$false)]
+            [Collections.Hashtable] $Parameters
+        )
+        $ConnectionValues = $Global:Job.Connections.Get($ConnectionName);
+        If (![IO.File]::Exists($ConnectionValues.FilePath))
+        {
+            [Data.Sqlite.SqliteConnection] $Connection = $null;
+            [Data.Sqlite.SqliteCommand] $Command = $null;
+            Try
+            {
+                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+                $Connection.Open();
+                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
+                $Command.CommandType = [Data.CommandType]::Text;
+                ForEach ($ParameterKey In $Parameters.Keys)
+                {
+                    [String] $Name = $ParameterKey;
+                    If (!$Name.StartsWith("@"))
+                        { $Name = "@" + $Name}
+                    [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                }
+                [void] $Command.ExecuteNonQuery();
+            }
+            Finally
+            {
+                If ($Command)
+                    { [void] $Command.Dispose(); }
+                If ($Connection)
+                {
+                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
+                        { [void] $Connection.Close(); }
+                    [void] $Connection.Dispose();
+                }
+            }
+        }
+    }
 
 Add-Member `
     -InputObject $Global:Job.Sqlite `

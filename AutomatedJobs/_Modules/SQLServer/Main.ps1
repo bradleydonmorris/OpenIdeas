@@ -9,90 +9,6 @@ Add-Member `
 #region Connection Methods
 Add-Member `
     -InputObject $Global:Job.SQLServer `
-    -Name "GetConnection" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Name
-        )
-        $Values = $Global:Job.Connections.Get($Name);
-        Return $Global:Job.SQLServer.GetConnectionString(
-            $Values.Instance,
-            $Values.Database,
-            $Values.IntegratedSecurity, #if true then UserName and Password are ignored
-            $Values.UserName,
-            $Values.Password,
-            [System.Net.Dns]::GetHostName(),
-            [String]::Format("{0}/{1}",
-                    $Global:Job.Project,
-                    $Global:Job.Script
-                )
-        );
-    };
-Add-Member `
-    -InputObject $Global:Job.SQLServer `
-    -Name "GetConnectionString" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
-    
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IntegratedSecurity,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $UserName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Password,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $WorkstationName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $ApplicationName
-        )
-        $WorkstationName = (
-            ![String]::IsNullOrEmpty($WorkstationName) ?
-                $WorkstationName :
-                [System.Net.Dns]::GetHostName()
-        );
-        $ApplicationName = (
-            ![String]::IsNullOrEmpty($ApplicationName) ?
-                $ApplicationName :
-                [String]::Format("{0}/{1}",
-                    $Global:Job.Project,
-                    $Global:Job.Script
-                )
-        );
-        [String] $Authentication = (
-            $IntegratedSecurity ?
-                "Trusted_Connection=True" :
-                [String]::Format("User ID={0};Password={1}",
-                    $UserName,
-                    $Password
-                )
-        );
-        Return [String]::Format(
-            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
-            $Instance,
-            $Database,
-            $Authentication,
-            $WorkstationName,
-            $ApplicationName
-        );
-    };
-Add-Member `
-    -InputObject $Global:Job.SQLServer `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -127,12 +43,56 @@ Add-Member `
             [PSCustomObject]@{
                 "Instance" = $Instance;
                 "Database" = $Database;
-                "IntegratedSecurity" = $IntegratedSecurity;
+                "IntegratedSecurity" = $IntegratedSecurity.ToString();
                 "UserName" = $UserName;
                 "Password" = $Password;
                 "Comments" = $Comments;
             },
             $IsPersisted
+        );
+    };
+Add-Member `
+    -InputObject $Global:Job.SQLServer `
+    -Name "GetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([PSCustomObject])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        Return $Global:Job.Connections.Get($Name);
+    };
+Add-Member `
+    -InputObject $Global:Job.SQLServer `
+    -Name "GetConnectionString" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        $Connection = $Global:Job.SQLServer.GetConnection($Name);
+        Return [String]::Format(
+            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
+            $Connection.Instance,
+            $Connection.Database,
+            (
+                ($Connection.IntegratedSecurity -eq "True") ?
+                    "Trusted_Connection=True" :
+                    [String]::Format("User ID={0};Password={1}",
+                        $Connection.UserName,
+                        $Connection.Password
+                    )
+            ),
+            [System.Net.Dns]::GetHostName(),
+            [String]::Format("{0}/{1}",
+                $Global:Job.Project,
+                $Global:Job.Script
+            )
         );
     };
 #endregion Connection Methods
@@ -158,7 +118,7 @@ Add-Member `
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -209,7 +169,7 @@ Add-Member `
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -286,7 +246,7 @@ Add-Member `
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -340,7 +300,7 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
@@ -395,7 +355,7 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
@@ -476,7 +436,7 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnection($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
