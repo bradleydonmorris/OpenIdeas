@@ -1,10 +1,10 @@
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Prompts" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "PressEnter" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -16,7 +16,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "StringResponse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -43,7 +43,7 @@ Add-Member `
         Return $Result;
     }
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "BooleanResponse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -67,7 +67,7 @@ Add-Member `
         Return $Result;
     }
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "DisplayHashTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -82,10 +82,10 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.Specialized.OrderedDictionary] $Values
         )
-        Write-Host -Object ($Global:Job.Prompts.OutputHashTableToText($SetName, $MaximumLineLength, $Values));
+        Write-Host -Object ($Global:Session.Prompts.OutputHashTableToText($SetName, $MaximumLineLength, $Values));
     }
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "OutputHashTableToText" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -148,7 +148,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Prompts `
+    -InputObject $Global:Session.Prompts `
     -Name "ShowMenu" `
     -MemberType "ScriptMethod" `
     -Value {

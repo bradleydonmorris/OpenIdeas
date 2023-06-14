@@ -1,11 +1,11 @@
 
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking `
+    -InputObject $Global:Session.PreciousMetalsTracking `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Messages" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowVendor" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -22,10 +22,10 @@ Add-Member `
                 $Vendor.WebSite
             )) `
             -ForegroundColor Green;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowItem" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -44,10 +44,10 @@ Add-Member `
                 $Item.Ounces
             )) `
             -ForegroundColor Green;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowLookupValues" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -68,10 +68,10 @@ Add-Member `
                 -Object ([String]::Format("`t{0}", $LookupValue.Name)) `
                 -ForegroundColor Green;
         }
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowNotFound" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -86,10 +86,10 @@ Add-Member `
                 $Prefix.ToUpper()
             )) `
             -ForegroundColor Red;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowAlreadyExists" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -104,10 +104,10 @@ Add-Member `
                 $Prefix.ToUpper()
             )) `
             -ForegroundColor Red;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowIsInUse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -122,10 +122,10 @@ Add-Member `
                 $Prefix.ToUpper()
             )) `
             -ForegroundColor Red;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
     Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowMustBeDouble" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -140,10 +140,10 @@ Add-Member `
                 $Prefix.ToUpper()
             )) `
             -ForegroundColor Red;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowNotImpletemented" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -158,10 +158,10 @@ Add-Member `
                 $Prefix.ToUpper()
             )) `
             -ForegroundColor Red;
-        [void] $Global:Job.Prompts.PressEnter();
+        [void] $Global:Session.Prompts.PressEnter();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Messages `
+    -InputObject $Global:Session.PreciousMetalsTracking.Messages `
     -Name "ShowExit" `
     -MemberType "ScriptMethod" `
     -Value {

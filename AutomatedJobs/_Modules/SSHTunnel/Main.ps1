@@ -1,16 +1,16 @@
-[void] $Global:Job.NuGet.InstallPackageIfMissing("SSH.NET")
-[void] $Global:Job.NuGet.AddAssembly("Renci.SshNet", "SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll");
+[void] $Global:Session.NuGet.InstallPackageIfMissing("SSH.NET")
+[void] $Global:Session.NuGet.AddAssembly("Renci.SshNet", "SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll");
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SSHTunnel" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -NotePropertyName "Internals" `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -Name "SetKeyAuthTunnelConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -53,7 +53,7 @@ Add-Member `
         {
             Throw [System.IO.FileNotFoundException]::new("Key File not found", $KeyFilePath);
         }
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "SSHServerAddress" = $SSHServerAddress;
@@ -70,7 +70,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -Name "GetKeyAuthTunnelConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -79,7 +79,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $ReturnValue = $Global:Job.Connections.Get($Name);
+        $ReturnValue = $Global:Session.Connections.Get($Name);
         If (![IO.File]::Exists($ReturnValue.KeyFilePath))
         {
             Throw [System.IO.FileNotFoundException]::new("Key File not found", $ReturnValue.KeyFilePath);
@@ -87,7 +87,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -Name "CreateKeyAuthTunnel" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -96,49 +96,49 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        $Global:Job.SSHTunnel.Internals = [Collections.Hashtable]::new();
-        $Global:Job.SSHTunnel.Internals.Clear();
+        $Global:Session.SSHTunnel.Internals = [Collections.Hashtable]::new();
+        $Global:Session.SSHTunnel.Internals.Clear();
 
-        $Connection = $Global:Job.SSHTunnel.GetKeyAuthTunnelConnection($ConnectionName);
+        $Connection = $Global:Session.SSHTunnel.GetKeyAuthTunnelConnection($ConnectionName);
         If (![String]::IsNullOrEmpty($Connection.KeyFilePassphrase))
         {
-            [void] $Global:Job.SSHTunnel.Internals.Add(
+            [void] $Global:Session.SSHTunnel.Internals.Add(
                 "PrivateKeyFile",
                 [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath, $Connection.KeyFilePassphrase)
             );
         }
         Else
         {
-            [void] $Global:Job.SSHTunnel.Internals.Add(
+            [void] $Global:Session.SSHTunnel.Internals.Add(
                 "PrivateKeyFile",
                 [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath)
             );
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
         {
-            [void] $Global:Job.SSHTunnel.Internals.Add(
+            [void] $Global:Session.SSHTunnel.Internals.Add(
                 "ConnectionInfo",
                 [Renci.SshNet.PrivateKeyConnectionInfo]::new(
                     $Connection.SSHServerAddress,
                     [Int32]$Connection.SSHServerPort,
                     $Connection.UserName,
-                    $Global:Job.SSHTunnel.Internals["PrivateKeyFile"]
+                    $Global:Session.SSHTunnel.Internals["PrivateKeyFile"]
                 )
             );
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("ConnectionInfo"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("ConnectionInfo"))
         {
-            [void] $Global:Job.SSHTunnel.Internals.Add(
+            [void] $Global:Session.SSHTunnel.Internals.Add(
                 "SshClient",
-                [Renci.SshNet.SshClient]::new($Global:Job.SSHTunnel.Internals["ConnectionInfo"])
+                [Renci.SshNet.SshClient]::new($Global:Session.SSHTunnel.Internals["ConnectionInfo"])
             );
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("SshClient"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("SshClient"))
         {
-            [void] $Global:Job.SSHTunnel.Internals["SshClient"].Connect();
-            If ($Global:Job.SSHTunnel.Internals["SshClient"].IsConnected)
+            [void] $Global:Session.SSHTunnel.Internals["SshClient"].Connect();
+            If ($Global:Session.SSHTunnel.Internals["SshClient"].IsConnected)
             {
-                [void] $Global:Job.SSHTunnel.Internals.Add(
+                [void] $Global:Session.SSHTunnel.Internals.Add(
                     "ForwardedPortLocal",
                     [Renci.SshNet.ForwardedPortLocal]::new(
                         $Connection.LocalAddress,
@@ -147,25 +147,25 @@ Add-Member `
                         $Connection.RemotePort
                     )
                 );
-                [void] $Global:Job.SSHTunnel.Internals["SshClient"].AddForwardedPort($Global:Job.SSHTunnel.Internals["ForwardedPortLocal"]);
-                [void] $Global:Job.SSHTunnel.Internals["ForwardedPortLocal"].Start();
+                [void] $Global:Session.SSHTunnel.Internals["SshClient"].AddForwardedPort($Global:Session.SSHTunnel.Internals["ForwardedPortLocal"]);
+                [void] $Global:Session.SSHTunnel.Internals["ForwardedPortLocal"].Start();
             }
         }
     }
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -Name "IsTunnelEstablished" `
     -MemberType "ScriptMethod" `
     -Value {
         [OutputType([Boolean])]
         [Boolean] $ReturnValue = $false;
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("SshClient"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("SshClient"))
         {
-            If ($Global:Job.SSHTunnel.Internals["SshClient"].IsConnected)
+            If ($Global:Session.SSHTunnel.Internals["SshClient"].IsConnected)
             {
-                If ($Global:Job.SSHTunnel.Internals.ContainsKey("ForwardedPortLocal"))
+                If ($Global:Session.SSHTunnel.Internals.ContainsKey("ForwardedPortLocal"))
                 {
-                    If ($Global:Job.SSHTunnel.Internals["ForwardedPortLocal"].IsStarted)
+                    If ($Global:Session.SSHTunnel.Internals["ForwardedPortLocal"].IsStarted)
                     {
                         $ReturnValue = $true;
                     }
@@ -175,39 +175,39 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.SSHTunnel `
+    -InputObject $Global:Session.SSHTunnel `
     -Name "DestroyTunnel" `
     -MemberType "ScriptMethod" `
     -Value {
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("ForwardedPortLocal"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("ForwardedPortLocal"))
         {
-            If ($Global:Job.SSHTunnel.Internals["ForwardedPortLocal"].IsStarted)
+            If ($Global:Session.SSHTunnel.Internals["ForwardedPortLocal"].IsStarted)
             {
-                $Global:Job.SSHTunnel.Internals["ForwardedPortLocal"].Stop();
+                $Global:Session.SSHTunnel.Internals["ForwardedPortLocal"].Stop();
             }
-            $Global:Job.SSHTunnel.Internals["ForwardedPortLocal"].Dispose();
-            [void] $Global:Job.SSHTunnel.Internals.Remove("ForwardedPortLocal");
+            $Global:Session.SSHTunnel.Internals["ForwardedPortLocal"].Dispose();
+            [void] $Global:Session.SSHTunnel.Internals.Remove("ForwardedPortLocal");
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("SshClient"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("SshClient"))
         {
-            If ($Global:Job.SSHTunnel.Internals["SshClient"].IsConnected)
+            If ($Global:Session.SSHTunnel.Internals["SshClient"].IsConnected)
             {
-                $Global:Job.SSHTunnel.Internals["SshClient"].Disconnect();
+                $Global:Session.SSHTunnel.Internals["SshClient"].Disconnect();
             }
-            $Global:Job.SSHTunnel.Internals["SshClient"].Dispose();
-            [void] $Global:Job.SSHTunnel.Internals.Remove("SshClient");
+            $Global:Session.SSHTunnel.Internals["SshClient"].Dispose();
+            [void] $Global:Session.SSHTunnel.Internals.Remove("SshClient");
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("ConnectionInfo"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("ConnectionInfo"))
         {
-            $Global:Job.SSHTunnel.Internals["ConnectionInfo"].Dispose();
-            [void] $Global:Job.SSHTunnel.Internals.Remove("ConnectionInfo");
+            $Global:Session.SSHTunnel.Internals["ConnectionInfo"].Dispose();
+            [void] $Global:Session.SSHTunnel.Internals.Remove("ConnectionInfo");
         }
-        If ($Global:Job.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
+        If ($Global:Session.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
         {
-            $Global:Job.SSHTunnel.Internals["PrivateKeyFile"].Dispose();
-            [void] $Global:Job.SSHTunnel.Internals.Remove("PrivateKeyFile");
+            $Global:Session.SSHTunnel.Internals["PrivateKeyFile"].Dispose();
+            [void] $Global:Session.SSHTunnel.Internals.Remove("PrivateKeyFile");
         }
-        $Global:Job.SSHTunnel.Internals.Clear();
-        $Global:Job.SSHTunnel.Internals = [Collections.Hashtable]::new();
+        $Global:Session.SSHTunnel.Internals.Clear();
+        $Global:Session.SSHTunnel.Internals = [Collections.Hashtable]::new();
     }
 

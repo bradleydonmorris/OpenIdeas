@@ -2,17 +2,17 @@
     "WebServer"
 );
 
-#$Global:Job.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
+#$Global:Session.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
 
-$Global:Job.Logging.WriteVariables("Valirables", @{
-    "ListeningURIs" = $Global:Job.Config.ListeningURIs;
+$Global:Session.Logging.WriteVariables("Valirables", @{
+    "ListeningURIs" = $Global:Session.Config.ListeningURIs;
 });
-$Global:Job.WebServer.Start($Global:Job.Config.ListeningURIs);
-If ($Global:Job.WebServer.IsListening())
+$Global:Session.WebServer.Start($Global:Session.Config.ListeningURIs);
+If ($Global:Session.WebServer.IsListening())
 {
     Write-Host "HTTP Server Running" -ForegroundColor Black -BackgroundColor Green;
     Write-Host "Listening on..." -ForegroundColor Green -BackgroundColor Black;
-    ForEach ($Prefix In $Global:Job.WebServer.Listener.Prefixes)
+    ForEach ($Prefix In $Global:Session.WebServer.Listener.Prefixes)
     {
         Write-Host $Prefix -ForegroundColor Green -BackgroundColor Black;;
     }
@@ -60,7 +60,7 @@ If ($Global:Job.WebServer.IsListening())
 # [void] $routeFunctions.Add($OneTwo.Route, $OneTwo);
 
 
-$Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
+$Global:Session.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     Param
     (
         [Parameter(Mandatory=$true)]
@@ -90,7 +90,7 @@ $Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     If ($Level -eq "Logs")
     {
         [void] $StringBuilder.Append("<h1>Projects</h1>");
-        ForEach ($Item In (Get-ChildItem -Path $Global:Job.Directories.LogsRoot | Where-Object -FilterScript { $_.PSIsContainer }))
+        ForEach ($Item In (Get-ChildItem -Path $Global:Session.Directories.LogsRoot | Where-Object -FilterScript { $_.PSIsContainer }))
         {
             [void] $StringBuilder.Append("<h3><a href=`"/logs?Project=" + $Item.Name + "`">" + $Item.Name + "</a></h3>");
         }
@@ -98,7 +98,7 @@ $Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     ElseIf ($Level -eq "Project")
     {
         [void] $StringBuilder.Append("<h1>Jobs</h1>");
-        ForEach ($Item In (Get-ChildItem -Path ([IO.Path]::Combine($Global:Job.Directories.LogsRoot, $Project)) | Where-Object -FilterScript { $_.PSIsContainer }))
+        ForEach ($Item In (Get-ChildItem -Path ([IO.Path]::Combine($Global:Session.Directories.LogsRoot, $Project)) | Where-Object -FilterScript { $_.PSIsContainer }))
         {
             [void] $StringBuilder.Append("<h3><a href=`"/logs?Project=" + $Project + "&Job=" + $Item.Name + "`">" + $Item.Name + "</a></h3>");
         }
@@ -107,7 +107,7 @@ $Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     {
         [void] $StringBuilder.Append("<h1>Logs</h1>");
         [Collections.ArrayList] $LogGroups = [Collections.ArrayList]::new()
-        ForEach ($LogFileItem In (Get-ChildItem -Path ([IO.Path]::Combine($Global:Job.Directories.LogsRoot, $Project, $Job)) -Filter "*.json" | Where-Object -FilterScript { -not $_.PSIsContainer } ))
+        ForEach ($LogFileItem In (Get-ChildItem -Path ([IO.Path]::Combine($Global:Session.Directories.LogsRoot, $Project, $Job)) -Filter "*.json" | Where-Object -FilterScript { -not $_.PSIsContainer } ))
         {
             If ($LogFileItem.Name.Length -gt 14)
             {
@@ -125,7 +125,7 @@ $Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     }
     ElseIf ($Level -eq "Group")
     {
-        [String] $LogFilePath = [IO.Path]::Combine($Global:Job.Directories.LogsRoot, $Project, $Job, ($Group + ".json"));
+        [String] $LogFilePath = [IO.Path]::Combine($Global:Session.Directories.LogsRoot, $Project, $Job, ($Group + ".json"));
         [void] $StringBuilder.Append("<h1>$LogFilePath</h1>");
     }
     $Buffer = [System.Text.Encoding]::UTF8.GetBytes($StringBuilder.ToString());
@@ -134,7 +134,7 @@ $Global:Job.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create({
     $Context.Response.OutputStream.Close();
 }));
 
-$Global:Job.WebServer.AddRouteCommand("/one/two", "Get", [scriptblock]::Create({
+$Global:Session.WebServer.AddRouteCommand("/one/two", "Get", [scriptblock]::Create({
     Param
     (
         [Parameter(Mandatory=$true)]
@@ -148,21 +148,21 @@ $Global:Job.WebServer.AddRouteCommand("/one/two", "Get", [scriptblock]::Create({
     $Context.Response.OutputStream.Close();
 }));
 
-ForEach ($Key In $Global:Job.WebServer.RouteFunctions.Keys)
+ForEach ($Key In $Global:Session.WebServer.RouteFunctions.Keys)
 {
     Write-Host -Object $Key;
 }
 
 Try
 {
-    While ($Global:Job.WebServer.IsListening())
+    While ($Global:Session.WebServer.IsListening())
     {
-        $ContextTask = $Global:Job.WebServer.Listener.GetContextAsync();
+        $ContextTask = $Global:Session.WebServer.Listener.GetContextAsync();
         While (-not $ContextTask.AsyncWaitHandle.WaitOne(200)) { }
         $Context = $ContextTask.GetAwaiter().GetResult();
-        If ($Global:Job.WebServer.HasRouteCommand($Context.Request.Url.LocalPath, $Context.Request.HttpMethod))
+        If ($Global:Session.WebServer.HasRouteCommand($Context.Request.Url.LocalPath, $Context.Request.HttpMethod))
         {
-            $Global:Job.WebServer.InvokeRouteCommand($Context.Request.Url.LocalPath, $Context.Request.HttpMethod, $Context);
+            $Global:Session.WebServer.InvokeRouteCommand($Context.Request.Url.LocalPath, $Context.Request.HttpMethod, $Context);
         }
 
         # If ($routeFunctions.ContainsKey($context.Request.RawUrl))
@@ -209,6 +209,6 @@ Try
 }
 Finally
 {
-    $Global:Job.WebServer.Listener.Stop()
+    $Global:Session.WebServer.Listener.Stop()
     Write-Host "HTTP Server Stopped" -ForegroundColor Black -BackgroundColor Green;
 }

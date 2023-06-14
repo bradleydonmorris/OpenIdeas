@@ -3,7 +3,7 @@
 );
 
 [String] $PackageName = "SSH.NET";
-If (!$Global:Job.NuGet.IsPackageInstalled($PackageName))
+If (!$Global:Session.NuGet.IsPackageInstalled($PackageName))
 {
-    [void] $Global:Job.NuGet.InstallPackage($PackageName);
+    [void] $Global:Session.NuGet.InstallPackage($PackageName);
 }

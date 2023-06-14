@@ -3,15 +3,15 @@
     "Databases.IICS"
 );
 
-#$Global:Job.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
-$Global:Job.Logging.WriteVariables("Config", @{
-    "IICSDatabaseConnectionName" = $Global:Job.Config.IICSDatabaseConnectionName;
-    "IICSAPIConnectionName" = $Global:Job.Config.IICSAPIConnectionName;
-    "Projects" = $Global:Job.Config.Projects;
+#$Global:Session.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
+$Global:Session.Logging.WriteVariables("Config", @{
+    "IICSDatabaseConnectionName" = $Global:Session.Config.IICSDatabaseConnectionName;
+    "IICSAPIConnectionName" = $Global:Session.Config.IICSAPIConnectionName;
+    "Projects" = $Global:Session.Config.Projects;
 });
 
-[String] $ExtractedDirectoryPath = $Global:Job.DataDirectory; # [IO.Path]::Combine($Global:Job.DataDirectory, "Extracted");
-$Global:Job.Logging.WriteVariables("Paths", @{
+[String] $ExtractedDirectoryPath = $Global:Session.DataDirectory; # [IO.Path]::Combine($Global:Session.DataDirectory, "Extracted");
+$Global:Session.Logging.WriteVariables("Paths", @{
     "ExtractedDirectoryPath" = $ExtractedDirectoryPath;
 });
 
@@ -19,99 +19,99 @@ $Global:Job.Logging.WriteVariables("Paths", @{
 [Collections.Hashtable] $Global:Export = $null;
 
 #region Establish IICS Session
-$Global:Job.Execute("Establish IICS Session", {
+$Global:Session.Execute("Establish IICS Session", {
     Try
     {
-        $Global:Job.InformaticaAPI.GetSession($Global:Job.Config.IICSAPIConnectionName);
+        $Global:Session.InformaticaAPI.GetSession($Global:Session.Config.IICSAPIConnectionName);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Establish IICS Session
 
 #region Gather Assets
-$Global:Job.Execute("Gather Assets", {
-    ForEach ($Project In $Global:Job.Config.Projects)
+$Global:Session.Execute("Gather Assets", {
+    ForEach ($Project In $Global:Session.Config.Projects)
     {
         Try
         {
-            $Global:Job.Logging.WriteEntry("Information", [String]::Format("Gathering assets for {0}", $Project));
-            [void] $Global:AssetIds.AddRange($Global:Job.InformaticaAPI.GetAssets($Project));
+            $Global:Session.Logging.WriteEntry("Information", [String]::Format("Gathering assets for {0}", $Project));
+            [void] $Global:AssetIds.AddRange($Global:Session.InformaticaAPI.GetAssets($Project));
         }
         Catch
         {
-            $Global:Job.Logging.WriteExceptionWithData($_.Exception, $Project);
+            $Global:Session.Logging.WriteExceptionWithData($_.Exception, $Project);
         }
     }
 });
 #endregion Gather Assets
 
 #region Export Assets
-$Global:Job.Execute("Export Assets", {
+$Global:Session.Execute("Export Assets", {
     Try
     {
-        $Global:Export = $Global:Job.InformaticaAPI.ExportAssets($Global:AssetIds, $ExtractedDirectoryPath, $true, $true);
+        $Global:Export = $Global:Session.InformaticaAPI.ExportAssets($Global:AssetIds, $ExtractedDirectoryPath, $true, $true);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Export Assets
 
 #region Clear Staged
-$Global:Job.Execute("Clear Staged", {
+$Global:Session.Execute("Clear Staged", {
     Try
     {
-        $Global:Job.Databases.IICS.ClearStaged($Global:Job.Config.IICSDatabaseConnectionName, $true, $true, $false);
+        $Global:Session.Databases.IICS.ClearStaged($Global:Session.Config.IICSDatabaseConnectionName, $true, $true, $false);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Clear Staged
 
 #region Post Staged Assets
-$Global:Job.Execute("Post Staged Assets", {
+$Global:Session.Execute("Post Staged Assets", {
     Try
     {
-        $Global:Job.Databases.IICS.PostStagedAssets($Global:Job.Config.IICSDatabaseConnectionName, $Global:Export.Assets);
+        $Global:Session.Databases.IICS.PostStagedAssets($Global:Session.Config.IICSDatabaseConnectionName, $Global:Export.Assets);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Post Staged Assets
 
 #region Post Staged Asset Files
-$Global:Job.Execute("Post Staged Asset Files", {
+$Global:Session.Execute("Post Staged Asset Files", {
     Try
     {
-        $Global:Job.Databases.IICS.PostStagedAssetFiles($Global:Job.Config.IICSDatabaseConnectionName, $Global:Export.AssetFiles);
+        $Global:Session.Databases.IICS.PostStagedAssetFiles($Global:Session.Config.IICSDatabaseConnectionName, $Global:Export.AssetFiles);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Post Staged Asset Files
 
 #region Parse
-$Global:Job.Execute("Parse", {
+$Global:Session.Execute("Parse", {
     Try
     {
-        $Global:Job.Databases.IICS.Parse($Global:Job.Config.IICSDatabaseConnectionName);
+        $Global:Session.Databases.IICS.Parse($Global:Session.Config.IICSDatabaseConnectionName);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Parse
 
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

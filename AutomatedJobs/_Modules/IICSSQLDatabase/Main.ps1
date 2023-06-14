@@ -1,13 +1,13 @@
-[void] $Global:Job.LoadModule("Connections");
-[void] $Global:Job.LoadModule("SQLServer");
+[void] $Global:Session.LoadModule("Connections");
+[void] $Global:Session.LoadModule("SQLServer");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "IICSSQLDatabase" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "ClearStaged" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -25,7 +25,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $ClearActivityLog
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -59,7 +59,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "PostStagedAssets" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -71,7 +71,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $Assets
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -94,7 +94,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "PostStagedAssetFiles" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -106,7 +106,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.ArrayList] $AssetFiles
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         ForEach ($AssetFile In $AssetFiles)
@@ -156,7 +156,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "PostStagedActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -168,7 +168,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $JSON
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -191,7 +191,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "Parse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -200,7 +200,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -215,7 +215,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "ParseActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -224,7 +224,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -239,7 +239,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "GetActivityLogLastStartTime" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -249,7 +249,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -271,7 +271,7 @@ Add-Member `
         }
     };
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "RemoveOldActivityLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -285,7 +285,7 @@ Add-Member `
         )
         If ($KeepLogsForDays -gt 0)
         {
-            [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+            [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
             [void] $SqlConnection.Open();
 
             [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();
@@ -312,7 +312,7 @@ Add-Member `
 
 #[IICS].[PostTempBDM]
 Add-Member `
-    -InputObject $Global:Job.IICSSQLDatabase `
+    -InputObject $Global:Session.IICSSQLDatabase `
     -Name "PostTempBDM" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -324,7 +324,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $JSON
         )
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetSQLServerConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetSQLServerConnection($ConnectionName));
         [void] $SqlConnection.Open();
 
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new();

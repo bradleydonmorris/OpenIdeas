@@ -1,12 +1,12 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "InformaticaAPI" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -30,7 +30,7 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [String] $Comments
         )
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "V3LoginURI" = $V3LoginURI
@@ -42,7 +42,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "GetSession" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -52,31 +52,31 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [PSCustomObject] $APIConnection = $Global:Job.Connections.Get($ConnectionName)
-        If (-not $Global:Job.InformaticaAPI.Session)
+        [PSCustomObject] $APIConnection = $Global:Session.Connections.Get($ConnectionName)
+        If (-not $Global:Session.InformaticaAPI.Session)
         {
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI `
+                -InputObject $Global:Session.InformaticaAPI `
                 -TypeName "System.Management.Automation.PSObject" `
                 -NotePropertyName "Session" `
                 -NotePropertyValue ([System.Management.Automation.PSObject]::new());
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session `
+                -InputObject $Global:Session.InformaticaAPI.Session `
                 -TypeName "System.Management.Automation.PSObject" `
                 -NotePropertyName "V3" `
                 -NotePropertyValue ([System.Management.Automation.PSObject]::new());
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V3 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V3 `
                 -TypeName "System.String" `
                 -NotePropertyName "LoginURL" `
                 -NotePropertyValue $APIConnection.V3LoginURI;
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V3 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V3 `
                 -TypeName "System.String" `
                 -NotePropertyName "APIURL" `
                 -NotePropertyValue $null;
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V3 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V3 `
                 -TypeName "System.Collections.Hashtable" `
                 -NotePropertyName "Headers" `
                 -NotePropertyValue @{
@@ -84,22 +84,22 @@ Add-Member `
                     "Accept" = "application/json";
                 };
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session `
+                -InputObject $Global:Session.InformaticaAPI.Session `
                 -TypeName "System.Management.Automation.PSObject" `
                 -NotePropertyName "V2" `
                 -NotePropertyValue ([System.Management.Automation.PSObject]::new());
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V2 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V2 `
                 -TypeName "System.String" `
                 -NotePropertyName "LoginURL" `
                 -NotePropertyValue $APIConnection.V2LoginURI;
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V2 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V2 `
                 -TypeName "System.String" `
                 -NotePropertyName "APIURL" `
                 -NotePropertyValue $null;
             Add-Member `
-                -InputObject $Global:Job.InformaticaAPI.Session.V2 `
+                -InputObject $Global:Session.InformaticaAPI.Session.V2 `
                 -TypeName "System.Collections.Hashtable" `
                 -NotePropertyName "Headers" `
                 -NotePropertyValue @{
@@ -113,8 +113,8 @@ Add-Member `
         $V3LoginResponse = (
             (
                 Invoke-WebRequest `
-                    -Uri $Global:Job.InformaticaAPI.Session.V3.LoginURL `
-                    -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                    -Uri $Global:Session.InformaticaAPI.Session.V3.LoginURL `
+                    -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                     -Method Post `
                     -Body (
                             ConvertTo-Json `
@@ -127,14 +127,14 @@ Add-Member `
             ).Content |
                 ConvertFrom-Json -Depth 100
         );
-        $Global:Job.InformaticaAPI.Session.V3.APIURL = $V3LoginResponse.products[0].BaseAPIURL;
-        [void] $Global:Job.InformaticaAPI.Session.V3.Headers.Add("INFA-SESSION-ID", $V3LoginResponse.userInfo.sessionId);
+        $Global:Session.InformaticaAPI.Session.V3.APIURL = $V3LoginResponse.products[0].BaseAPIURL;
+        [void] $Global:Session.InformaticaAPI.Session.V3.Headers.Add("INFA-SESSION-ID", $V3LoginResponse.userInfo.sessionId);
     
         $V2LoginResponse = (
             (
                 Invoke-WebRequest `
-                    -Uri $Global:Job.InformaticaAPI.Session.V2.LoginURL `
-                    -Headers $Global:Job.InformaticaAPI.Session.V2.Headers `
+                    -Uri $Global:Session.InformaticaAPI.Session.V2.LoginURL `
+                    -Headers $Global:Session.InformaticaAPI.Session.V2.Headers `
                     -Method Post `
                     -Body (
                             ConvertTo-Json `
@@ -148,13 +148,13 @@ Add-Member `
                 ).Content |
                     ConvertFrom-Json -Depth 100
         );
-        $Global:Job.InformaticaAPI.Session.V2.APIURL = $V2LoginResponse.serverUrl;
-        [void] $Global:Job.InformaticaAPI.Session.V2.Headers.Add("icSessionId", $V2LoginResponse.icSessionId);
+        $Global:Session.InformaticaAPI.Session.V2.APIURL = $V2LoginResponse.serverUrl;
+        [void] $Global:Session.InformaticaAPI.Session.V2.Headers.Add("icSessionId", $V2LoginResponse.icSessionId);
     
         $global:ProgressPreference = $PreviousProgressPreference;
     };
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "GetAssets" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -175,11 +175,11 @@ Add-Member `
                 (
                     Invoke-WebRequest `
                         -Uri ([String]::Format("{0}/public/core/v3/objects?limit=100&skip={1}&q=location=='{2}'",
-                            $Global:Job.InformaticaAPI.Session.V3.APIURL,
+                            $Global:Session.InformaticaAPI.Session.V3.APIURL,
                             $AssetSkip,
                             $Project
                         )) `
-                        -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                        -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                         -Method Get
                 ).Content |
                     ConvertFrom-Json -Depth 100
@@ -206,7 +206,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "ExportAssets" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -294,8 +294,8 @@ Add-Member `
             $ExportResponse = (
                 (
                     Invoke-WebRequest `
-                        -Uri ([String]::Format("{0}/public/core/v3/export", $Global:Job.InformaticaAPI.Session.V3.APIURL)) `
-                        -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                        -Uri ([String]::Format("{0}/public/core/v3/export", $Global:Session.InformaticaAPI.Session.V3.APIURL)) `
+                        -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                         -Body $ExportBody `
                         -Method Post
                 ).Content |
@@ -314,10 +314,10 @@ Add-Member `
                         Invoke-WebRequest `
                             -Uri ([String]::Format(
                                 "{0}/public/core/v3/export/{1}",
-                                $Global:Job.InformaticaAPI.Session.V3.APIURL,
+                                $Global:Session.InformaticaAPI.Session.V3.APIURL,
                                 $ExportBatch.ExportId
                             )) `
-                            -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                            -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                             -Body $ExportBody `
                             -Method Get
                     ).Content |
@@ -336,10 +336,10 @@ Add-Member `
             Invoke-WebRequest `
                 -Uri ([String]::Format(
                     "{0}/public/core/v3/export/{1}/package",
-                    $Global:Job.InformaticaAPI.Session.V3.APIURL,
+                    $Global:Session.InformaticaAPI.Session.V3.APIURL,
                     $ExportBatch.ExportId
                 )) `
-                -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                 -Method Get `
                 -OutFile $ExportBatch.DownloadPath;
             Expand-Archive `
@@ -464,8 +464,8 @@ Add-Member `
             [String] $ConnectionsFilePath = [IO.Path]::Combine($OutputDirectoryPath, "Connections.json");
             (
                 Invoke-WebRequest `
-                    -Uri ([String]::Format("{0}/api/v2/connection", $Global:Job.InformaticaAPI.Session.V2.APIURL)) `
-                    -Headers $Global:Job.InformaticaAPI.Session.V2.Headers `
+                    -Uri ([String]::Format("{0}/api/v2/connection", $Global:Session.InformaticaAPI.Session.V2.APIURL)) `
+                    -Headers $Global:Session.InformaticaAPI.Session.V2.Headers `
                     -Method Get
             ).Content |
                 Out-File -FilePath $ConnectionsFilePath;
@@ -488,8 +488,8 @@ Add-Member `
             [String] $SchedulesFilePath = [IO.Path]::Combine($OutputDirectoryPath, "Schedules.json");
             (
                 Invoke-WebRequest `
-                    -Uri ([String]::Format("{0}/public/core/v3/schedule", $Global:Job.InformaticaAPI.Session.V3.APIURL)) `
-                    -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                    -Uri ([String]::Format("{0}/public/core/v3/schedule", $Global:Session.InformaticaAPI.Session.V3.APIURL)) `
+                    -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                     -Method Get
             ).Content |
                     #ConvertFrom-Json -Depth 100 |
@@ -514,7 +514,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "ExportLogs" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -542,10 +542,10 @@ Add-Member `
                     Invoke-WebRequest `
                         -Uri ([String]::Format(
                             "{0}/api/v2/activity/activityLog?rowLimit=1000&offset={1}",
-                            $Global:Job.InformaticaAPI.Session.V2.APIURL,
+                            $Global:Session.InformaticaAPI.Session.V2.APIURL,
                             $Offset
                         )) `
-                        -Headers $Global:Job.InformaticaAPI.Session.V2.Headers `
+                        -Headers $Global:Session.InformaticaAPI.Session.V2.Headers `
                         -Method Get
                 ).Content |
                     ConvertFrom-Json -Depth 100;
@@ -577,7 +577,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.InformaticaAPI `
+    -InputObject $Global:Session.InformaticaAPI `
     -Name "GetSchedules" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -587,8 +587,8 @@ Add-Member `
         [Object] $ReturnValue = $null;
         $ReturnValue = (
             Invoke-WebRequest `
-                -Uri ([String]::Format("{0}/public/core/v3/schedule", $Global:Job.InformaticaAPI.Session.V3.APIURL)) `
-                -Headers $Global:Job.InformaticaAPI.Session.V3.Headers `
+                -Uri ([String]::Format("{0}/public/core/v3/schedule", $Global:Session.InformaticaAPI.Session.V3.APIURL)) `
+                -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
                 -Method Get
         ).Content |
                 ConvertFrom-Json -Depth 100;

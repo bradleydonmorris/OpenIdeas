@@ -1,10 +1,10 @@
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Vendors" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "Exists" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -15,8 +15,8 @@ Add-Member `
             [String] $Name
         )
         [Boolean] $ReturnValue = $false;
-        [Int64] $Count = $Global:Job.SQLite.GetTableRowCount(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Int64] $Count = $Global:Session.SQLite.GetTableRowCount(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             "Vendor",
             @{ "Name" = $Name}
         );
@@ -27,7 +27,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "IsInUse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -38,8 +38,8 @@ Add-Member `
             [String] $Name
         )
         [Boolean] $ReturnValue = $false;
-        [Int64] $Count = $Global:Job.SQLite.GetScalar(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Int64] $Count = $Global:Session.SQLite.GetScalar(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "IsInUse.sql")),
             @{ "Name" = $Name; }
         );
@@ -50,7 +50,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "GetByName" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -60,8 +60,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $VendorName
         )
-        [Collections.Generic.List[PSObject]] $Records = $Global:Job.SQLite.GetRecords(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Collections.Generic.List[PSObject]] $Records = $Global:Session.SQLite.GetRecords(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "GetByName.sql")),
             @{ "VendorName" = $VendorName },
             @( "VendorGUID", "Name", "WebSite" ),
@@ -77,7 +77,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "GetByGUID" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -87,8 +87,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Guid] $VendorGUID
         )
-        [Collections.Generic.List[PSObject]] $Records = $Global:Job.SQLite.GetRecords(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Collections.Generic.List[PSObject]] $Records = $Global:Session.SQLite.GetRecords(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "GetByGUID.sql")),
             @{ "VendorGUID" = $VendorGUID},
             @( "VendorGUID", "Name", "WebSite" ),
@@ -104,7 +104,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "Add" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -117,12 +117,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $WebSite
         )
-        [PSObject] $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
+        [PSObject] $ReturnValue = $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
         If (-not $ReturnValue)
         {
             [Guid] $VendorGUID = [Guid]::NewGuid();
-            $Global:Job.SQLite.Execute(
-                $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+            $Global:Session.SQLite.Execute(
+                $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
                 [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Add.sql")),
                 @{
                     "VendorGUID" = $VendorGUID;
@@ -130,12 +130,12 @@ Add-Member `
                     "WebSite" = $WebSite;
                 }
             );
-            $ReturnValue = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
+            $ReturnValue = $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByName($Name);
         }
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "Modify" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -151,8 +151,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $WebSite
         )
-        $Global:Job.SQLite.Execute(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        $Global:Session.SQLite.Execute(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Modify.sql")),
             @{
                 "VendorGUID" = $VendorGUID;
@@ -160,10 +160,10 @@ Add-Member `
                 "WebSite" = $WebSite;
             }
         );
-        Return $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByGUID($VendorGUID);
+        Return $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByGUID($VendorGUID);
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Vendors `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Vendors `
     -Name "Remove" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -172,8 +172,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Guid] $VendorGUID
         )
-        $Global:Job.SQLite.Execute(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        $Global:Session.SQLite.Execute(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Vendors", "Remove.sql")),
             @{ "VendorGUID" = $VendorGUID; }
         );

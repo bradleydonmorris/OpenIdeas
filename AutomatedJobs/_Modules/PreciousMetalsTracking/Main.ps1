@@ -1,13 +1,13 @@
-[void] $Global:Job.LoadModule("Prompts");
-[void] $Global:Job.LoadModule("Sqlite");
+[void] $Global:Session.LoadModule("Prompts");
+[void] $Global:Session.LoadModule("Sqlite");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "PreciousMetalsTracking" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking `
+    -InputObject $Global:Session.PreciousMetalsTracking `
     -Name "Open" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -16,16 +16,16 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $FilePath
         )
-        [void] $Global:Job.PreciousMetalsTracking.Data.SetActiveConnection($FilePath);
-        [void] $Global:Job.PreciousMetalsTracking.Data.VerifyDatabase();
-        [void] $Global:Job.PreciousMetalsTracking.Menus.ShowMainMenu();
+        [void] $Global:Session.PreciousMetalsTracking.Data.SetActiveConnection($FilePath);
+        [void] $Global:Session.PreciousMetalsTracking.Data.VerifyDatabase();
+        [void] $Global:Session.PreciousMetalsTracking.Menus.ShowMainMenu();
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking `
+    -InputObject $Global:Session.PreciousMetalsTracking `
     -Name "Exit" `
     -MemberType "ScriptMethod" `
     -Value {
-        $Global:Job.PreciousMetalsTracking.Messages.ShowExit();
+        $Global:Session.PreciousMetalsTracking.Messages.ShowExit();
     }
 
 

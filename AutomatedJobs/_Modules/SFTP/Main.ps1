@@ -1,4 +1,4 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
 #This script creates methods to manage logs
 # that are stored in the Logs directory
@@ -17,17 +17,17 @@ If (-not (Get-Module -Name "Posh-SSH"))
     Import-Module -Name "Posh-SSH"
 } 
 
-If (![IO.Directory]::Exists($Global:Job.Directories.ConnectionsRoot))
+If (![IO.Directory]::Exists($Global:Session.Directories.ConnectionsRoot))
 {
-    [void] [IO.Directory]::CreateDirectory($Global:Job.Directories.ConnectionsRoot);
+    [void] [IO.Directory]::CreateDirectory($Global:Session.Directories.ConnectionsRoot);
 }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SFTP" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.SFTP `
+    -InputObject $Global:Session.SFTP `
     -Name "GetSession" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -38,7 +38,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [SSH.SftpSession] $Result = $null;
-        $Values = $Global:Job.Connections.Get($ConnectionName);
+        $Values = $Global:Session.Connections.Get($ConnectionName);
         Get-SSHTrustedHost | Remove-SSHTrustedHost | Out-Null;
         If ($Values.AuthType -eq "UserNameAndPassword")
         {
@@ -57,7 +57,7 @@ Add-Member `
         Return $Result;
     }
 Add-Member `
-    -InputObject $Global:Job.SFTP `
+    -InputObject $Global:Session.SFTP `
     -Name "GetFileList" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -77,7 +77,7 @@ Add-Member `
             [Int32] $DateTimeStartPosition
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [SSH.SftpSession] $Session = $Global:Job.SFTP.GetSession($ConnectionName);
+        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         $Files = Get-SFTPChildItem -SFTPSession $Session -Path $RemotePath;
         If ([String]::IsNullOrEmpty($DateTimeFormatString))
         {
@@ -128,7 +128,7 @@ Add-Member `
         Return $Results
     };
 Add-Member `
-    -InputObject $Global:Job.SFTP `
+    -InputObject $Global:Session.SFTP `
     -Name "GetFile" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -153,7 +153,7 @@ Add-Member `
         {
             Throw [System.IO.IOException]::new("File Already Exists.");
         }
-        [SSH.SftpSession] $Session = $Global:Job.SFTP.GetSession($ConnectionName);
+        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         If ($Overwrite)
         {
             Get-SFTPItem -SFTPSession $Session -Path $RemoteFilePath -Destination $LocalDirectoryPath -Force;
@@ -165,7 +165,7 @@ Add-Member `
         Remove-SFTPSession -SFTPSession $Session | Out-Null;
     };
 Add-Member `
-    -InputObject $Global:Job.SFTP `
+    -InputObject $Global:Session.SFTP `
     -Name "GetFilesNewerThan" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -194,7 +194,7 @@ Add-Member `
             [Boolean] $Overwrite
         )
         [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
-        [SSH.SftpSession] $Session = $Global:Job.SFTP.GetSession($ConnectionName);
+        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         $Files = Get-SFTPChildItem -SFTPSession $Session -Path $RemotePath -File;
         ForEach ($SftpFile In $Files)
         {
@@ -251,7 +251,7 @@ Add-Member `
         Return $Results;
     };
 Add-Member `
-    -InputObject $Global:Job.SFTP `
+    -InputObject $Global:Session.SFTP `
     -Name "WriteFile" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -266,7 +266,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $LocalFilePath
         )
-        [SSH.SftpSession] $Session = $Global:Job.SFTP.GetSession($ConnectionName);
+        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         Set-SFTPItem -SFTPSession $Session -Destination $RemoteDirectoryPath -Path $LocalFilePath;
         Remove-SFTPSession -SFTPSession $Session | Out-Null;
     };

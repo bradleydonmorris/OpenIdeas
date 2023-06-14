@@ -1,13 +1,19 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ActiveDirectory" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+# Add-Member `
+#     -InputObject $Global:Session.ActiveDirectory `
+#     -TypeName "System.Management.Automation.PSObject" `
+#     -NotePropertyName "Doc" `
+#     -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Doc.json"))));
+
 #region Connection Methods
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -25,7 +31,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IsPersisted
         )
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "RootLDIF" = $RootLDIF;
@@ -35,7 +41,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -45,91 +51,11 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Values = $Global:Job.Connections.Get($Name);
-        Return $Global:Job.SQLServer.GetConnectionString(
-            $Values.Instance,
-            $Values.Database,
-            $Values.IntegratedSecurity, #if true then UserName and Password are ignored
-            $Values.UserName,
-            $Values.Password,
-            [System.Net.Dns]::GetHostName(),
-            [String]::Format("{0}/{1}",
-                    $Global:Job.Project,
-                    $Global:Job.Script
-                )
-        );
+        Return $Global:Session.Connections.Get($Name);
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetConnectionString" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
-    
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IntegratedSecurity,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $UserName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Password,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $WorkstationName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $ApplicationName
-        )
-        $WorkstationName = (
-            ![String]::IsNullOrEmpty($WorkstationName) ?
-                $WorkstationName :
-                [System.Net.Dns]::GetHostName()
-        );
-        $ApplicationName = (
-            ![String]::IsNullOrEmpty($ApplicationName) ?
-                $ApplicationName :
-                [String]::Format("{0}/{1}",
-                    $Global:Job.Project,
-                    $Global:Job.Script
-                )
-        );
-        [String] $Authentication = (
-            $IntegratedSecurity ?
-                "Trusted_Connection=True" :
-                [String]::Format("User ID={0};Password={1}",
-                    $UserName,
-                    $Password
-                )
-        );
-        Return [String]::Format(
-            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
-            $Instance,
-            $Database,
-            $Authentication,
-            $WorkstationName,
-            $ApplicationName
-        );
-    };
-#endregion Connection Methods
-
-
-
-Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
-    -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "Doc" `
-    -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Doc.json"))));
-Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
-    -Name "GetLDAPConnection" `
     -MemberType "ScriptMethod" `
     -Value {
         [OutputType([String])]
@@ -138,13 +64,13 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        [String] $ReturnValue = $null;
-        $Values = $Global:Job.Connections.Get($Name);
-        $ReturnValue = $Values.RootLDIF;
-        Return $ReturnValue;
+        $Connection = $Global:Session.SQLServer.GetConnection($Name);
+        Return $Connection.RootLDIF;
     };
+#endregion Connection Methods
+
 Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetChangedUsers" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -158,7 +84,7 @@ Add-Member `
             [DateTime] $ChangedSince
         )
         [Collections.Generic.List[String]] $ReturnValue = [Collections.Generic.List[String]]::new();
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Session.ActiveDirectory.GetConnectionString($ConnectionName));
         [String] $Filter = "(&(objectCategory=user)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
         [System.DirectoryServices.DirectorySearcher] $DirectorySearcher = [System.DirectoryServices.DirectorySearcher]::new($RootDirectoryEntry, $Filter, $PropertiesToLoad, [System.DirectoryServices.SearchScope]::Subtree);
@@ -172,7 +98,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetUser" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -201,7 +127,7 @@ Add-Member `
             "uSNCreated": null, "uSNChanged": null, "whenCreated": null, "whenChanged": null
         }
 "@;
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Session.ActiveDirectory.GetConnectionString($ConnectionName));
         [String] $Filter = "(&(distinguishedName={@DistinguishedName}))".Replace("{@DistinguishedName}", $DistinguishedName);
         [System.String[]] $PropertiesToLoad = @(
             "objectGuid", "objectSid", "objectClass", "objectCategory",
@@ -354,7 +280,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetChangedGroups" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -368,7 +294,7 @@ Add-Member `
             [DateTime] $ChangedSince
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Session.ActiveDirectory.GetConnectionString($ConnectionName));
         [String] $Filter = "(&(objectCategory=group)(whenChanged>={@WhenChanged}))".Replace("{@WhenChanged}", $ChangedSince.ToString("yyyyMMddHHmmss.fffffffZ"));
         [System.String[]] $PropertiesToLoad = @("distinguishedName");
         [System.DirectoryServices.DirectorySearcher] $DirectorySearcher = [System.DirectoryServices.DirectorySearcher]::new($RootDirectoryEntry, $Filter, $PropertiesToLoad, [System.DirectoryServices.SearchScope]::Subtree);
@@ -382,7 +308,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.ActiveDirectory `
+    -InputObject $Global:Session.ActiveDirectory `
     -Name "GetGroup" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -405,7 +331,7 @@ Add-Member `
             "members": null
         }
 "@;
-        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Job.ActiveDirectory.GetLDAPConnection($ConnectionName));
+        [System.DirectoryServices.DirectoryEntry] $RootDirectoryEntry = [System.DirectoryServices.DirectoryEntry]::new($Global:Session.ActiveDirectory.GetConnectionString($ConnectionName));
         [String] $Filter = "(&(distinguishedName={@DistinguishedName}))".Replace("{@DistinguishedName}", $DistinguishedName);
         [System.String[]] $PropertiesToLoad = @(
             "objectSid", "objectGuid", "objectClass", "objectCategory", "groupType"

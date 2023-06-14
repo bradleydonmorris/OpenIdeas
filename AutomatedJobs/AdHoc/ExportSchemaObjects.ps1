@@ -9,12 +9,12 @@
 [String] $OutputDirectoryPath = "C:\SQLExports\temp";
 
 Clear-Host;
-$SQLInstance = $Global:Job.Prompts.StringResponse("SQL Instance", $SQLInstance);
-$Database = $Global:Job.Prompts.StringResponse("SQL Database", $Database);
-$Schema = $Global:Job.Prompts.StringResponse("SQL Schema", $Schema);
-$OutputDirectoryPath = $Global:Job.Prompts.StringResponse("Output Folder", $OutputDirectoryPath);
+$SQLInstance = $Global:Session.Prompts.StringResponse("SQL Instance", $SQLInstance);
+$Database = $Global:Session.Prompts.StringResponse("SQL Database", $Database);
+$Schema = $Global:Session.Prompts.StringResponse("SQL Schema", $Schema);
+$OutputDirectoryPath = $Global:Session.Prompts.StringResponse("Output Folder", $OutputDirectoryPath);
 
-$Global:Job.Logging.WriteVariables("Config", @{
+$Global:Session.Logging.WriteVariables("Config", @{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;
@@ -22,15 +22,15 @@ $Global:Job.Logging.WriteVariables("Config", @{
 });
 
 Clear-Host;
-$Global:Job.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
+$Global:Session.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;
     "Output Folder Path" = $OutputDirectoryPath;
 });
 
-$Global:Job.Logging.TimedExecute("GenerateScriptsByDependency", {
-    $Global:Job.ScriptSQLServerDatabase.GenerateScriptsByDependency(
+$Global:Session.Logging.TimedExecute("GenerateScriptsByDependency", {
+    $Global:Session.ScriptSQLServerDatabase.GenerateScriptsByDependency(
         $SQLInstance,
         $Database,
         $Schema,
@@ -40,5 +40,5 @@ $Global:Job.Logging.TimedExecute("GenerateScriptsByDependency", {
     );
 });
 
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

@@ -3,23 +3,26 @@
     "Prompts"
 );
 Clear-Host;
-[String] $Name = $Global:Job.Prompts.StringResponse("Please provide connection name", $null);
+[String] $Name = $Global:Session.Prompts.StringResponse("Please provide connection name", $null);
 # If ([String]::IsNullOrEmpty($Name))
 #     { $Name = "GoogleAPI"; }
-[PSCustomObject] $GoogleAPIConnection = [PSCustomObject]::new();
-If ($Global:Job.Connections.Exists($Name))
-    { $GoogleAPIConnection = $Global:Job.Connections.Get($Name); }
-Else
-    { $GoogleAPIConnection = $Global:Job.GoogleAPI.NewConnection(); }
-$GoogleAPIConnection.CustomerId = $Global:Job.Prompts.StringResponse("Please provide the Customer Id", $GoogleAPIConnection.CustomerId);
-$GoogleAPIConnection.ClientId = $Global:Job.Prompts.StringResponse("Please provide the Client Id", $GoogleAPIConnection.ClientId);
-$GoogleAPIConnection.ClientSecret = $Global:Job.Prompts.StringResponse("Please provide the Client Secret", $GoogleAPIConnection.ClientSecret);
-$GoogleAPIConnection.RedirectURI = $Global:Job.Prompts.StringResponse("Please provide the Redirect URI", $GoogleAPIConnection.RedirectURI);
-$GoogleAPIConnection.AuthURI = $Global:Job.Prompts.StringResponse("Please provide the Auth URI", $GoogleAPIConnection.AuthURI);
-$GoogleAPIConnection.TokenURI = $Global:Job.Prompts.StringResponse("Please provide the Token URI", $GoogleAPIConnection.TokenURI);
+[PSCustomObject] $GoogleAPIConnection = $Global:Session.Connections.Get("GoogleAPI");
+#[PSCustomObject] $GoogleAPIConnection = [PSCustomObject]::new();
+# If ($Global:Session.Connections.Exists($Name))
+#     { $GoogleAPIConnection = $Global:Session.Connections.Get($Name); }
+# Else
+#     { $GoogleAPIConnection = $Global:Session.GoogleAPI.NewConnection(); }
+$GoogleAPIConnection;
+
+#$GoogleAPIConnection.CustomerId = $Global:Session.Prompts.StringResponse("Please provide the Customer Id", $GoogleAPIConnection.CustomerId);
+$GoogleAPIConnection.ClientId = $Global:Session.Prompts.StringResponse("Please provide the Client Id", $GoogleAPIConnection.ClientId);
+$GoogleAPIConnection.ClientSecret = $Global:Session.Prompts.StringResponse("Please provide the Client Secret", $GoogleAPIConnection.ClientSecret);
+$GoogleAPIConnection.RedirectURI = $Global:Session.Prompts.StringResponse("Please provide the Redirect URI", $GoogleAPIConnection.RedirectURI);
+$GoogleAPIConnection.AuthURI = $Global:Session.Prompts.StringResponse("Please provide the Auth URI", $GoogleAPIConnection.AuthURI);
+$GoogleAPIConnection.TokenURI = $Global:Session.Prompts.StringResponse("Please provide the Token URI", $GoogleAPIConnection.TokenURI);
 If ($GoogleAPIConnection.Scopes.Count -eq 0)
 {
-    If ($Global:Job.Prompts.BooleanResponse("Would you like to add the read only scope for Users, Groups, and Org Units"))
+    If ($Global:Session.Prompts.BooleanResponse("Would you like to add the read only scope for Users, Groups, and Org Units"))
     {
         $GoogleAPIConnection.Scopes += "https://www.googleapis.com/auth/admin.directory.group.readonly";
         $GoogleAPIConnection.Scopes += "https://www.googleapis.com/auth/admin.directory.orgunit.readonly";
@@ -37,9 +40,9 @@ If ($GoogleAPIConnection.Scopes.Count -gt 0)
 [Boolean] $KeepAsking = $true;
 While ($KeepAsking)
 {
-    If ($Global:Job.Prompts.BooleanResponse("Would you like to add a scope"))
+    If ($Global:Session.Prompts.BooleanResponse("Would you like to add a scope"))
     {
-        [String] $NewScope = $Global:Job.Prompts.StringResponse("Please provide the new scope", $null);
+        [String] $NewScope = $Global:Session.Prompts.StringResponse("Please provide the new scope", $null);
         If ([String]::IsNullOrEmpty($NewScope))
         {
             $KeepAsking = $false;
@@ -64,9 +67,9 @@ Write-Host -Object "Once you log in and complete the authorization, you will be 
 Write-Host -Object "This page may not exists. However, it is important to copy the resulting address from the brower.";
 Write-Host -Object "Return here once you have copied the address, and paste it into the prompt that will follow.";
 Write-Host -Object "";
-If ($Global:Job.Prompts.BooleanResponse("Would you like to save this connection"))
+If ($Global:Session.Prompts.BooleanResponse("Would you like to save this connection"))
 {
-    $Global:Job.Connections.Set($Name, $GoogleAPIConnection);
+    $Global:Session.Connections.Set($Name, $GoogleAPIConnection);
     [String] $Scopes = [String]::Join(" ", $GoogleAPIConnection.Scopes)
     [System.String] $OAuthURI = $GoogleAPIConnection.AuthURI +
         "?client_id=" + $GoogleAPIConnection.ClientId +
@@ -76,7 +79,7 @@ If ($Global:Job.Prompts.BooleanResponse("Would you like to save this connection"
         "&approval_prompt=force" +
         "&response_type=code"
     Start-Process $OAuthURI;
-    [String] $ResultingRedirectURL = $Global:Job.Prompts.StringResponse("Please provide the resulting URL", $null);
+    [String] $ResultingRedirectURL = $Global:Session.Prompts.StringResponse("Please provide the resulting URL", $null);
     If (![String]::IsNullOrEmpty($ResultingRedirectURL))
     {
         [String] $Code = [System.Web.HttpUtility]::ParseQueryString([Uri]::new($ResultingRedirectURL).Query)["code"];
@@ -90,9 +93,9 @@ If ($Global:Job.Prompts.BooleanResponse("Would you like to save this connection"
         $Tokens = Invoke-RestMethod -Uri $GoogleAPIConnection.TokenURI -Method POST -Body $TokenRequestBody;
         $GoogleAPIConnection.RefreshToken = $Tokens.refresh_token;
         ConvertTo-Json $Tokens
-        $Global:Job.Connections.Set($Name, $GoogleAPIConnection);
+        $Global:Session.Connections.Set("AAA$Name", $GoogleAPIConnection, $true);
     }
 }
 
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

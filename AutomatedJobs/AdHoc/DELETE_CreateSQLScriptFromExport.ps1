@@ -13,21 +13,21 @@
 [String] $LobFileGroupName = "PRIMARY";
 [String] $OutputScriptPath = [IO.Path]::Combine($InputFolderPath, "Output.sql");
 
-$Schema = $Global:Job.Prompts.StringResponse("SQL Schema", $Schema);
-$InputFolderPath = $Global:Job.Prompts.StringResponse("Input Folder", $InputFolderPath);
-$ClearStructure = $Global:Job.Prompts.BooleanResponse("Do you wish to drop all existing objects in $Schema before creating the new objects?");
+$Schema = $Global:Session.Prompts.StringResponse("SQL Schema", $Schema);
+$InputFolderPath = $Global:Session.Prompts.StringResponse("Input Folder", $InputFolderPath);
+$ClearStructure = $Global:Session.Prompts.BooleanResponse("Do you wish to drop all existing objects in $Schema before creating the new objects?");
 If ($ClearStructure)
 {
-    $DropSchema = $Global:Job.Prompts.BooleanResponse("Do you wish to drop the schema $Schema?");
+    $DropSchema = $Global:Session.Prompts.BooleanResponse("Do you wish to drop the schema $Schema?");
 }
-$OverrideFileGroups = $Global:Job.Prompts.BooleanResponse("Do you wish override the file groups?");
+$OverrideFileGroups = $Global:Session.Prompts.BooleanResponse("Do you wish override the file groups?");
 If ($OverrideFileGroups)
 {
-    $HeapFileGroupName = $Global:Job.Prompts.StringResponse("Heap File Group", $HeapFileGroupName);
-    $IndexFileGroupName = $Global:Job.Prompts.StringResponse("Index File Group", $IndexFileGroupName);
-    $LobFileGroupName = $Global:Job.Prompts.StringResponse("Lob File Group", $LobFileGroupName);
+    $HeapFileGroupName = $Global:Session.Prompts.StringResponse("Heap File Group", $HeapFileGroupName);
+    $IndexFileGroupName = $Global:Session.Prompts.StringResponse("Index File Group", $IndexFileGroupName);
+    $LobFileGroupName = $Global:Session.Prompts.StringResponse("Lob File Group", $LobFileGroupName);
 }
-$OutputScriptPath = $Global:Job.Prompts.StringResponse("Output File", $OutputScriptPath);
+$OutputScriptPath = $Global:Session.Prompts.StringResponse("Output File", $OutputScriptPath);
 
 [Collections.Specialized.OrderedDictionary] $Variables = [Ordered]@{
     "Schema" = $Schema;
@@ -47,9 +47,9 @@ If ($OverrideFileGroups)
 }
 
 Clear-Host;
-$Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
+$Global:Session.Prompts.WriteHashTable("Variables", 180, $Variables);
 
-[Collections.ArrayList] $SQLScripts = $Global:Job.SQLDatabaseJson.BuildSQLScripts(
+[Collections.ArrayList] $SQLScripts = $Global:Session.SQLDatabaseJson.BuildSQLScripts(
     $Schema,
     $ClearStructure,
     $DropSchema,
@@ -60,7 +60,7 @@ $Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
     $InputFolderPath
 );
 
-[String] $OutputContent = $Global:Job.Prompts.OutputHashTableToText("", 150, $Variables);
+[String] $OutputContent = $Global:Session.Prompts.OutputHashTableToText("", 150, $Variables);
 $OutputContent = "/" + $OutputContent.Substring(1).Substring(0, ($OutputContent.Length - 2)) + "/`r`n`r`n";
 
 ForEach ($SQLScript In ($SQLScripts | Sort-Object -Property "Sequence"))

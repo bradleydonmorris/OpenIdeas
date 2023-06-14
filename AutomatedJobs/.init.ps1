@@ -22,13 +22,13 @@ If (![IO.File]::Exists($JobsConfigFilePath))
         }
     } | Set-Content -Path $JobsConfigFilePath;
 }
-$Global:Job = ConvertFrom-Json -InputObject (Get-Content -Path $JobsConfigFilePath -Raw) -Depth 10;
+$Global:Session = ConvertFrom-Json -InputObject (Get-Content -Path $JobsConfigFilePath -Raw) -Depth 10;
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -NotePropertyName "Modules" `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -Name "LoadModule" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -41,18 +41,18 @@ Add-Member `
         {
             $Name = [IO.Path]::GetFileNameWithoutExtension($Name);
         }
-        If (!$Global:Job.Modules.ContainsKey($Name))
+        If (!$Global:Session.Modules.ContainsKey($Name))
         {
-            [String] $ModuleFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, "$Name\Main.ps1"));
+            [String] $ModuleFilePath = ([IO.Path]::Combine($Global:Session.Directories.Modules, "$Name\Main.ps1"));
             If ([IO.File]::Exists($ModuleFilePath))
             {
-                [void] $Global:Job.Modules.Add($Name, $ModuleFilePath);
+                [void] $Global:Session.Modules.Add($Name, $ModuleFilePath);
                 . $ModuleFilePath;
             }
         }
     }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -Name "IsModuleLoaded" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -67,17 +67,17 @@ Add-Member `
         {
             $Name = [IO.Path]::GetFileNameWithoutExtension($Name);
         }
-        $ReturnValue = $Global:Job.Modules.ContainsKey($Name);
+        $ReturnValue = $Global:Session.Modules.ContainsKey($Name);
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -Name "GetAvailableModules" `
     -MemberType "ScriptMethod" `
     -Value {
         [OutputType([Collections.Generic.List[PSObject]])]
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
-        ForEach ($Directory In (Get-ChildItem -Path $Global:Job.Directories.Modules -Directory))
+        ForEach ($Directory In (Get-ChildItem -Path $Global:Session.Directories.Modules -Directory))
         {
             [String] $MainFilePath = [IO.Path]::Combine($Directory.FullName, "Main.ps1");
             [String] $ReadMeFilePath = [IO.Path]::Combine($Directory.FullName, "README.md");
@@ -104,7 +104,7 @@ Add-Member `
                     -InputObject $Module `
                     -TypeName "System.Boolean" `
                     -NotePropertyName "IsLoaded" `
-                    -NotePropertyValue ($Global:Job.IsModuleLoaded($Directory.Name));
+                    -NotePropertyValue ($Global:Session.IsModuleLoaded($Directory.Name));
                 Add-Member `
                     -InputObject $Module `
                     -TypeName "System.String" `
@@ -121,7 +121,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -Name "CreateModuleDocFile" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -134,18 +134,18 @@ Add-Member `
         {
             $Name = [IO.Path]::GetFileNameWithoutExtension($Name);
         }
-        If (!$Global:Job.IsModuleLoaded($Name))
+        If (!$Global:Session.IsModuleLoaded($Name))
         {
-            $Global:Job.LoadModule($Name);
+            $Global:Session.LoadModule($Name);
         }
-        [String] $DocFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, $Name, "Doc.json"));
+        [String] $DocFilePath = ([IO.Path]::Combine($Global:Session.Directories.Modules, $Name, "Doc.json"));
         $Doc = [Ordered]@{
             "Name" = $Name;
             "Description" = "";
             "Properties" = [Collections.Generic.List[PSObject]]::new();
             "Methods" = [Collections.Generic.List[PSObject]]::new();
         };
-        ForEach ($Property In ($Global:Job."$Name" | Get-Member -MemberType NoteProperty))
+        ForEach ($Property In ($Global:Session."$Name" | Get-Member -MemberType NoteProperty))
         {
             [String] $TypeName = $Property.Definition.Substring(0, $Property.Definition.IndexOf(" "));
             Switch ($TypeName)
@@ -165,7 +165,7 @@ Add-Member `
                 "Description" = "";
             });
         }
-        ForEach ($ScriptMethod In ($Global:Job."$Name" | Get-Member -MemberType ScriptMethod))
+        ForEach ($ScriptMethod In ($Global:Session."$Name" | Get-Member -MemberType ScriptMethod))
         {
             [void] $Doc.Methods.Add([Ordered]@{
                 "Name" = $ScriptMethod.Name;
@@ -182,7 +182,7 @@ Add-Member `
         $Doc | ConvertTo-Json -Depth 10 | Out-File -FilePath $DocFilePath;
     }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -Name "CreateModuleReadMeFile" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -195,8 +195,8 @@ Add-Member `
         {
             $Name = [IO.Path]::GetFileNameWithoutExtension($Name);
         }
-        [String] $DocFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, $Name, "Doc.json"));
-        [String] $ReadMeFilePath = ([IO.Path]::Combine($Global:Job.Directories.Modules, $Name, "README.md"));
+        [String] $DocFilePath = ([IO.Path]::Combine($Global:Session.Directories.Modules, $Name, "Doc.json"));
+        [String] $ReadMeFilePath = ([IO.Path]::Combine($Global:Session.Directories.Modules, $Name, "README.md"));
         If ([IO.File]::Exists($DocFilePath))
         {
             $Doc = ConvertFrom-Json -InputObject ([IO.File]::ReadAllText($DocFilePath));
@@ -263,39 +263,39 @@ Add-Member `
 If ([IO.File]::Exists($ConfigFilePath))
 {
     Add-Member `
-        -InputObject $Global:Job `
+        -InputObject $Global:Session `
         -NotePropertyName "Config" `
         -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText($ConfigFilePath)));
 }
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "String" `
     -NotePropertyName "Project" `
     -NotePropertyValue ([IO.Path]::GetFileNameWithoutExtension([IO.Path]::GetDirectoryName($MyInvocation.PSCommandPath)));
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "String" `
     -NotePropertyName "Script" `
     -NotePropertyValue ([IO.Path]::GetFileNameWithoutExtension($MyInvocation.PSCommandPath));
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "String" `
     -NotePropertyName "DataDirectory" `
-    -NotePropertyValue ([IO.Path]::Combine($Global:Job.Directories.DataRoot, $Global:Job.Project, $Global:Job.Script));
+    -NotePropertyValue ([IO.Path]::Combine($Global:Session.Directories.DataRoot, $Global:Session.Project, $Global:Session.Script));
 
-If (![IO.Directory]::Exists($Global:Job.DataDirectory))
+If (![IO.Directory]::Exists($Global:Session.DataDirectory))
 {
-    [void] [IO.Directory]::CreateDirectory($Global:Job.DataDirectory);
+    [void] [IO.Directory]::CreateDirectory($Global:Session.DataDirectory);
 }
 
 #These modules must always be loaded.
-[void] $Global:Job.LoadModule("Logging");
-[void] $Global:Job.LoadModule("Utilities");
-[void] $Global:Job.LoadModule("NuGet");
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Logging");
+[void] $Global:Session.LoadModule("Utilities");
+[void] $Global:Session.LoadModule("NuGet");
+[void] $Global:Session.LoadModule("Connections");
 
 #Load additional modules that may be required
 ForEach ($Module In $RequiredModules)
 {
-    [void] $Global:Job.LoadModule($Module);
+    [void] $Global:Session.LoadModule($Module);
 }

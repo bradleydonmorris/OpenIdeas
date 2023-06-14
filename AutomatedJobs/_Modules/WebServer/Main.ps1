@@ -9,29 +9,29 @@ class RouteCommand {
 }
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "WebServer" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -TypeName "Collections.Hashtable" `
     -NotePropertyName "RouteFunctions" `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -TypeName "System.Net.HttpListener" `
     -NotePropertyName "Listener" `
     -NotePropertyValue ([System.Net.HttpListener]::new());
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "IsListening" `
     -MemberType "ScriptMethod" `
     -Value {
-        Return $Global:Job.WebServer.Listener.IsListening;
+        Return $Global:Session.WebServer.Listener.IsListening;
     }
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "AddRouteCommand" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -51,10 +51,10 @@ Add-Member `
         $RouteCommand.Route = $Route.ToLower();
         $RouteCommand.Method = $Method.ToUpper();
         $RouteCommand.Command = $Command;
-        [void] $Global:Job.WebServer.RouteFunctions.Add($Key, $RouteCommand);
+        [void] $Global:Session.WebServer.RouteFunctions.Add($Key, $RouteCommand);
     };
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "HasRouteCommand" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -68,10 +68,10 @@ Add-Member `
             [String] $Method
         )
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
-        Return $Global:Job.WebServer.RouteFunctions.ContainsKey($Key);
+        Return $Global:Session.WebServer.RouteFunctions.ContainsKey($Key);
     };
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "GetRouteCommand" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -85,10 +85,10 @@ Add-Member `
             [String] $Method
         )
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
-        Return $Global:Job.WebServer.RouteFunctions[$Key];
+        Return $Global:Session.WebServer.RouteFunctions[$Key];
     };
     Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "InvokeRouteCommand" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -104,11 +104,11 @@ Add-Member `
             [System.Net.HttpListenerContext] $Context
         )
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
-        [RouteCommand] $routeCommand = $Global:Job.WebServer.RouteFunctions[$Key];
+        [RouteCommand] $routeCommand = $Global:Session.WebServer.RouteFunctions[$Key];
         $routeCommand.Invoke($Context);
     };
 Add-Member `
-    -InputObject $Global:Job.WebServer `
+    -InputObject $Global:Session.WebServer `
     -Name "Start" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -119,9 +119,9 @@ Add-Member `
         )
         ForEach ($ListeningURI In $ListeningURIs)
         {
-            $Global:Job.WebServer.Listener.Prefixes.Add($ListeningURI);
+            $Global:Session.WebServer.Listener.Prefixes.Add($ListeningURI);
         }
-        $Global:Job.WebServer.Listener.Start();
+        $Global:Session.WebServer.Listener.Start();
     };
 
 

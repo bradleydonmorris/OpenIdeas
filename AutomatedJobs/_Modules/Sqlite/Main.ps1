@@ -1,17 +1,17 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
-[void] $Global:Job.NuGet.InstallPackageIfMissing("System.Data.Sqlite");
-[void] $Global:Job.NuGet.AddAssembly("System.Data.Sqlite", "Stub.System.Data.Sqlite.Core.NetFramework.1.0.117.0\lib\net451\System.Data.Sqlite.dll");
+[void] $Global:Session.NuGet.InstallPackageIfMissing("System.Data.Sqlite");
+[void] $Global:Session.NuGet.AddAssembly("System.Data.Sqlite", "Stub.System.Data.Sqlite.Core.NetFramework.1.0.117.0\lib\net451\System.Data.Sqlite.dll");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Sqlite" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 
 #region Connection Methods
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -29,7 +29,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IsPersisted
         )
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "FilePath" = $FilePath;
@@ -39,7 +39,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -49,10 +49,10 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        Return $Global:Job.Connections.Get($Name);
+        Return $Global:Session.Connections.Get($Name);
     };
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "GetConnectionString" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -62,7 +62,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Connection = $Global:Job.PostgreSQL.GetConnection($Name);
+        $Connection = $Global:Session.PostgreSQL.GetConnection($Name);
         If (![IO.File]::Exists($Connection.FilePath))
         {
             Throw [System.IO.FileNotFoundException]::new("Database File not found", $Connection.FilePath);
@@ -73,7 +73,7 @@ Add-Member `
 
 #region Base Methods
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "ConvertToDBValue" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -94,7 +94,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "ConvertFromDBValue" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -121,7 +121,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "Execute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -140,7 +140,7 @@ Add-Member `
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -149,7 +149,7 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
             }
             [void] $Command.ExecuteNonQuery();
         }
@@ -166,7 +166,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -195,7 +195,7 @@ Add-Member `
         $FieldConversion = (($FieldConversion -ne $null) ? $FieldConversion : [Collections.Hashtable]::new());
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -204,7 +204,7 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
             }
             $DataReader = $Command.ExecuteReader();
             If ($Fields.Contains("*"))
@@ -222,7 +222,7 @@ Add-Member `
                 {
                     [Object] $Value = (
                         $FieldConversion.ContainsKey($Field) ?
-                            $Global:Job.Sqlite.ConvertFromDBValue(
+                            $Global:Session.Sqlite.ConvertFromDBValue(
                                 $DataReader.GetValue($DataReader.GetOrdinal($Field)),
                                 $FieldConversion[$Field]
                             ) :
@@ -259,7 +259,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "GetScalar" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -280,7 +280,7 @@ Add-Member `
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -289,7 +289,7 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
             }
             $ReturnValue = $Command.ExecuteScalar();
             If ($ReturnValue -is [System.DBNull])
@@ -312,7 +312,7 @@ Add-Member `
     }
 #endregion Base Methods
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "CreateIfNotFound" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -327,14 +327,14 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Collections.Hashtable] $Parameters
         )
-        $ConnectionValues = $Global:Job.Connections.Get($ConnectionName);
+        $ConnectionValues = $Global:Session.Connections.Get($ConnectionName);
         If (![IO.File]::Exists($ConnectionValues.FilePath))
         {
             [Data.Sqlite.SqliteConnection] $Connection = $null;
             [Data.Sqlite.SqliteCommand] $Command = $null;
             Try
             {
-                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
                 $Connection.Open();
                 $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
                 $Command.CommandType = [Data.CommandType]::Text;
@@ -343,7 +343,7 @@ Add-Member `
                     [String] $Name = $ParameterKey;
                     If (!$Name.StartsWith("@"))
                         { $Name = "@" + $Name}
-                    [void] $Command.Parameters.AddWithValue($Name, $Global:Job.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
                 }
                 [void] $Command.ExecuteNonQuery();
             }
@@ -362,7 +362,7 @@ Add-Member `
     }
 
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "ClearTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -374,10 +374,10 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [void] $Global:Job.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM ``{0}``", $Table));
+        [void] $Global:Session.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM ``{0}``", $Table));
     };
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "GetTableRowCount" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -427,7 +427,7 @@ Add-Member `
                 }
             }
         }
-        [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
+        [Object] $ScalarValue = $Global:Session.Sqlite.GetScalar(
             $ConnectionName,
             [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",
                 $Table,
@@ -447,7 +447,7 @@ Add-Member `
         Return $ReturnValue
     };
 Add-Member `
-    -InputObject $Global:Job.Sqlite `
+    -InputObject $Global:Session.Sqlite `
     -Name "DoesTableHaveColumn" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -464,7 +464,7 @@ Add-Member `
             [String] $Column
         )
         [Boolean] $ReturnValue = $false;
-        [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
+        [Object] $ScalarValue = $Global:Session.Sqlite.GetScalar(
             $ConnectionName,
             (
                 "SELECT 1 AS HasColumn`r`n" +

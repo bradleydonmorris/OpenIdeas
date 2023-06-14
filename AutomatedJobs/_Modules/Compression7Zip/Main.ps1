@@ -1,17 +1,17 @@
 #These Modules require 7-Zip to be installed.
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Compression7Zip" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.Compression7Zip `
+    -InputObject $Global:Session.Compression7Zip `
     -TypeName "String" `
     -NotePropertyName "ExecutablePath" `
     -NotePropertyValue "C:\Program Files\7-Zip\7z.exe";
 Add-Member `
-    -InputObject $Global:Job.Compression7Zip `
+    -InputObject $Global:Session.Compression7Zip `
     -Name "ExtractAsset" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -67,7 +67,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.Compression7Zip `
+    -InputObject $Global:Session.Compression7Zip `
     -Name "GetAssets" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -157,7 +157,7 @@ Add-Member `
         [void] $Process.Dispose();
         Return $ReturnValue;
     };
-If (![IO.File]::Exists($Global:Job.Compression7Zip.ExecutablePath))
+If (![IO.File]::Exists($Global:Session.Compression7Zip.ExecutablePath))
 {
-    Throw [IO.FileNotFoundException]::new($Global:Job.Compression7Zip.ExecutablePath);
+    Throw [IO.FileNotFoundException]::new($Global:Session.Compression7Zip.ExecutablePath);
 }

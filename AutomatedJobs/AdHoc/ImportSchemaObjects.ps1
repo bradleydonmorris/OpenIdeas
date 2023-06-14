@@ -13,16 +13,16 @@ Clear-Host;
 [String] $IndexFileGroup = "PRIMARY";
 [Boolean] $WhatIf = $false;
 
-$SQLInstance = $Global:Job.Prompts.StringResponse("SQL Instance", $SQLInstance);
-$Database = $Global:Job.Prompts.StringResponse("SQL Database", $Database);
-$Schema = $Global:Job.Prompts.StringResponse("SQL Schema", $Schema);
-$JSONFilePath = $Global:Job.Prompts.StringResponse("JSON File", $JSONFilePath);
-$HeapFileGroup = $Global:Job.Prompts.StringResponse("Heap File Group", $HeapFileGroup);
-$LobFileGroup = $Global:Job.Prompts.StringResponse("Lob File Group", $LobFileGroup);
-$IndexFileGroup = $Global:Job.Prompts.StringResponse("Index File Group", $IndexFileGroup);
-$WhatIf = $Global:Job.Prompts.BooleanResponse("Do `"What If`" only?", $WhatIf);
+$SQLInstance = $Global:Session.Prompts.StringResponse("SQL Instance", $SQLInstance);
+$Database = $Global:Session.Prompts.StringResponse("SQL Database", $Database);
+$Schema = $Global:Session.Prompts.StringResponse("SQL Schema", $Schema);
+$JSONFilePath = $Global:Session.Prompts.StringResponse("JSON File", $JSONFilePath);
+$HeapFileGroup = $Global:Session.Prompts.StringResponse("Heap File Group", $HeapFileGroup);
+$LobFileGroup = $Global:Session.Prompts.StringResponse("Lob File Group", $LobFileGroup);
+$IndexFileGroup = $Global:Session.Prompts.StringResponse("Index File Group", $IndexFileGroup);
+$WhatIf = $Global:Session.Prompts.BooleanResponse("Do `"What If`" only?", $WhatIf);
 
-$Global:Job.Logging.WriteVariables("Config", @{
+$Global:Session.Logging.WriteVariables("Config", @{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;
@@ -34,7 +34,7 @@ $Global:Job.Logging.WriteVariables("Config", @{
 });
 
 Clear-Host;
-$Global:Job.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
+$Global:Session.Prompts.DisplayHashTable("Variables", 180, [Ordered]@{
     "SQL Instance" = $SQLInstance;
     "Database" = $Database;
     "Schema" = $Schema;
@@ -49,43 +49,43 @@ If ($WhatIf)
 {
     Try
     {
-        $Global:Job.Logging.TimedExecute("ImportFromJSONWhatIf", {
-            $Global:Job.Logging.WriteEntry("Information", [String]::Format("Building What If for JSON File {0}", $JSONFilePath));
+        $Global:Session.Logging.TimedExecute("ImportFromJSONWhatIf", {
+            $Global:Session.Logging.WriteEntry("Information", [String]::Format("Building What If for JSON File {0}", $JSONFilePath));
             [String] $WhatIfFilePath = [IO.Path]::Combine(
                 [IO.Path]::GetDirectoryName($JSONFilePath),
                 "WhatIf.tsv"
             );
-            $Global:Job.ScriptSQLServerDatabase.ImportFromJSONWhatIf(
+            $Global:Session.ScriptSQLServerDatabase.ImportFromJSONWhatIf(
                 $JSONFilePath,
                 $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true,
                 $WhatIfFilePath
             );
-            $Global:Job.Logging.WriteEntry("Information", [String]::Format("What If file built {0}", $WhatIfFilePath));
+            $Global:Session.Logging.WriteEntry("Information", [String]::Format("What If file built {0}", $WhatIfFilePath));
             Write-Host -Object "What If file created:`r`n`t$WhatIfFilePath";
         });
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
+        $Global:Session.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
     }
 }
 Else
 {
-    $Global:Job.Logging.TimedExecute("ImportFromJSON", {
+    $Global:Session.Logging.TimedExecute("ImportFromJSON", {
         Try
         {
-            $Global:Job.Logging.WriteEntry("Information", [String]::Format("Importing JSON File {0}", $JSONFilePath));
-            $Global:Job.ScriptSQLServerDatabase.ImportFromJSON(
+            $Global:Session.Logging.WriteEntry("Information", [String]::Format("Importing JSON File {0}", $JSONFilePath));
+            $Global:Session.ScriptSQLServerDatabase.ImportFromJSON(
                 $JSONFilePath,
                 $SQLInstance, $Database, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $true
             );
         }
         Catch
         {
-            $Global:Job.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
+            $Global:Session.Logging.WriteExceptionWithData($_.Exception, $JSONFilePath);
         }
     });
 }
 
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

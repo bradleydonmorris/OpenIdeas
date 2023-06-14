@@ -1,12 +1,12 @@
-[void] $Global:Job.LoadModule("SQLServer");
+[void] $Global:Session.LoadModule("SQLServer");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SQLServerFileImport" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.SQLServerFileImport `
+    -InputObject $Global:Session.SQLServerFileImport `
     -Name "DeleteTableRows" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -50,7 +50,7 @@ Add-Member `
                 }
             }
         }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new(
             [String]::Format("DELETE FROM [{0}].[{1}]{2}",
@@ -70,7 +70,7 @@ Add-Member `
         [void] $SqlConnection.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServerFileImport `
+    -InputObject $Global:Session.SQLServerFileImport `
     -Name "CSVToDataTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -127,7 +127,7 @@ Add-Member `
         Return ,$ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServerFileImport `
+    -InputObject $Global:Session.SQLServerFileImport `
     -Name "ImportCSV" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -160,7 +160,7 @@ Add-Member `
                         }
                 #>
         )
-        [System.Data.DataTable] $DataTable = $Global:Job.SQLServerFileImport.CSVToDataTable($FilePath, $Delimiter);
+        [System.Data.DataTable] $DataTable = $Global:Session.SQLServerFileImport.CSVToDataTable($FilePath, $Delimiter);
         If ($AdditionalDataItems)
         {
             If ($AdditionalDataItems.Count -gt 0)
@@ -175,7 +175,7 @@ Add-Member `
                 }
             }
         }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnection($ConnectionName));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnection($ConnectionName));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlBulkCopy] $SqlBulkCopy = [Data.SqlClient.SqlBulkCopy]::new($SqlConnection);
         $SqlBulkCopy.BatchSize = $BatchSize;
@@ -188,7 +188,7 @@ Add-Member `
         [void] $DataTable.Dispose();
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServerFileImport `
+    -InputObject $Global:Session.SQLServerFileImport `
     -Name "GetCSVRowCount" `
     -MemberType "ScriptMethod" `
     -Value {

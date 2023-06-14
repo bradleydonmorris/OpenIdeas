@@ -2,24 +2,24 @@
     "PreciousMetalsTracking"
 );
 
-$Global:Job.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3"));
+$Global:Session.PreciousMetalsTracking.Open([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Data.sqlite3"));
 
-# $Global:Job.PreciousMetalsTracking.VerifyDatabase();
+# $Global:Session.PreciousMetalsTracking.VerifyDatabase();
 
-# $Global:Job.PreciousMetalsTracking.GetVendorByName("APMEX");
-# $Global:Job.PreciousMetalsTracking.GetVendorByGUID([Guid]::Parse("48011eee-6d05-450f-8480-8e7cce94fc1b"));
+# $Global:Session.PreciousMetalsTracking.GetVendorByName("APMEX");
+# $Global:Session.PreciousMetalsTracking.GetVendorByGUID([Guid]::Parse("48011eee-6d05-450f-8480-8e7cce94fc1b"));
 
-# $Vendor = $Global:Job.PreciousMetalsTracking.AddVendor("APMEXsadf", "asdfasdfasdfasdf");
-# $Global:Job.PreciousMetalsTracking.GetVendorByGUID($Vendor.VendorGUID);
-# $Global:Job.PreciousMetalsTracking.RemoveVendor($Vendor.VendorGUID);
+# $Vendor = $Global:Session.PreciousMetalsTracking.AddVendor("APMEXsadf", "asdfasdfasdfasdf");
+# $Global:Session.PreciousMetalsTracking.GetVendorByGUID($Vendor.VendorGUID);
+# $Global:Session.PreciousMetalsTracking.RemoveVendor($Vendor.VendorGUID);
 
-# $Global:Job.PreciousMetalsTracking.AddMetalType("Copper");
+# $Global:Session.PreciousMetalsTracking.AddMetalType("Copper");
 
 # SELECT COUNT(*) FROM `MetalType` WHERE `Name` = @Param0
 
-# $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName
-# $Global:Job.Sqlite.GetScalar(
-#     $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+# $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName
+# $Global:Session.Sqlite.GetScalar(
+#     $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
 #     [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",
 #         "MetalType",
 #         " WHERE `Name` = @Param0"

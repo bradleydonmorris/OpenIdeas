@@ -1,88 +1,104 @@
 . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
     "GoogleAPI",
-    "Databases.Google"
+    "GoogleSQLDatabase"
 );
 
-#$Global:Job.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
-$Global:Job.Logging.WriteVariables("Valirables", @{
-    "GoogleDatabase" = $Global:Job.Config.GoogleDatabase;
-    "GoogleConnectionName" = $Global:Job.Config.GoogleConnectionName;
+#$Global:Session.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
+$Global:Session.Logging.WriteVariables("Valirables", @{
+    "GoogleDatabase" = $Global:Session.Config.GoogleDatabase;
+    "GoogleAPIConnectionName" = $Global:Session.Config.GoogleAPIConnectionName;
 });
 
-$Global:Job.Logging.Timers.Add("Organizational Unit Import");
-$Global:Job.Logging.Timers.Start("Organizational Unit Import");
-$Global:Job.Logging.WriteEntry("Information", "Importing Organizational Unit Changes");
-ForEach ($OrgUnit In $Global:Job.GoogleAPI.GetOrgUnits($Global:Job.Config.GoogleConnectionName))
-{
-    $Global:Job.Logging.WriteEntry("Information", (
-        "Importing Org Unit " +
-        $OrgUnit.orgUnitPath
-    ));
-    [String] $OrgUnitJSON = [String]::Empty;
+$Global:Session.Logging.TimedExecute("ImportOrgUnits", {
     Try
     {
-        $OrgUnitJSON = ConvertTo-Json -InputObject $OrgUnit -Depth 100;
-        $Global:Job.Databases.Google.ImportOrganizationalUnit($Global:Job.Config.DatabaseConnectionName, $OrgUnitJSON);
+        ForEach ($OrgUnit In $Global:Session.GoogleAPI.GetOrgUnits($Global:Session.Config.GoogleAPIConnectionName))
+        {
+            [void] $Global:Session.Logging.WriteEntry("Information", (
+                "Importing Org Unit " +
+                $OrgUnit.orgUnitPath
+            ));
+            [String] $OrgUnitJSON = [String]::Empty;
+            Try
+            {
+                $OrgUnitJSON = ConvertTo-Json -InputObject $OrgUnit -Depth 100;
+                [void] $Global:Session.GoogleSQLDatabases.ImportOrganizationalUnit($Global:Session.Config.DatabaseConnectionName, $OrgUnitJSON);
+            }
+            Catch
+            {
+                [void] $Global:Session.Logging.WriteExceptionWithData($_.Exception, $OrgUnitJSON);
+            }
+        }
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $OrgUnitJSON);
+        [void] $Global:Session.Logging.WriteException($_.Exception);
     }
-}
-$Global:Job.Logging.Timers.Stop("Organizational Unit Import");
+});
 
-$Global:Job.Logging.Timers.Add("Group Import");
-$Global:Job.Logging.Timers.Start("Group Import");
-$Global:Job.Logging.WriteEntry("Information", "Importing Group Changes");
-ForEach ($Group In $Global:Job.GoogleAPI.GetGroups($Global:Job.Config.GoogleConnectionName, $true))
-{
-    $Global:Job.Logging.WriteEntry("Information", (
-        "Importing Group " +
-        $Group.name
-    ));
-    [String] $GroupJSON = [String]::Empty;
+$Global:Session.Logging.TimedExecute("ImportUsers", {
     Try
     {
-        $GroupJSON = ConvertTo-Json -InputObject $Group -Depth 100;
-        $Global:Job.Databases.Google.ImportGroup($Global:Job.Config.DatabaseConnectionName, $GroupJSON);
+        ForEach ($User In $Global:Session.GoogleAPI.GetUsers($Global:Session.Config.GoogleAPIConnectionName))
+        {
+            [void] $Global:Session.Logging.WriteEntry("Information", (
+                "Importing User " +
+                $User.primaryEmail
+            ));
+            [String] $UserJSON = [String]::Empty;
+            Try
+            {
+                $UserJSON = ConvertTo-Json -InputObject $User;
+                [void] $Global:Session.GoogleSQLDatabases.ImportUser($Global:Session.Config.DatabaseConnectionName, $UserJSON);
+            }
+            Catch
+            {
+                [void] $Global:Session.Logging.WriteExceptionWithData($_.Exception, $UserJSON);
+            }
+        }
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $GroupJSON);
+        [void] $Global:Session.Logging.WriteException($_.Exception);
     }
-}
-$Global:Job.Logging.Timers.Stop("Group Import");
+});
 
-$Global:Job.Logging.Timers.Add("User Import");
-$Global:Job.Logging.Timers.Start("User Import");
-$Global:Job.Logging.WriteEntry("Information", "Importing User Changes");
-ForEach ($User In $Global:Job.GoogleAPI.GetUsers($Global:Job.Config.GoogleConnectionName))
-{
-    $Global:Job.Logging.WriteEntry("Information", (
-        "Importing User " +
-        $User.primaryEmail
-    ));
-    [String] $UserJSON = [String]::Empty;
+$Global:Session.Logging.TimedExecute("ImportGroups", {
     Try
     {
-        $UserJSON = ConvertTo-Json -InputObject $User -Depth 100;
-        $Global:Job.Databases.Google.ImportUser($Global:Job.Config.DatabaseConnectionName, $UserJSON);
+        ForEach ($Group In $Global:Session.GoogleAPI.GetGroups($Global:Session.Config.GoogleAPIConnectionName))
+        {
+            [void] $Global:Session.Logging.WriteEntry("Information", (
+                "Importing Group " +
+                $Group.name
+            ));
+            [String] $GroupJSON = [String]::Empty;
+            Try
+            {
+                $GroupJSON = ConvertTo-Json -InputObject $Group;
+                [void] $Global:Session.GoogleSQLDatabases.ImportGroup($Global:Session.Config.DatabaseConnectionName, $GroupJSON);
+            }
+            Catch
+            {
+                [void] $Global:Session.Logging.WriteExceptionWithData($_.Exception, $GroupJSON);
+            }
+        }
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $UserJSON);
+        [void] $Global:Session.Logging.WriteException($_.Exception);
     }
-}
-$Global:Job.Logging.Timers.Stop("User Import");
+});
 
+$Global:Session.Logging.TimedExecute("ProcessGroupMembershipChanges", {
+    Try { [void] $Global:Session.GoogleSQLDatabases.ProcessGroupMembershipChanges($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
+$Global:Session.Logging.TimedExecute("RebuildIndexes", {
+    Try { [void] $Global:Session.GoogleSQLDatabases.RebuildIndexes($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
-$Global:Job.Logging.Timers.Add("Processing Group Membership Changes");
-$Global:Job.Logging.Timers.Start("Processing Group Membership Changes");
-$Global:Job.Logging.WriteEntry("Information", "Processing Group Membership Changes");
-Try { $Global:Job.Databases.Google.ProcessGroupMembershipChanges($Global:Job.Config.DatabaseConnectionName); }
-    Catch { $Global:Job.Logging.WriteException($_.Exception); }
-$Global:Job.Logging.Timers.Stop("Processing Group Membership Changes");
-
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

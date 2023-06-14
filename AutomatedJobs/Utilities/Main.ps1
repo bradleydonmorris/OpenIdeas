@@ -1,10 +1,10 @@
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Utilities" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.Utilities `
+    -InputObject $Global:Session.Utilities `
     -Name "ParseFileNameTime" `
     -MemberType "ScriptMethod" `
     -Value {

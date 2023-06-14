@@ -1,15 +1,15 @@
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking `
+    -InputObject $Global:Session.PreciousMetalsTracking `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Menus" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -TypeName "System.Boolean" `
     -NotePropertyName "ExitApplication" `
     -NotePropertyValue $false;
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -Name "ShowMainMenu" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -18,7 +18,7 @@ Add-Member `
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $MenuResponse = $Global:Job.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $MenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
                 @(
                     @{ "Selector" = "L"; "Name" = "Lookups"; "Text" = "Lookup Data"; },
                     @{ "Selector" = "V"; "Name" = "Vendors"; "Text" = "Vendors"; },
@@ -31,31 +31,31 @@ Add-Member `
             {
                 "Lookups"
                 {
-                    [void] $Global:Job.PreciousMetalsTracking.Menus.ShowLookupsMenu();
+                    [void] $Global:Session.PreciousMetalsTracking.Menus.ShowLookupsMenu();
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Vendors"
                 {
-                    [void] $Global:Job.PreciousMetalsTracking.Menus.ShowVendorsMenu();
+                    [void] $Global:Session.PreciousMetalsTracking.Menus.ShowVendorsMenu();
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Items"
                 {
-                    [void] $Global:Job.PreciousMetalsTracking.Menus.ShowItemsMenu();
+                    [void] $Global:Session.PreciousMetalsTracking.Menus.ShowItemsMenu();
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Transactions"
                 {
-                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotImpletemented("Transactions");
+                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotImpletemented("Transactions");
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitApplication"
                 {
-                    $Global:Job.PreciousMetalsTracking.Menus.ExitApplication = $true;
+                    $Global:Session.PreciousMetalsTracking.Menus.ExitApplication = $true;
                 }
                 Default
                 {
@@ -63,16 +63,16 @@ Add-Member `
                     $ExitMenu = $false;
                 }
             }
-            If ($Global:Job.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
+            If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
-                $Global:Job.PreciousMetalsTracking.Exit();
+                $Global:Session.PreciousMetalsTracking.Exit();
                 $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
             }
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -Name "ShowLookupsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -81,7 +81,7 @@ Add-Member `
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
                 @(
                     @{ "Selector" = "MT"; "Name" = "MetalTypes"; "Text" = "Metal Types"; },
                     @{ "Selector" = "X"; "Name" = "ExitMenu"; "Text" = "Return to Main Menu"; },
@@ -92,7 +92,7 @@ Add-Member `
             {
                 "MetalTypes"
                 {
-                    [void] $Global:Job.PreciousMetalsTracking.Menus.ShowLookupMenu("Metal Types", "Metal Type", "MetalType");
+                    [void] $Global:Session.PreciousMetalsTracking.Menus.ShowLookupMenu("Metal Types", "Metal Type", "MetalType");
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
@@ -103,7 +103,7 @@ Add-Member `
                 }
                 "ExitApplication"
                 {
-                    $Global:Job.PreciousMetalsTracking.Menus.ExitApplication = $true;
+                    $Global:Session.PreciousMetalsTracking.Menus.ExitApplication = $true;
                 }
                 Default
                 {
@@ -111,7 +111,7 @@ Add-Member `
                     $ExitMenu = $false;
                 }
             }
-            If ($Global:Job.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
+            If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
                 $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
@@ -119,7 +119,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -Name "ShowLookupMenu" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -139,7 +139,7 @@ Add-Member `
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
                 @(
                     @{ "Selector" = "L"; "Name" = "List"; "Text" = "List $LookupDisplayNamePlural"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add $LookupDisplayNameSingular"; },
@@ -154,71 +154,71 @@ Add-Member `
                 "List"
                 {
                     Clear-Host;
-                    $LookupValues = $Global:Job.PreciousMetalsTracking.Data.Lookups.GetAll($LookupTableName);
+                    $LookupValues = $Global:Session.PreciousMetalsTracking.Data.Lookups.GetAll($LookupTableName);
                     If ($LookupValues)
                     {
                         If ($LookupValues.Count -gt 0)
                         {
-                            [void] $Global:Job.PreciousMetalsTracking.Messages.ShowLookupValues($LookupDisplayNamePlural, $LookupValues);
+                            [void] $Global:Session.PreciousMetalsTracking.Messages.ShowLookupValues($LookupDisplayNamePlural, $LookupValues);
                         }
                         {
-                            [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound($LookupDisplayNamePlural);
+                            [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound($LookupDisplayNamePlural);
                         }
                     }
                     Else
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound($LookupDisplayNamePlural);
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound($LookupDisplayNamePlural);
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Add"
                 {
-                    [String] $LookupValue = $Global:Job.Prompts.StringResponse("Enter $LookupDisplayNameSingular Name", "");
+                    [String] $LookupValue = $Global:Session.Prompts.StringResponse("Enter $LookupDisplayNameSingular Name", "");
                     If (![String]::IsNullOrEmpty($LookupValue))
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Data.Lookups.Add($LookupTableName, $LookupValue);
+                        [void] $Global:Session.PreciousMetalsTracking.Data.Lookups.Add($LookupTableName, $LookupValue);
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }   
                 "Modify"
                 {
-                    [String] $OldLookupValue = $Global:Job.Prompts.StringResponse("Enter Current $LookupDisplayNameSingular Name", "");
-                    [String] $NewLookupValue = $Global:Job.Prompts.StringResponse("Enter New $LookupDisplayNameSingular Name", "");
+                    [String] $OldLookupValue = $Global:Session.Prompts.StringResponse("Enter Current $LookupDisplayNameSingular Name", "");
+                    [String] $NewLookupValue = $Global:Session.Prompts.StringResponse("Enter New $LookupDisplayNameSingular Name", "");
                     If (![String]::IsNullOrEmpty($OldLookupValue))
                     {
-                        If ($Global:Job.PreciousMetalsTracking.Data.Lookups.Exists($LookupTableName, $OldLookupValue))
+                        If ($Global:Session.PreciousMetalsTracking.Data.Lookups.Exists($LookupTableName, $OldLookupValue))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Lookups.Exists($LookupTableName, $NewLookupValue))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Lookups.Exists($LookupTableName, $NewLookupValue))
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("{0} `"{1}`"", $LookupDisplayNameSingular, $NewLookupValue));
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("{0} `"{1}`"", $LookupDisplayNameSingular, $NewLookupValue));
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Data.Lookups.Rename($LookupTableName, $OldLookupValue, $NewLookupValue);
+                                [void] $Global:Session.PreciousMetalsTracking.Data.Lookups.Rename($LookupTableName, $OldLookupValue, $NewLookupValue);
                             }
                         }
                     }
                     Else
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("{0} `"{1}`"", $LookupDisplayNameSingular, $OldLookupValue));
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("{0} `"{1}`"", $LookupDisplayNameSingular, $OldLookupValue));
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Remove"
                 {
-                    [String] $LookupValue = $Global:Job.Prompts.StringResponse("Enter $LookupDisplayNameSingular Name", "");
+                    [String] $LookupValue = $Global:Session.Prompts.StringResponse("Enter $LookupDisplayNameSingular Name", "");
                     If (![String]::IsNullOrEmpty($LookupValue))
                     {
-                        If ($Global:Job.PreciousMetalsTracking.Data.Lookups.IsInUse($LookupTableName, $LookupValue))
+                        If ($Global:Session.PreciousMetalsTracking.Data.Lookups.IsInUse($LookupTableName, $LookupValue))
                         {
-                            [void] $Global:Job.PreciousMetalsTracking.Messages.ShowIsInUse([String]::Format("$LookupDisplayNameSingular `"{0}`"", $LookupValue));
+                            [void] $Global:Session.PreciousMetalsTracking.Messages.ShowIsInUse([String]::Format("$LookupDisplayNameSingular `"{0}`"", $LookupValue));
                         }
                         Else
                         {
-                            [void] $Global:Job.PreciousMetalsTracking.Data.Lookups.Remove($LookupTableName, $LookupValue);
+                            [void] $Global:Session.PreciousMetalsTracking.Data.Lookups.Remove($LookupTableName, $LookupValue);
                         }
                     }
                     $ShowInvalidChoiceMessage = $false;
@@ -231,7 +231,7 @@ Add-Member `
                 }
                 "ExitApplication"
                 {
-                    $Global:Job.PreciousMetalsTracking.Menus.ExitApplication = $true;
+                    $Global:Session.PreciousMetalsTracking.Menus.ExitApplication = $true;
                 }
                 Default
                 {
@@ -239,7 +239,7 @@ Add-Member `
                     $ExitMenu = $false;
                 }
             }
-            If ($Global:Job.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
+            If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
                 $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
@@ -247,7 +247,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -Name "ShowVendorsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -256,7 +256,7 @@ Add-Member `
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
                 @(
                     @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Vendor"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Vendor"; },
@@ -271,15 +271,15 @@ Add-Member `
                 "Get"
                 {
                     Clear-Host;
-                    [String] $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
-                    [PSObject] $Vendor = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
+                    [String] $VendorName = $Global:Session.Prompts.StringResponse("Enter Vendor Name", "");
+                    [PSObject] $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
                     If ($Vendor)
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
                     }
                     Else
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound("Vendor");
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound("Vendor");
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
@@ -291,12 +291,12 @@ Add-Member `
                     [String] $VendorName = $null;
                     While ($VendorExists)
                     {
-                        $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
+                        $VendorName = $Global:Session.Prompts.StringResponse("Enter Vendor Name", "");
                         If (![String]::IsNullOrEmpty($VendorName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Vendor `"{0}`"", $VendorName));
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Vendor `"{0}`"", $VendorName));
                                 $VendorExists = $true;
                             }
                             Else
@@ -305,9 +305,9 @@ Add-Member `
                             }
                         }
                     }
-                    [String] $VendorWebSite = $Global:Job.Prompts.StringResponse("Enter Vendor Web Site", "");
-                    [PSObject] $Vendor = $Global:Job.PreciousMetalsTracking.Data.Vendors.Add($VendorName, $VendorWebSite);
-                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
+                    [String] $VendorWebSite = $Global:Session.Prompts.StringResponse("Enter Vendor Web Site", "");
+                    [PSObject] $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.Add($VendorName, $VendorWebSite);
+                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
@@ -319,12 +319,12 @@ Add-Member `
                     [PSObject] $Vendor = $null;
                     While (!$VendorExists)
                     {
-                        $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
+                        $VendorName = $Global:Session.Prompts.StringResponse("Enter Vendor Name", "");
                         If (![String]::IsNullOrEmpty($VendorName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
                             {
-                                $Vendor = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
+                                $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
                                 $VendorExists = $true;
                             }
                             Else
@@ -340,15 +340,15 @@ Add-Member `
                         [String] $NewVendorName = $null;
                         While ($NewVendorNameExists)
                         {
-                            $NewVendorName = $Global:Job.Prompts.StringResponse("Enter New Vendor Name", $Vendor.Name);
+                            $NewVendorName = $Global:Session.Prompts.StringResponse("Enter New Vendor Name", $Vendor.Name);
                             If (![String]::IsNullOrEmpty($NewVendorName))
                             {
                                 If (
                                     $NewVendorName -ne $Vendor.Name -and
-                                    $Global:Job.PreciousMetalsTracking.Data.Vendors.Exists($NewVendorName)
+                                    $Global:Session.PreciousMetalsTracking.Data.Vendors.Exists($NewVendorName)
                                 )
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Vendor `"{0}`"", $NewVendorName));
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Vendor `"{0}`"", $NewVendorName));
                                     $NewVendorNameExists = $true;
                                 }
                                 Else
@@ -362,9 +362,9 @@ Add-Member `
                             }
                         }
                         $Vendor.Name = $NewVendorName;
-                        $Vendor.WebSite = $Global:Job.Prompts.StringResponse("New Vendor Web Site", $Vendor.WebSite);
-                        [PSObject] $Vendor = $Global:Job.PreciousMetalsTracking.Data.Vendors.Modify($Vendor.VendorGUID, $Vendor.Name, $Vendor.WebSite);
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
+                        $Vendor.WebSite = $Global:Session.Prompts.StringResponse("New Vendor Web Site", $Vendor.WebSite);
+                        [PSObject] $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.Modify($Vendor.VendorGUID, $Vendor.Name, $Vendor.WebSite);
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
@@ -377,25 +377,25 @@ Add-Member `
                     [PSObject] $Vendor = $null;
                     While (!$VendorExists)
                     {
-                        $VendorName = $Global:Job.Prompts.StringResponse("Enter Vendor Name", "");
+                        $VendorName = $Global:Session.Prompts.StringResponse("Enter Vendor Name", "");
                         If (![String]::IsNullOrEmpty($VendorName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Vendors.Exists($VendorName))
                             {
                                 $VendorExists = $true;
-                                If ($Global:Job.PreciousMetalsTracking.Data.Vendors.IsInUse($VendorName))
+                                If ($Global:Session.PreciousMetalsTracking.Data.Vendors.IsInUse($VendorName))
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowIsInUse($VendorName);
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowIsInUse($VendorName);
                                 }
                                 Else
                                 {
-                                    $Vendor = $Global:Job.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
-                                    [void] $Global:Job.PreciousMetalsTracking.Data.Vendors.Remove($Vendor.VendorGUID);
+                                    $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.GetByName($VendorName);
+                                    [void] $Global:Session.PreciousMetalsTracking.Data.Vendors.Remove($Vendor.VendorGUID);
                                 }
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound($VendorName);
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound($VendorName);
                                 $VendorExists = $false;
                             }
                         }
@@ -410,7 +410,7 @@ Add-Member `
                 }
                 "ExitApplication"
                 {
-                    $Global:Job.PreciousMetalsTracking.Menus.ExitApplication = $true;
+                    $Global:Session.PreciousMetalsTracking.Menus.ExitApplication = $true;
                 }
                 Default
                 {
@@ -418,7 +418,7 @@ Add-Member `
                     $ExitMenu = $false;
                 }
             }
-            If ($Global:Job.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
+            If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
                 $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
@@ -426,7 +426,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Menus `
+    -InputObject $Global:Session.PreciousMetalsTracking.Menus `
     -Name "ShowItemsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -435,7 +435,7 @@ Add-Member `
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Job.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
                 @(
                     @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Item"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Item"; },
@@ -450,15 +450,15 @@ Add-Member `
                 "Get"
                 {
                     Clear-Host;
-                    [String] $ItemName = $Global:Job.Prompts.StringResponse("Enter Item Name", "");
-                    [PSObject] $Item = $Global:Job.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
+                    [String] $ItemName = $Global:Session.Prompts.StringResponse("Enter Item Name", "");
+                    [PSObject] $Item = $Global:Session.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
                     If ($Item)
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowItem($Item);
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowItem($Item);
                     }
                     Else
                     {
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound("Item");
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound("Item");
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
@@ -470,12 +470,12 @@ Add-Member `
                     [String] $ItemName = $null;
                     While ($ItemExists)
                     {
-                        $ItemName = $Global:Job.Prompts.StringResponse("Enter Item Name", "");
+                        $ItemName = $Global:Session.Prompts.StringResponse("Enter Item Name", "");
                         If (![String]::IsNullOrEmpty($ItemName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Items.Exists($ItemName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Items.Exists($ItemName))
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Item `"{0}`"", $ItemName));
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Item `"{0}`"", $ItemName));
                                 $ItemExists = $true;
                             }
                             Else
@@ -493,16 +493,16 @@ Add-Member `
                     [String] $ItemMetalType = $null;
                     While (!$ItemMetalTypeExists)
                     {
-                        $ItemMetalType = $Global:Job.Prompts.StringResponse("Enter Metal Type Name", "");
+                        $ItemMetalType = $Global:Session.Prompts.StringResponse("Enter Metal Type Name", "");
                         If (![String]::IsNullOrEmpty($ItemMetalType))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Lookups.Exists("MetalType", $ItemMetalType))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Lookups.Exists("MetalType", $ItemMetalType))
                             {
                                 $ItemMetalTypeExists = $true;
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Metal Type `"{0}`"", $ItemMetalType));
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Metal Type `"{0}`"", $ItemMetalType));
                                 $ItemMetalTypeExists = $false;
                             }
                         }
@@ -517,7 +517,7 @@ Add-Member `
                     [Double] $Purity = 0;
                     While (!$PurityIsDouble)
                     {
-                        $PurityText = $Global:Job.Prompts.StringResponse("Enter Purity", "0.999");
+                        $PurityText = $Global:Session.Prompts.StringResponse("Enter Purity", "0.999");
                         If (![String]::IsNullOrEmpty($PurityText))
                         {
                             If ([Double]::TryParse($PurityText, [ref]$Purity))
@@ -526,7 +526,7 @@ Add-Member `
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowMustBeDouble("Purity");
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowMustBeDouble("Purity");
                                 $PurityIsDouble = $false;
                             }
                         }
@@ -541,7 +541,7 @@ Add-Member `
                     [Double] $Ounces = 0;
                     While (!$OuncesIsDouble)
                     {
-                        $OuncesText = $Global:Job.Prompts.StringResponse("Enter Ounces", "");
+                        $OuncesText = $Global:Session.Prompts.StringResponse("Enter Ounces", "");
                         If (![String]::IsNullOrEmpty($OuncesText))
                         {
                             If ([Double]::TryParse($OuncesText, [ref]$Ounces))
@@ -550,7 +550,7 @@ Add-Member `
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowMustBeDouble("Ounces");
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowMustBeDouble("Ounces");
                                 $OuncesIsDouble = $false;
                             }
                         }
@@ -559,8 +559,8 @@ Add-Member `
                             $OuncesIsDouble = $false;
                         }
                     }
-                    [PSObject] $Item = $Global:Job.PreciousMetalsTracking.Data.Items.Add($ItemName, $ItemMetalType, $Purity, $Ounces);
-                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowItem($Item);
+                    [PSObject] $Item = $Global:Session.PreciousMetalsTracking.Data.Items.Add($ItemName, $ItemMetalType, $Purity, $Ounces);
+                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowItem($Item);
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
@@ -572,17 +572,17 @@ Add-Member `
                     [PSObject] $Item = $null;
                     While (!$ItemExists)
                     {
-                        $ItemName = $Global:Job.Prompts.StringResponse("Enter Item Name", "");
+                        $ItemName = $Global:Session.Prompts.StringResponse("Enter Item Name", "");
                         If (![String]::IsNullOrEmpty($ItemName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Items.Exists($ItemName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Items.Exists($ItemName))
                             {
-                                $Item = $Global:Job.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
+                                $Item = $Global:Session.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
                                 $ItemExists = $true;
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Item `"{0}`"", $ItemName));
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Item `"{0}`"", $ItemName));
                                 $ItemExists = $false;
                             }
                         }
@@ -594,15 +594,15 @@ Add-Member `
                         [String] $NewItemName = $null;
                         While ($NewItemNameExists)
                         {
-                            $NewItemName = $Global:Job.Prompts.StringResponse("Enter New Item Name", $Item.Name);
+                            $NewItemName = $Global:Session.Prompts.StringResponse("Enter New Item Name", $Item.Name);
                             If (![String]::IsNullOrEmpty($NewItemName))
                             {
                                 If (
                                     $NewItemName -ne $Item.Name -and
-                                    $Global:Job.PreciousMetalsTracking.Data.Items.Exists($NewItemName)
+                                    $Global:Session.PreciousMetalsTracking.Data.Items.Exists($NewItemName)
                                 )
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Item `"{0}`"", $NewItemName));
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowAlreadyExists([String]::Format("Item `"{0}`"", $NewItemName));
                                     $NewItemNameExists = $true;
                                 }
                                 Else
@@ -621,16 +621,16 @@ Add-Member `
                         [String] $ItemMetalType = $null;
                         While (!$ItemMetalTypeExists)
                         {
-                            $ItemMetalType = $Global:Job.Prompts.StringResponse("Enter Metal Type Name", $Item.MetalType);
+                            $ItemMetalType = $Global:Session.Prompts.StringResponse("Enter Metal Type Name", $Item.MetalType);
                             If (![String]::IsNullOrEmpty($ItemMetalType))
                             {
-                                If ($Global:Job.PreciousMetalsTracking.Data.Lookups.Exists("MetalType", $ItemMetalType))
+                                If ($Global:Session.PreciousMetalsTracking.Data.Lookups.Exists("MetalType", $ItemMetalType))
                                 {
                                     $ItemMetalTypeExists = $true;
                                 }
                                 Else
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Metal Type `"{0}`"", $ItemMetalType));
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("Metal Type `"{0}`"", $ItemMetalType));
                                     $ItemMetalTypeExists = $false;
                                 }
                             }
@@ -646,7 +646,7 @@ Add-Member `
                         [Double] $Purity = 0;
                         While (!$PurityIsDouble)
                         {
-                            $PurityText = $Global:Job.Prompts.StringResponse("Enter Purity", $Item.Purity.ToString());
+                            $PurityText = $Global:Session.Prompts.StringResponse("Enter Purity", $Item.Purity.ToString());
                             If (![String]::IsNullOrEmpty($PurityText))
                             {
                                 If ([Double]::TryParse($PurityText, [ref]$Purity))
@@ -655,7 +655,7 @@ Add-Member `
                                 }
                                 Else
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowMustBeDouble("Purity");
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowMustBeDouble("Purity");
                                     $PurityIsDouble = $false;
                                 }
                             }
@@ -671,7 +671,7 @@ Add-Member `
                         [Double] $Ounces = 0;
                         While (!$OuncesIsDouble)
                         {
-                            $OuncesText = $Global:Job.Prompts.StringResponse("Enter Ounces", $Item.Ounces.ToString());
+                            $OuncesText = $Global:Session.Prompts.StringResponse("Enter Ounces", $Item.Ounces.ToString());
                             If (![String]::IsNullOrEmpty($OuncesText))
                             {
                                 If ([Double]::TryParse($OuncesText, [ref]$Ounces))
@@ -680,7 +680,7 @@ Add-Member `
                                 }
                                 Else
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowMustBeDouble("Ounces");
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowMustBeDouble("Ounces");
                                     $OuncesIsDouble = $false;
                                 }
                             }
@@ -690,8 +690,8 @@ Add-Member `
                             }
                         }
                         $Item.Ounces = $Ounces;
-                        [PSObject] $Item = $Global:Job.PreciousMetalsTracking.Data.Items.Modify($Item.ItemGUID, $Item.Name, $Item.MetalType,  $Item.Purity,  $Item.Ounces);
-                        [void] $Global:Job.PreciousMetalsTracking.Messages.ShowItem($Item);
+                        [PSObject] $Item = $Global:Session.PreciousMetalsTracking.Data.Items.Modify($Item.ItemGUID, $Item.Name, $Item.MetalType,  $Item.Purity,  $Item.Ounces);
+                        [void] $Global:Session.PreciousMetalsTracking.Messages.ShowItem($Item);
                     }
                     $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
@@ -704,25 +704,25 @@ Add-Member `
                     [PSObject] $Item = $null;
                     While (!$ItemExists)
                     {
-                        $ItemName = $Global:Job.Prompts.StringResponse("Enter Item Name", "");
+                        $ItemName = $Global:Session.Prompts.StringResponse("Enter Item Name", "");
                         If (![String]::IsNullOrEmpty($ItemName))
                         {
-                            If ($Global:Job.PreciousMetalsTracking.Data.Items.Exists($ItemName))
+                            If ($Global:Session.PreciousMetalsTracking.Data.Items.Exists($ItemName))
                             {
                                 $ItemExists = $true;
-                                If ($Global:Job.PreciousMetalsTracking.Data.Items.IsInUse($ItemName))
+                                If ($Global:Session.PreciousMetalsTracking.Data.Items.IsInUse($ItemName))
                                 {
-                                    [void] $Global:Job.PreciousMetalsTracking.Messages.ShowIsInUse($ItemName);
+                                    [void] $Global:Session.PreciousMetalsTracking.Messages.ShowIsInUse($ItemName);
                                 }
                                 Else
                                 {
-                                    $Item = $Global:Job.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
-                                    [void] $Global:Job.PreciousMetalsTracking.Data.Items.Remove($Item.ItemGUID);
+                                    $Item = $Global:Session.PreciousMetalsTracking.Data.Items.GetByName($ItemName);
+                                    [void] $Global:Session.PreciousMetalsTracking.Data.Items.Remove($Item.ItemGUID);
                                 }
                             }
                             Else
                             {
-                                [void] $Global:Job.PreciousMetalsTracking.Messages.ShowNotFound($ItemName);
+                                [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound($ItemName);
                                 $ItemExists = $false;
                             }
                         }
@@ -737,7 +737,7 @@ Add-Member `
                 }
                 "ExitApplication"
                 {
-                    $Global:Job.PreciousMetalsTracking.Menus.ExitApplication = $true;
+                    $Global:Session.PreciousMetalsTracking.Menus.ExitApplication = $true;
                 }
                 Default
                 {
@@ -745,7 +745,7 @@ Add-Member `
                     $ExitMenu = $false;
                 }
             }
-            If ($Global:Job.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
+            If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
                 $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;

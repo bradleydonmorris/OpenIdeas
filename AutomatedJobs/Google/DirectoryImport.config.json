@@ -1,4 +1,4 @@
 {
     "DatabaseConnectionName": "GoogleDatabase",
-    "GoogleConnectionName": "asdf"
+    "GoogleAPIConnectionName": "GoogleAPI"
 }

@@ -1,17 +1,17 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
-[void] $Global:Job.NuGet.InstallPackageVersionIfMissing("Npgsql", "5.0.0");
-[void] $Global:Job.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
+[void] $Global:Session.NuGet.InstallPackageVersionIfMissing("Npgsql", "5.0.0");
+[void] $Global:Session.NuGet.AddAssembly("Npgsql", "Npgsql.5.0.0\lib\net5.0\Npgsql.dll");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "PostgreSQL" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 
 #region Connection Methods
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -41,7 +41,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IsPersisted
         )
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "Server" = $Server;
@@ -55,7 +55,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -65,10 +65,10 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        Return $Global:Job.Connections.Get($Name);
+        Return $Global:Session.Connections.Get($Name);
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "GetConnectionString" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -78,7 +78,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Connection = $Global:Job.PostgreSQL.GetConnection($Name);
+        $Connection = $Global:Session.PostgreSQL.GetConnection($Name);
         Return [String]::Format(
             "Server={0};Port={1};Database={2};User ID={3};Password={4};",
             $Connection.Server,
@@ -92,7 +92,7 @@ Add-Member `
 
 #region Base Methods
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "Execute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -111,7 +111,7 @@ Add-Member `
         [Npgsql.NpgsqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Session.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -137,7 +137,7 @@ Add-Member `
         }
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -162,7 +162,7 @@ Add-Member `
         [Npgsql.NpgsqlDataReader] $DataReader = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Session.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -216,7 +216,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "GetScalar" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -240,7 +240,7 @@ Add-Member `
         [Npgsql.NpgsqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Job.PostgreSQL.GetConnectionString($ConnectionName));
+            $Connection = [Npgsql.NpgsqlConnection]::new($Global:Session.PostgreSQL.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -273,7 +273,7 @@ Add-Member `
 #endregion Base Methods
 
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "ClearTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -288,13 +288,13 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [void] $Global:Job.PostgreSQL.Execute(
+        [void] $Global:Session.PostgreSQL.Execute(
             $ConnectionName,
             [String]::Format("TRUNCATE TABLE {0}.{1}", $Schema, $Table)
         );
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "GetTableRowCount" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -340,7 +340,7 @@ Add-Member `
                 }
             }
         }
-        [Object] $ScalarValue = $Global:Job.Sqlite.GetScalar(
+        [Object] $ScalarValue = $Global:Session.Sqlite.GetScalar(
             $ConnectionName,
             [String]::Format("SELECT COUNT(*) FROM {0}.{1}{2}",
                 $Schema,
@@ -361,7 +361,7 @@ Add-Member `
         Return $ReturnValue
     };
 Add-Member `
-    -InputObject $Global:Job.PostgreSQL `
+    -InputObject $Global:Session.PostgreSQL `
     -Name "DoesTableHaveColumn" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -381,7 +381,7 @@ Add-Member `
             [String] $Column
         )
         [Boolean] $ReturnValue = $false;
-        [Object] $ScalarValue = $Global:Job.PostgreSQL.GetScalar(
+        [Object] $ScalarValue = $Global:Session.PostgreSQL.GetScalar(
             $ConnectionName,
             (
                 "SELECT 1 AS HasColumn FROM pg_namespace`r`n" +

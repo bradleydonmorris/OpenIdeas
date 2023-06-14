@@ -1,14 +1,14 @@
-[void] $Global:Job.LoadModule("Connections");
+[void] $Global:Session.LoadModule("Connections");
 
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SQLServer" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 
 #region Connection Methods
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -38,7 +38,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IsPersisted
         )
-        $Global:Job.Connections.Set(
+        $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "Instance" = $Instance;
@@ -52,7 +52,7 @@ Add-Member `
         );
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -62,10 +62,10 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        Return $Global:Job.Connections.Get($Name);
+        Return $Global:Session.Connections.Get($Name);
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "GetConnectionString" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -75,7 +75,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Connection = $Global:Job.SQLServer.GetConnection($Name);
+        $Connection = $Global:Session.SQLServer.GetConnection($Name);
         Return [String]::Format(
             "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
             $Connection.Instance,
@@ -90,8 +90,8 @@ Add-Member `
             ),
             [System.Net.Dns]::GetHostName(),
             [String]::Format("{0}/{1}",
-                $Global:Job.Project,
-                $Global:Job.Script
+                $Global:Session.Project,
+                $Global:Session.Script
             )
         );
     };
@@ -99,7 +99,7 @@ Add-Member `
 
 #region Base Methods
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "Execute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -118,7 +118,7 @@ Add-Member `
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -144,7 +144,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "GetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -169,7 +169,7 @@ Add-Member `
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -225,7 +225,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "GetScalar" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -246,7 +246,7 @@ Add-Member `
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::Text;
@@ -277,7 +277,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "ProcExecute" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -300,14 +300,14 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
+                If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
                 [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
@@ -326,7 +326,7 @@ Add-Member `
         }
     }
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "ProcGetRecords" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -355,14 +355,14 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
+                If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
                 [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
@@ -411,7 +411,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "ProcGetScalar" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -436,14 +436,14 @@ Add-Member `
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
         Try
         {
-            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Job.Sqlite.GetConnectionString($ConnectionName));
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
+                If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
                 [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
@@ -469,7 +469,7 @@ Add-Member `
 #endregion Base Methods
 
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "ClearTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -484,13 +484,13 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        $Global:Job.PostgreSQL.Execute(
+        $Global:Session.PostgreSQL.Execute(
             $ConnectionName,
             [String]::Format("TRUNCATE TABLE [{0}].[{1}]", $Schema, $Table)
         );
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "GetTableRowCount" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -536,7 +536,7 @@ Add-Member `
                 }
             }
         }
-        [Object] $ScalarValue = $Global:Job.SQLServer.GetScalar(
+        [Object] $ScalarValue = $Global:Session.SQLServer.GetScalar(
             $ConnectionName,
             [String]::Format("SELECT COUNT_BIG(*) FROM [{0}].[{1}]{2}",
                 $Schema,
@@ -557,7 +557,7 @@ Add-Member `
         Return $ReturnValue
     };
 Add-Member `
-    -InputObject $Global:Job.SQLServer `
+    -InputObject $Global:Session.SQLServer `
     -Name "DoesTableHaveColumn" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -577,7 +577,7 @@ Add-Member `
             [String] $Column
         )
         [Boolean] $ReturnValue = $false;
-        [Object] $ScalarValue = $Global:Job.SQLServer.GetScalar(
+        [Object] $ScalarValue = $Global:Session.SQLServer.GetScalar(
             $ConnectionName,
             (
                 "SELECT 1 FROM [sys].[schemas]`r`n" +

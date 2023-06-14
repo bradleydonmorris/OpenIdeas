@@ -15,22 +15,22 @@
 [String] $IndexFileGroupName = "PRIMARY";
 [String] $LobFileGroupName = "PRIMARY";
 
-$SQLInstance = $Global:Job.Prompts.StringResponse("SQL Instance", $SQLInstance);
-$Database = $Global:Job.Prompts.StringResponse("SQL Database", $Database);
-$Schema = $Global:Job.Prompts.StringResponse("SQL Schema", $Schema);
-$InputFolderPath = $Global:Job.Prompts.StringResponse("Input Folder", $InputFolderPath);
-$OutputScriptPath = $Global:Job.Prompts.StringResponse("Output File", $OutputScriptPath);
-$ClearStructure = $Global:Job.Prompts.BooleanResponse("Do you wish to drop all existing objects in $Schema before creating the new objects?");
+$SQLInstance = $Global:Session.Prompts.StringResponse("SQL Instance", $SQLInstance);
+$Database = $Global:Session.Prompts.StringResponse("SQL Database", $Database);
+$Schema = $Global:Session.Prompts.StringResponse("SQL Schema", $Schema);
+$InputFolderPath = $Global:Session.Prompts.StringResponse("Input Folder", $InputFolderPath);
+$OutputScriptPath = $Global:Session.Prompts.StringResponse("Output File", $OutputScriptPath);
+$ClearStructure = $Global:Session.Prompts.BooleanResponse("Do you wish to drop all existing objects in $Schema before creating the new objects?");
 If ($ClearStructure)
 {
-    $DropSchema = $Global:Job.Prompts.BooleanResponse("Do you wish to drop the schema $Schema?");
+    $DropSchema = $Global:Session.Prompts.BooleanResponse("Do you wish to drop the schema $Schema?");
 }
-$OverrideFileGroups = $Global:Job.Prompts.BooleanResponse("Do you wish override the file groups?");
+$OverrideFileGroups = $Global:Session.Prompts.BooleanResponse("Do you wish override the file groups?");
 If ($OverrideFileGroups)
 {
-    $HeapFileGroupName = $Global:Job.Prompts.StringResponse("Heap File Group", $HeapFileGroupName);
-    $IndexFileGroupName = $Global:Job.Prompts.StringResponse("Index File Group", $IndexFileGroupName);
-    $LobFileGroupName = $Global:Job.Prompts.StringResponse("Lob File Group", $LobFileGroupName);
+    $HeapFileGroupName = $Global:Session.Prompts.StringResponse("Heap File Group", $HeapFileGroupName);
+    $IndexFileGroupName = $Global:Session.Prompts.StringResponse("Index File Group", $IndexFileGroupName);
+    $LobFileGroupName = $Global:Session.Prompts.StringResponse("Lob File Group", $LobFileGroupName);
 }
 
 [Collections.Specialized.OrderedDictionary] $Variables = [Ordered]@{
@@ -53,7 +53,7 @@ If ($OverrideFileGroups)
 }
 
 Clear-Host;
-$Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
+$Global:Session.Prompts.WriteHashTable("Variables", 180, $Variables);
 
 # [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
 # If ($InputFolderPath.EndsWith("DatabaseObjects.json"))
@@ -144,7 +144,7 @@ $Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
 #         "Sequence" = $LastSequence;
 #         "Type" = "Table";
 #         "Name" = [String]::Format("[{0}].[{1}]", $Schema, $Table.Name);
-#         "Script" = $Global:Job.SQLDatabaseJson.GetTableCreate(
+#         "Script" = $Global:Session.SQLDatabaseJson.GetTableCreate(
 #             $Schema,
 #             $Table.Name,
 #             $Table.Columns,
@@ -163,7 +163,7 @@ $Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
 #                 "Sequence" = $LastSequence;
 #                 "Type" = "Index";
 #                 "Name" = [String]::Format("[{0}].[{1}].[{2}]", $Schema, $Table.Name, $Index.Name);
-#                 "Script" = $Global:Job.SQLDatabaseJson.GetIndexCreate(
+#                 "Script" = $Global:Session.SQLDatabaseJson.GetIndexCreate(
 #                     $Schema,
 #                     $Table.Name,
 #                     $Index.Name,
@@ -191,15 +191,15 @@ $Global:Job.Prompts.WriteHashTable("Variables", 180, $Variables);
 #     {
 #         "Function"
 #         {
-#             $ModuleScript = $Global:Job.SQLDatabaseJson.GetFunctionCreate($Schema, $Module.Name, $Module.Returns, $Module.Parameters, $ContentFile);
+#             $ModuleScript = $Global:Session.SQLDatabaseJson.GetFunctionCreate($Schema, $Module.Name, $Module.Returns, $Module.Parameters, $ContentFile);
 #         }
 #         "Procedure"
 #         {
-#             $ModuleScript = $Global:Job.SQLDatabaseJson.GetProcedureCreate($Schema, $Module.Name, $Module.Parameters, $ContentFile);
+#             $ModuleScript = $Global:Session.SQLDatabaseJson.GetProcedureCreate($Schema, $Module.Name, $Module.Parameters, $ContentFile);
 #         }
 #         "View"
 #         {
-#             $ModuleScript = $Global:Job.SQLDatabaseJson.GetViewCreate($Schema, $Module.Name, $ContentFile);
+#             $ModuleScript = $Global:Session.SQLDatabaseJson.GetViewCreate($Schema, $Module.Name, $ContentFile);
 #         }
 #     }
 #     $LastSequence ++;

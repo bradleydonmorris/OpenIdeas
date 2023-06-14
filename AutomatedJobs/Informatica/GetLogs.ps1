@@ -3,11 +3,11 @@
     "Databases.IICS"
 );
 
-#$Global:Job.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
-$Global:Job.Logging.WriteVariables("Config", @{
-    "IICSDatabaseConnectionName" = $Global:Job.Config.IICSDatabaseConnectionName;
-    "IICSAPIConnectionName" = $Global:Job.Config.IICSAPIConnectionName;
-    "KeepLogsForDays" = $Global:Job.Config.KeepLogsForDays;
+#$Global:Session.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
+$Global:Session.Logging.WriteVariables("Config", @{
+    "IICSDatabaseConnectionName" = $Global:Session.Config.IICSDatabaseConnectionName;
+    "IICSAPIConnectionName" = $Global:Session.Config.IICSAPIConnectionName;
+    "KeepLogsForDays" = $Global:Session.Config.KeepLogsForDays;
 });
 
 [DateTime] $Global:LastDatabaseStartTime = [DateTime]::MinValue;
@@ -15,105 +15,105 @@ $Global:Job.Logging.WriteVariables("Config", @{
 
 
 #region Establish IICS Session
-$Global:Job.Execute("Establish IICS Session", {
+$Global:Session.Execute("Establish IICS Session", {
     Try
     {
-        $Global:Job.InformaticaAPI.GetSession($Global:Job.Config.IICSAPIConnectionName);
+        $Global:Session.InformaticaAPI.GetSession($Global:Session.Config.IICSAPIConnectionName);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Establish IICS Session
 
 #region Get Start Time
-$Global:Job.Execute("Get Start Time", {
-    $Global:LastDatabaseStartTime = $Global:Job.Databases.IICS.GetActivityLogLastStartTime($Global:Job.Config.IICSDatabaseConnectionName);
-    $Global:Job.Logging.WriteVariables("StartTime", @{
+$Global:Session.Execute("Get Start Time", {
+    $Global:LastDatabaseStartTime = $Global:Session.Databases.IICS.GetActivityLogLastStartTime($Global:Session.Config.IICSDatabaseConnectionName);
+    $Global:Session.Logging.WriteVariables("StartTime", @{
         "LastDatabaseStartTime" = $Global:LastDatabaseStartTime;
     });
 });
 #endregion Get Start Time
 
 #region Export Activity Logs
-$Global:Job.Execute("Export Activity Logs", {
+$Global:Session.Execute("Export Activity Logs", {
     Try
     {
-        $Global:LogFiles = $Global:Job.InformaticaAPI.ExportLogs($Global:Job.DataDirectory, $Global:LastDatabaseStartTime);
+        $Global:LogFiles = $Global:Session.InformaticaAPI.ExportLogs($Global:Session.DataDirectory, $Global:LastDatabaseStartTime);
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $Project);
+        $Global:Session.Logging.WriteExceptionWithData($_.Exception, $Project);
     }
 });
 #endregion Export Activity Logs
 
 #region Clear Staged
-$Global:Job.Execute("Clear Staged", {
+$Global:Session.Execute("Clear Staged", {
     Try
     {
-        $Global:Job.Databases.IICS.ClearStaged($Global:Job.Config.IICSDatabaseConnectionName, $false, $false, $true);
+        $Global:Session.Databases.IICS.ClearStaged($Global:Session.Config.IICSDatabaseConnectionName, $false, $false, $true);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Clear Staged
 
 #region Post Staged Activity Logs
-$Global:Job.Execute("Post Staged Activity Logs", {
+$Global:Session.Execute("Post Staged Activity Logs", {
     ForEach ($FilePath In $Global:LLogFiles)
     {
         Try
         {
-            $Global:Job.Databases.IICS.PostStagedActivityLogs(
-                $Global:Job.Config.IICSDatabaseConnectionName,
+            $Global:Session.Databases.IICS.PostStagedActivityLogs(
+                $Global:Session.Config.IICSDatabaseConnectionName,
                 [IO.File]::ReadAllText($FilePath)
             );
             [void] [IO.File]::Delete($FilePath);
         }
         Catch
         {
-            $Global:Job.Logging.WriteException($_.Exception);
+            $Global:Session.Logging.WriteException($_.Exception);
         }
     }
 });
 #endregion Post Staged Activity Logs
 
 #region Parse Activity Logs
-$Global:Job.Execute("Parse Activity Logs", {
+$Global:Session.Execute("Parse Activity Logs", {
     Try
     {
-        $Global:Job.Databases.IICS.ParseActivityLogs($Global:Job.Config.IICSDatabaseConnectionName);
+        $Global:Session.Databases.IICS.ParseActivityLogs($Global:Session.Config.IICSDatabaseConnectionName);
     }
     Catch
     {
-        $Global:Job.Logging.WriteException($_.Exception);
+        $Global:Session.Logging.WriteException($_.Exception);
     }
 });
 #endregion Parse Activity Logs
 
 #region Remove Old Activity Logs
-$Global:Job.Execute("Remove Old Activity Logs", {
-    If ($Global:Job.Config.KeepLogsForDays -gt 0)
+$Global:Session.Execute("Remove Old Activity Logs", {
+    If ($Global:Session.Config.KeepLogsForDays -gt 0)
     {
         Try
         {
-            $Global:Job.Databases.IICS.RemoveOldActivityLogs($Global:Job.Config.KeepLogsForDays);
+            $Global:Session.Databases.IICS.RemoveOldActivityLogs($Global:Session.Config.KeepLogsForDays);
         }
         Catch
         {
-            $Global:Job.Logging.WriteException($_.Exception);
+            $Global:Session.Logging.WriteException($_.Exception);
         }
     }
     Else
     {
-        $Global:Job.Logging.WriteEntry("Information", [String]::Format("No activity logs were removed. KeepLogsForDays is set to {0}", $Global:Job.Config.KeepLogsForDays));
+        $Global:Session.Logging.WriteEntry("Information", [String]::Format("No activity logs were removed. KeepLogsForDays is set to {0}", $Global:Session.Config.KeepLogsForDays));
     }
 });
 #endregion Remove Old Activity Logs
 
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

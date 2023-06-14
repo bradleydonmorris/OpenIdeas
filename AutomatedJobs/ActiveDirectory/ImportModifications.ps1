@@ -1,20 +1,19 @@
 . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
     "ActiveDirectory",
-    "Databases.ActiveDirectory"
+    "ActiveDirectorySQLDatabase"
 );
 
 
-#$Global:Job.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
+#$Global:Session.Config is automatically loaded if a sibling file with an extension of .config.json is found for this script.
 
-$Global:Job.Logging.WriteVariables("Valirables", @{
-    "DatabaseConnectionName" = $Global:Job.Config.DatabaseConnectionName;
-    "LDAPConnectionName" = $Global:Job.Config.LDAPConnectionName;
+[void] $Global:Session.Logging.WriteVariables("Valirables", @{
+    "DatabaseConnectionName" = $Global:Session.Config.DatabaseConnectionName;
+    "ActiveDirectoryConnectionName" = $Global:Session.Config.ActiveDirectoryConnectionName;
 });
 
 #Use these to determine the date/time from existing data in SQL Server.
-[DateTime] $UsersChangedSince = $Global:Job.Databases.ActiveDirectory.GetUserLastWhenChangedTime($Global:Job.Config.DatabaseConnectionName);
-[DateTime] $GroupsChangedSince = $Global:Job.Databases.ActiveDirectory.GetGroupLastWhenChangedTime($Global:Job.Config.DatabaseConnectionName);
-
+[DateTime] $UsersChangedSince = $Global:Session.ActiveDirectorySQLDatabase.GetUserLastWhenChangedTime($Global:Session.Config.DatabaseConnectionName);
+[DateTime] $GroupsChangedSince = $Global:Session.ActiveDirectorySQLDatabase.GetGroupLastWhenChangedTime($Global:Session.Config.DatabaseConnectionName);
 #Use these to force load of all data.
 #[DateTime] $UsersChangedSince = [DateTime]::SpecifyKind([DateTime]::new(1970, 1, 1, 0, 0, 0), [System.DateTimeKind]::Utc);
 #[DateTime] $GroupsChangedSince = [DateTime]::SpecifyKind([DateTime]::new(1970, 1, 1, 0, 0, 0), [System.DateTimeKind]::Utc);
@@ -23,87 +22,86 @@ $Global:Job.Logging.WriteVariables("Valirables", @{
 #[DateTime] $UsersChangedSince = [DateTime]::SpecifyKind([DateTime]::new(2022, 10, 15, 0, 0, 0), [System.DateTimeKind]::Utc);
 #[DateTime] $GroupsChangedSince = [DateTime]::SpecifyKind([DateTime]::new(2022, 1, 1, 0, 0, 0), [System.DateTimeKind]::Utc);
 
-$Global:Job.Logging.WriteVariables("Valirables", @{
+[void] $Global:Session.Logging.WriteVariables("SinceChangedTimes", @{
     "UsersChangedSince" = $UsersChangedSince.ToString("yyyy-MM-ddTHH:mm:ss.fffffffK");
     "GroupsChangedSince" = $GroupsChangedSince.ToString("yyyy-MM-ddTHH:mm:ss.fffffffK");
 });
 
-#Setting up timers used in this job.
-$Global:Job.Logging.Timers.Add("User Import");
-$Global:Job.Logging.Timers.Add("Group Import");
-$Global:Job.Logging.Timers.Add("Processing Managerial Changes");
-$Global:Job.Logging.Timers.Add("Processing Group Membership Changes");
-$Global:Job.Logging.Timers.Add("Processing Group Manager Changes");
-$Global:Job.Logging.Timers.Add("Rebuilding Indexes");
-
-$Global:Job.Logging.Timers.Start("User Import");
-$Global:Job.Logging.WriteEntry("Information", "Importing User Changes");
-ForEach ($UserDistinguishedName In $Global:Job.ActiveDirectory.GetChangedUsers($Global:Job.Config.LDAPConnectionName, $UsersChangedSince))
-{
-    $Global:Job.Logging.WriteEntry("Information", (
-        "Importing User " +
-        $UserDistinguishedName
-    ));
-    [String] $UserJSON = [String]::Empty;
+$Global:Session.Logging.TimedExecute("ImportUsers", {
     Try
     {
-        $User = $Global:Job.ActiveDirectory.GetUser($Global:Job.Config.LDAPConnectionName, $UserDistinguishedName);
-        $UserJSON = ConvertTo-Json -InputObject $User;
-        $Global:Job.Databases.ActiveDirectory.ImportUser($Global:Job.Config.DatabaseConnectionName, $UserJSON);
+        ForEach ($UserDistinguishedName In $Global:Session.ActiveDirectory.GetChangedUsers($Global:Session.Config.ActiveDirectoryConnectionName, $UsersChangedSince))
+        {
+            [void] $Global:Session.Logging.WriteEntry("Information", (
+                "Importing User " +
+                $UserDistinguishedName
+            ));
+            [String] $UserJSON = [String]::Empty;
+            Try
+            {
+                $User = $Global:Session.ActiveDirectory.GetUser($Global:Session.Config.ActiveDirectoryConnectionName, $UserDistinguishedName);
+                $UserJSON = ConvertTo-Json -InputObject $User;
+                [void] $Global:Session.ActiveDirectorySQLDatabase.ImportUser($Global:Session.Config.DatabaseConnectionName, $UserJSON);
+            }
+            Catch
+            {
+                [void] $Global:Session.Logging.WriteExceptionWithData($_.Exception, $UserJSON);
+            }
+        }
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $UserJSON);
+        [void] $Global:Session.Logging.WriteException($_.Exception);
     }
-}
-$Global:Job.Logging.Timers.Stop("User Import");
+});
 
-$Global:Job.Logging.Timers.Start("Group Import");
-$Global:Job.Logging.WriteEntry("Information", "Importing Group Changes");
-ForEach ($GroupDistinguishedName In $Global:Job.ActiveDirectory.GetChangedGroups($Global:Job.Config.LDAPConnectionName, $GroupsChangedSince))
-{
-    $Global:Job.Logging.WriteEntry("Information", (
-        "Importing Group " +
-        $GroupDistinguishedName
-    ));
-    [String] $GroupJSON = [String]::Empty;
+$Global:Session.Logging.TimedExecute("ImportGroups", {
     Try
     {
-        $Group = $Global:Job.ActiveDirectory.GetGroup($Global:Job.Config.LDAPConnectionName, $GroupDistinguishedName);
-        $GroupJSON = ConvertTo-Json -InputObject $Group;
-        $Global:Job.Databases.ActiveDirectory.ImportGroup($Global:Job.Config.DatabaseConnectionName, $GroupJSON);
+        ForEach ($GroupDistinguishedName In $Global:Session.ActiveDirectory.GetChangedGroups($Global:Session.Config.ActiveDirectoryConnectionName, $GroupsChangedSince))
+        {
+            [void] $Global:Session.Logging.WriteEntry("Information", (
+                "Importing Group " +
+                $GroupDistinguishedName
+            ));
+            [String] $GroupJSON = [String]::Empty;
+            Try
+            {
+                $Group = $Global:Session.ActiveDirectory.GetGroup($Global:Session.Config.ActiveDirectoryConnectionName, $GroupDistinguishedName);
+                $GroupJSON = ConvertTo-Json -InputObject $Group;
+                [void] $Global:Session.ActiveDirectorySQLDatabase.ImportGroup($Global:Session.Config.DatabaseConnectionName, $GroupJSON);
+            }
+            Catch
+            {
+                [void] $Global:Session.Logging.WriteExceptionWithData($_.Exception, $GroupJSON);
+            }
+        }
     }
     Catch
     {
-        $Global:Job.Logging.WriteExceptionWithData($_.Exception, $GroupJSON);
+        [void] $Global:Session.Logging.WriteException($_.Exception);
     }
-}
-$Global:Job.Logging.Timers.Stop("Group Import");
+});
 
-$Global:Job.Logging.Timers.Start("Processing Managerial Changes");
-$Global:Job.Logging.WriteEntry("Information", "Processing Managerial Changes");
-Try { $Global:Job.Databases.ActiveDirectory.ProcessManagerialChanges($Global:Job.Config.DatabaseConnectionName); }
-    Catch { $Global:Job.Logging.WriteException($_.Exception); }
-$Global:Job.Logging.Timers.Stop("Processing Managerial Changes");
+$Global:Session.Logging.TimedExecute("ProcessingManagerialChanges", {
+    Try { [void] $Global:Session.ActiveDirectorySQLDatabase.ProcessManagerialChanges($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
-$Global:Job.Logging.Timers.Start("Processing Group Membership Changes");
-$Global:Job.Logging.WriteEntry("Information", "Processing Group Membership Changes");
-Try { $Global:Job.Databases.ActiveDirectory.ProcessGroupMembershipChanges($Global:Job.Config.DatabaseConnectionName); }
-    Catch { $Global:Job.Logging.WriteException($_.Exception); }
-$Global:Job.Logging.Timers.Stop("Processing Group Membership Changes");
+$Global:Session.Logging.TimedExecute("ProcessGroupMembershipChanges", {
+    Try { [void] $Global:Session.ActiveDirectorySQLDatabase.ProcessGroupMembershipChanges($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
-$Global:Job.Logging.Timers.Start("Processing Group Manager Changes");
-$Global:Job.Logging.WriteEntry("Information", "Processing Group Manager Changes");
-Try { $Global:Job.Databases.ActiveDirectory.ProcessGroupManagerChanges($Global:Job.Config.DatabaseConnectionName); }
-    Catch { $Global:Job.Logging.WriteException($_.Exception); }
-$Global:Job.Logging.Timers.Stop("Processing Group Manager Changes");
+$Global:Session.Logging.TimedExecute("ProcessGroupManagerChanges", {
+    Try { [void] $Global:Session.ActiveDirectorySQLDatabase.ProcessGroupManagerChanges($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
+$Global:Session.Logging.TimedExecute("RebuildIndexes", {
+    Try { [void] $Global:Session.ActiveDirectorySQLDatabase.RebuildIndexes($Global:Session.Config.DatabaseConnectionName); }
+    Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+});
 
-$Global:Job.Logging.Timers.Start("Rebuilding Indexes");
-$Global:Job.Logging.WriteEntry("Information", "Rebuilding Indexes");
-Try { $Global:Job.Databases.ActiveDirectory.RebuildIndexes($Global:Job.Config.DatabaseConnectionName); }
-    Catch { $Global:Job.Logging.WriteException($_.Exception); }
-$Global:Job.Logging.Timers.Stop("Rebuilding Indexes");
-
-$Global:Job.Logging.Close();
-$Global:Job.Logging.ClearLogs();
+$Global:Session.Logging.Close();
+$Global:Session.Logging.ClearLogs();

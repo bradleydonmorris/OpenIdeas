@@ -1,15 +1,15 @@
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "NuGet" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -TypeName "String" `
     -NotePropertyName "ExecPath" `
     -NotePropertyValue ([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "nuget.exe"));
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "InstallPackageVersion" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -22,18 +22,18 @@ Add-Member `
             [String] $Version
         )
         Start-Process `
-            -FilePath $Global:Job.NuGet.ExecPath `
+            -FilePath $Global:Session.NuGet.ExecPath `
             -ArgumentList @(
                 "install",
                 $PackageName,
                 "-DependencyVersion Highest",
                 [String]::Format("-Version {0}", $Version),
-                [String]::Format("-OutputDirectory {0}", $Global:Job.Directories.Packages)
+                [String]::Format("-OutputDirectory {0}", $Global:Session.Directories.Packages)
             ) `
             -NoNewWindow;
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "IsPackageVersionInstalled" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -50,7 +50,7 @@ Add-Member `
         [Object] $Package = $null;
         Try
         {
-            $Package = Get-Package -Name $PackageName -Destination $Global:Job.Directories.Packages -AllVersions -ErrorAction SilentlyContinue |
+            $Package = Get-Package -Name $PackageName -Destination $Global:Session.Directories.Packages -AllVersions -ErrorAction SilentlyContinue |
                 Where-Object -FilterScript {$_.Version -eq $Version };
         }
         Finally { }
@@ -59,7 +59,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "InstallPackageVersionIfMissing" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -71,13 +71,13 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Version
         )
-        If (!$Global:Job.NuGet.IsPackageVersionInstalled($PackageName, $Version))
+        If (!$Global:Session.NuGet.IsPackageVersionInstalled($PackageName, $Version))
         {
-            [void] $Global:Job.NuGet.InstallPackageVersion($PackageName, $Version);
+            [void] $Global:Session.NuGet.InstallPackageVersion($PackageName, $Version);
         }
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "InstallPackage" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -87,17 +87,17 @@ Add-Member `
             [String] $PackageName
         )
         Start-Process `
-            -FilePath $Global:Job.NuGet.ExecPath `
+            -FilePath $Global:Session.NuGet.ExecPath `
             -ArgumentList @(
                 "install",
                 $PackageName,
                 "-DependencyVersion Highest",
-                [String]::Format("-OutputDirectory {0}", $Global:Job.Directories.Packages)
+                [String]::Format("-OutputDirectory {0}", $Global:Session.Directories.Packages)
             ) `
             -NoNewWindow;
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "IsPackageInstalled" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -111,7 +111,7 @@ Add-Member `
         [Object] $Package = $null;
         Try
         {
-            $Package = Get-Package -Name $PackageName -Destination $Global:Job.Directories.Packages -ErrorAction SilentlyContinue;
+            $Package = Get-Package -Name $PackageName -Destination $Global:Session.Directories.Packages -ErrorAction SilentlyContinue;
         }
         Finally { }
         If ($Package)
@@ -119,7 +119,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "InstallPackageIfMissing" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -128,13 +128,13 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $PackageName
         )
-        If (!$Global:Job.NuGet.IsPackageInstalled($PackageName))
+        If (!$Global:Session.NuGet.IsPackageInstalled($PackageName))
         {
-            [void] $Global:Job.NuGet.InstallPackage($PackageName);
+            [void] $Global:Session.NuGet.InstallPackage($PackageName);
         }
     }
 Add-Member `
-    -InputObject $Global:Job.NuGet `
+    -InputObject $Global:Session.NuGet `
     -Name "AddAssembly" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -146,7 +146,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $RelativePath
         )
-        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Job.Directories.Packages, $RelativePath);
+        [String] $AssemblyFilePath = [IO.Path]::Combine($Global:Session.Directories.Packages, $RelativePath);
         [Object] $Assembly = [System.AppDomain]::CurrentDomain.GetAssemblies() |
             Where-Object -FilterScript { $_.GetName().Name -eq $Name}
         If (-not $Assembly)
@@ -154,10 +154,10 @@ Add-Member `
             Add-Type -Path $AssemblyFilePath;
         }
     }
-If (![IO.File]::Exists($Global:Job.NuGet.ExecPath))
+If (![IO.File]::Exists($Global:Session.NuGet.ExecPath))
 {
     $ProgressPreference = "SilentlyContinue";
-    Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile $Global:Job.NuGet.ExecPath
+    Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile $Global:Session.NuGet.ExecPath
     $ProgressPreference = "Continue";
 }
-Set-Alias -Name "nuget" -Value $Global:Job.NuGet.ExecPath -Scope Global
+Set-Alias -Name "nuget" -Value $Global:Session.NuGet.ExecPath -Scope Global

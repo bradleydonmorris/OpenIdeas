@@ -1,10 +1,10 @@
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Lookups" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "Exists" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -18,8 +18,8 @@ Add-Member `
             [String] $Name
         )
         [Boolean] $ReturnValue = $false;
-        [Int64] $Count = $Global:Job.SQLite.GetTableRowCount(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Int64] $Count = $Global:Session.SQLite.GetTableRowCount(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             $Lookup,
             @{ "Name" = $Name; }
         );
@@ -30,7 +30,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "IsInUse" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -44,8 +44,8 @@ Add-Member `
             [String] $Name
         )
         [Boolean] $ReturnValue = $false;
-        [Int64] $Count = $Global:Job.SQLite.GetScalar(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        [Int64] $Count = $Global:Session.SQLite.GetScalar(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "IsInUse.sql")),
             @{
                 "Lookup" = $Lookup;
@@ -59,7 +59,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "GetAll" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -69,8 +69,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Lookup
         )
-        Return $Global:Job.SQLite.GetRecords(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        Return $Global:Session.SQLite.GetRecords(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "GetAll.sql")).Replace("`$(Lookup)", $Lookup),
             $null,
             @( "Name" ),
@@ -78,7 +78,7 @@ Add-Member `
         );
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "Add" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -90,14 +90,14 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Global:Job.SQLite.Execute(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        $Global:Session.SQLite.Execute(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Add.sql")).Replace("`$(Lookup)", $Lookup),
             @{ "Name" = $Name; }
         );
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "Rename" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -112,8 +112,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $NewName
         )
-        $Global:Job.SQLite.Execute(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        $Global:Session.SQLite.Execute(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Rename.sql")).Replace("`$(Lookup)", $Lookup),
             @{
                 "OldName" = $OldName;
@@ -122,7 +122,7 @@ Add-Member `
         );
     }
 Add-Member `
-    -InputObject $Global:Job.PreciousMetalsTracking.Data.Lookups `
+    -InputObject $Global:Session.PreciousMetalsTracking.Data.Lookups `
     -Name "Remove" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -134,8 +134,8 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Guid] $Name
         )
-        $Global:Job.SQLite.Execute(
-            $Global:Job.PreciousMetalsTracking.Data.ActiveConnectionName,
+        $Global:Session.SQLite.Execute(
+            $Global:Session.PreciousMetalsTracking.Data.ActiveConnectionName,
             [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "SQLScripts", "Lookups", "Remove.sql")).Replace("`$(Lookup)", $Lookup),
             @{ "Name" = $Name; }
         );

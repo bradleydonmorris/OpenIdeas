@@ -1,14 +1,14 @@
-[void] $Global:Job.LoadModule("Connections");
-[void] $Global:Job.LoadModule("SQLServer");
+[void] $Global:Session.LoadModule("Connections");
+[void] $Global:Session.LoadModule("SQLServer");
 
 #region Gather from SQL Server
 Add-Member `
-    -InputObject $Global:Job `
+    -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ScriptSQLServerDatabase" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetTableInfo" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -30,7 +30,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetTableJSON.sql"));
         [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.SQLServer.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -63,7 +63,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetViewInfo" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -85,7 +85,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetViewJSON.sql"));
         [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -117,7 +117,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetFunctionInfo" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -139,7 +139,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetFunctionJSON.sql"));
         [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -171,7 +171,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetProcedureInfo" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -193,7 +193,7 @@ Add-Member `
         [Object] $ReturnValue = $null;
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetProcedureJSON.sql"));
         [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text;
@@ -225,7 +225,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetObjectsByDependency" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -266,7 +266,7 @@ Add-Member `
         {
             $CommandText = $CommandText.Replace("`$($ParameterKey)", $Parameters[$ParameterKey].ToString());
         }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Job.Databases.GetConnectionString($Instance, $Database));
+        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
         [void] $SqlConnection.Open();
         [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
         $SqlCommand.CommandType = [Data.CommandType]::Text
@@ -308,7 +308,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GenerateScriptsByDependency" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -333,7 +333,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.Hashtable] $Parameters
         )
-        $SQLObjectInfos = $Global:Job.ScriptSQLServerDatabase.GetObjectsByDependency(
+        $SQLObjectInfos = $Global:Session.ScriptSQLServerDatabase.GetObjectsByDependency(
             $SQLInstance,
             $Database,
             $Schema,
@@ -352,7 +352,7 @@ Add-Member `
             {
                 "Table"
                 {
-                    $TableInfo = $Global:Job.ScriptSQLServerDatabase.GetTableInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $TableInfo = $Global:Session.ScriptSQLServerDatabase.GetTableInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("HeapFileGroupName", $TableInfo.HeapFileGroupName);
                     [void] $SQLObjectInfo.Add("LobFileGroupName", $TableInfo.LobFileGroupName);
                     [void] $SQLObjectInfo.Add("Columns", $TableInfo.Columns);
@@ -362,7 +362,7 @@ Add-Member `
                 }
                 "View"
                 {
-                    $ViewInfo = $Global:Job.ScriptSQLServerDatabase.GetViewInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $ViewInfo = $Global:Session.ScriptSQLServerDatabase.GetViewInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Columns", $ViewInfo.Columns);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
                     [void] [IO.File]::WriteAllText(
@@ -378,7 +378,7 @@ Add-Member `
                 }
                 "Function"
                 {
-                    $FunctionInfo = $Global:Job.ScriptSQLServerDatabase.GetFunctionInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $FunctionInfo = $Global:Session.ScriptSQLServerDatabase.GetFunctionInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Returns", $FunctionInfo.Returns);
                     [void] $SQLObjectInfo.Add("Parameters", $FunctionInfo.Parameters);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
@@ -395,7 +395,7 @@ Add-Member `
                 }
                 "Procedure"
                 {
-                    $ProcedureInfo = $Global:Job.ScriptSQLServerDatabase.GetProcedureInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $ProcedureInfo = $Global:Session.ScriptSQLServerDatabase.GetProcedureInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Parameters", $ProcedureInfo.Parameters);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
                     [void] [IO.File]::WriteAllText(
@@ -420,7 +420,7 @@ Add-Member `
 
 #region Import to SQL Server
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GenerateTableScript" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -648,7 +648,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GenerateViewScript" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -669,7 +669,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GenerateFunctionScript" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -712,7 +712,7 @@ Add-Member `
         Return $ReturnValue;
     };
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GenerateProcedureScript" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -754,7 +754,7 @@ Add-Member `
         Return $ReturnValue;
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "CreateScriptArrayFromJSON" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -872,13 +872,13 @@ Add-Member `
                             $ForeignKey.ReferencedSchema = $Schema;
                         }
                     }
-                    $CreateScript = $Global:Job.ScriptSQLServerDatabase.GenerateTableScript($ObjectInfo);
+                    $CreateScript = $Global:Session.ScriptSQLServerDatabase.GenerateTableScript($ObjectInfo);
                     $DropScript = [String]::Format("DROP {0} IF EXISTS [{1}].[{2}]", $ObjectInfo.SimpleType.ToUpper(), $Schema, $ObjectInfo.Name);
                 }
                 "View"
                 {
                     $Name = [String]::Format("[{0}].[{1}]", $Schema, $ObjectInfo.Name);
-                    $CreateScript = $Global:Job.ScriptSQLServerDatabase.GenerateViewScript(
+                    $CreateScript = $Global:Session.ScriptSQLServerDatabase.GenerateViewScript(
                         $ObjectInfo,
                         [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
                     );
@@ -887,7 +887,7 @@ Add-Member `
                 "Function"
                 {
                     $Name = [String]::Format("[{0}].[{1}]", $Schema, $ObjectInfo.Name);
-                    $CreateScript = $Global:Job.ScriptSQLServerDatabase.GenerateFunctionScript(
+                    $CreateScript = $Global:Session.ScriptSQLServerDatabase.GenerateFunctionScript(
                         $ObjectInfo,
                         [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
                     );
@@ -896,7 +896,7 @@ Add-Member `
                 "Procedure"
                 {
                     $Name = [String]::Format("[{0}].[{1}]", $Schema, $ObjectInfo.Name);
-                    $CreateScript = $Global:Job.ScriptSQLServerDatabase.GenerateProcedureScript(
+                    $CreateScript = $Global:Session.ScriptSQLServerDatabase.GenerateProcedureScript(
                         $ObjectInfo,
                         [IO.Path]::Combine($DirectoryPath, $ObjectInfo.ModuleBodyFileRef)
                     );
@@ -929,7 +929,7 @@ Add-Member `
         Return $ReturnValue | Sort-Object -Property "Sequence";
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "ImportFromJSON" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -960,7 +960,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeDrops
         )
-        [Collections.ArrayList] $NamedSQLScripts = $Global:Job.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
+        [Collections.ArrayList] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
         If ($IncludeDrops)
@@ -976,7 +976,7 @@ Add-Member `
                     $NamedSQLScript.Type,
                     $NamedSQLScript.Name
                 ));
-                [void] $Global:Job.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+                [void] $Global:Session.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
             }
         }
         ForEach ($NamedSQLScript In ($NamedSQLScripts |
@@ -990,11 +990,11 @@ Add-Member `
                 $NamedSQLScript.Type,
                 $NamedSQLScript.Name
             ));
-            [void] $Global:Job.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+            [void] $Global:Session.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
         }
     }
 Add-Member `
-    -InputObject $Global:Job.ScriptSQLServerDatabase `
+    -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "ImportFromJSONWhatIf" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -1028,7 +1028,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $OutputFilePath
         )
-        [Collections.ArrayList] $NamedSQLScripts = $Global:Job.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
+        [Collections.ArrayList] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
         Set-Content `
