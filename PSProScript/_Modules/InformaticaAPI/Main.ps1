@@ -5,6 +5,8 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "InformaticaAPI" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+
+#region Connection Methods
 Add-Member `
     -InputObject $Global:Session.InformaticaAPI `
     -Name "SetConnection" `
@@ -28,18 +30,35 @@ Add-Member `
             [String] $Password,
     
             [Parameter(Mandatory=$false)]
-            [String] $Comments
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted
         )
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
-                "V3LoginURI" = $V3LoginURI
-                "V2LoginURI" = $V2LoginURI
-                "UserName" = $UserName
-                "Password" = $Password
-                "Comments" = $Comments
-            }
+                "V3LoginURI" = $V3LoginURI;
+                "V2LoginURI" = $V2LoginURI;
+                "UserName" = $UserName;
+                "Password" = $Password;
+                "Comments" = $Comments;
+            },
+            $IsPersisted
         );
+    };
+Add-Member `
+    -InputObject $Global:Session.InformaticaAPI `
+    -Name "GetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([PSCustomObject])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        Return $Global:Session.Connections.Get($Name);
     };
 Add-Member `
     -InputObject $Global:Session.InformaticaAPI `
@@ -52,7 +71,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
-        [PSCustomObject] $APIConnection = $Global:Session.Connections.Get($ConnectionName)
+        [PSCustomObject] $Connection = $Global:Session.Connections.Get($ConnectionName)
         If (-not $Global:Session.InformaticaAPI.Session)
         {
             Add-Member `
@@ -69,7 +88,7 @@ Add-Member `
                 -InputObject $Global:Session.InformaticaAPI.Session.V3 `
                 -TypeName "System.String" `
                 -NotePropertyName "LoginURL" `
-                -NotePropertyValue $APIConnection.V3LoginURI;
+                -NotePropertyValue $Connection.V3LoginURI;
             Add-Member `
                 -InputObject $Global:Session.InformaticaAPI.Session.V3 `
                 -TypeName "System.String" `
@@ -92,7 +111,7 @@ Add-Member `
                 -InputObject $Global:Session.InformaticaAPI.Session.V2 `
                 -TypeName "System.String" `
                 -NotePropertyName "LoginURL" `
-                -NotePropertyValue $APIConnection.V2LoginURI;
+                -NotePropertyValue $Connection.V2LoginURI;
             Add-Member `
                 -InputObject $Global:Session.InformaticaAPI.Session.V2 `
                 -TypeName "System.String" `
@@ -119,8 +138,8 @@ Add-Member `
                     -Body (
                             ConvertTo-Json `
                                 -InputObject @{
-                                    "username" = $APIConnection.UserName;
-                                    "password" = $APIConnection.Password;
+                                    "username" = $Connection.UserName;
+                                    "password" = $Connection.Password;
                                 } `
                                 -Depth 100
                     )            
@@ -153,12 +172,14 @@ Add-Member `
     
         $global:ProgressPreference = $PreviousProgressPreference;
     };
+#endregion Connection Methods
+
 Add-Member `
     -InputObject $Global:Session.InformaticaAPI `
     -Name "GetAssets" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[String]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -166,7 +187,7 @@ Add-Member `
         )
         $PreviousProgressPreference = $global:ProgressPreference;
         $global:ProgressPreference = "SilentlyContinue";
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[String]] $ReturnValue = [Collections.Generic.List[String]]::new();
         [Boolean] $ContinueAssetRetrieval = $true;
         [Int32] $AssetSkip = 0;
         While ($ContinueAssetRetrieval)
@@ -210,7 +231,7 @@ Add-Member `
     -Name "ExportAssets" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.Hashtable])]
+        [OutputType([PSObject])]
         Param
         (
             [Parameter(Mandatory=$false)]
@@ -227,10 +248,10 @@ Add-Member `
         )
         $PreviousProgressPreference = $global:ProgressPreference;
         $global:ProgressPreference = "SilentlyContinue";
-        [Collections.Hashtable] $ReturnValue = [Collections.Hashtable]::new(@{
+        [PSObject] $ReturnValue = [PSObject]@{
             "Assets" = [System.Collections.ArrayList]::new();
             "AssetFiles" = [System.Collections.ArrayList]::new();
-        });
+        };
     
         [String] $TempExportDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [Guid]::NewGuid().ToString("N"));
         If ([IO.Directory]::Exists($TempExportDirectory))
@@ -518,7 +539,7 @@ Add-Member `
     -Name "ExportLogs" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[String]])]
         Param
         (
             [Parameter(Mandatory=$false)]
@@ -529,7 +550,7 @@ Add-Member `
         )
         $PreviousProgressPreference = $global:ProgressPreference;
         $global:ProgressPreference = "SilentlyContinue";
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[String]] $ReturnValue = [Collections.Generic.List[String]]::new();
     
         [Int32] $Offset = 0;
         [Boolean] $Continue = $true;

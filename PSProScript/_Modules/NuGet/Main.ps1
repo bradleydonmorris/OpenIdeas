@@ -6,7 +6,7 @@ Add-Member `
 Add-Member `
     -InputObject $Global:Session.NuGet `
     -TypeName "String" `
-    -NotePropertyName "ExecPath" `
+    -NotePropertyName "ExecutablePath" `
     -NotePropertyValue ([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "nuget.exe"));
 Add-Member `
     -InputObject $Global:Session.NuGet `
@@ -22,7 +22,7 @@ Add-Member `
             [String] $Version
         )
         Start-Process `
-            -FilePath $Global:Session.NuGet.ExecPath `
+            -FilePath $Global:Session.NuGet.ExecutablePath `
             -ArgumentList @(
                 "install",
                 $PackageName,
@@ -87,7 +87,7 @@ Add-Member `
             [String] $PackageName
         )
         Start-Process `
-            -FilePath $Global:Session.NuGet.ExecPath `
+            -FilePath $Global:Session.NuGet.ExecutablePath `
             -ArgumentList @(
                 "install",
                 $PackageName,
@@ -154,10 +154,10 @@ Add-Member `
             Add-Type -Path $AssemblyFilePath;
         }
     }
-If (![IO.File]::Exists($Global:Session.NuGet.ExecPath))
+If (![IO.File]::Exists($Global:Session.NuGet.ExecutablePath))
 {
     $ProgressPreference = "SilentlyContinue";
-    Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile $Global:Session.NuGet.ExecPath
+    Invoke-WebRequest "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile $Global:Session.NuGet.ExecutablePath
     $ProgressPreference = "Continue";
 }
-Set-Alias -Name "nuget" -Value $Global:Session.NuGet.ExecPath -Scope Global
+Set-Alias -Name "nuget" -Value $Global:Session.NuGet.ExecutablePath -Scope Global

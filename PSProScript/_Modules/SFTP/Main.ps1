@@ -2,7 +2,7 @@
 
 #This script creates methods to manage logs
 # that are stored in the Logs directory
-# which should be specified in the ".jobs-config.json".
+# which should be specified in the ".psps-config.json".
 
 #These Modules require Posh-SSH
 # On newer Windows machines, SSH is built in.
@@ -17,15 +17,107 @@ If (-not (Get-Module -Name "Posh-SSH"))
     Import-Module -Name "Posh-SSH"
 } 
 
-If (![IO.Directory]::Exists($Global:Session.Directories.ConnectionsRoot))
-{
-    [void] [IO.Directory]::CreateDirectory($Global:Session.Directories.ConnectionsRoot);
-}
+
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SFTP" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+
+#region Connection Methods
+Add-Member `
+    -InputObject $Global:Session.SFTP `
+    -Name "SetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $AuthType, #Password Or KeyFile
+    
+            [Parameter(Mandatory=$true)]
+            [String] $HostAddress,
+    
+            [Parameter(Mandatory=$true)]
+            [Int32] $Port,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $UserName,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $Password,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $KeyFilePath,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted
+        )
+        If ($AuthType -eq "Password")
+        {
+            $Global:Session.Connections.Set(
+                $Name,
+                [PSCustomObject]@{
+                    "HostAddress" = $HostAddress;
+                    "Port" = $Port;
+                    "UserName" = $UserName;
+                    "Password" = $Password;
+                    "Comments" = $Comments;
+                },
+                $IsPersisted
+            );
+        }
+        ElseIf ($AuthType -eq "KeyFile")
+        {
+            If (![IO.File]::Exists($KeyFilePath))
+            {
+                Throw [System.IO.FileNotFoundException]::new("Key File not found", $KeyFilePath);
+            }
+            $Global:Session.Connections.Set(
+                $Name,
+                [PSCustomObject]@{
+                    "HostAddress" = $HostAddress;
+                    "Port" = $Port;
+                    "UserName" = $UserName;
+                    "KeyFilePath" = $KeyFilePath;
+                    "Comments" = $Comments;
+                },
+                $IsPersisted
+            );
+        }
+        Else
+        {
+            Throw [System.ArgumentOutOfRangeException]::new("AuthType", "AuthType must be either UserNameAndPassword or KeyFile");
+        }
+    };
+Add-Member `
+    -InputObject $Global:Session.SFTP `
+    -Name "GetConnection" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([PSCustomObject])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        [PSCustomObject] $ReturnValue = $Global:Session.Connections.Get($Name);
+        If ($ReturnValue.AuthType -eq "FileFile")
+        {
+            If (![IO.File]::Exists($ReturnValue.KeyFilePath))
+            {
+                $ReturnValue = $null;
+                Throw [System.IO.FileNotFoundException]::new("Key File not found", $ReturnValue.KeyFilePath);
+            }
+        }
+        Return $ReturnValue;
+    };
 Add-Member `
     -InputObject $Global:Session.SFTP `
     -Name "GetSession" `
@@ -35,33 +127,35 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $ConnectionName
+            [String] $Name
         )
-        [SSH.SftpSession] $Result = $null;
-        $Values = $Global:Session.Connections.Get($ConnectionName);
+        [SSH.SftpSession] $ReturnValue = $null;
+        $Connection = $Global:Session.Connections.Get($Name);
         Get-SSHTrustedHost | Remove-SSHTrustedHost | Out-Null;
-        If ($Values.AuthType -eq "UserNameAndPassword")
+        If ($Connection.AuthType -eq "UserNameAndPassword")
         {
-            [System.Security.SecureString] $SecurePassword = ConvertTo-SecureString -String ($Values.Password) -AsPlainText -Force;
-            [System.Management.Automation.PSCredential] $Credential = [System.Management.Automation.PSCredential]::new($Values.UserName, $SecurePassword);
-            $Result = New-SFTPSession -ComputerName $Values.HostName -Port $Values.Port -Credential $Credential -AcceptKey;
+            [System.Security.SecureString] $SecurePassword = ConvertTo-SecureString -String ($Connection.Password) -AsPlainText -Force;
+            [System.Management.Automation.PSCredential] $Credential = [System.Management.Automation.PSCredential]::new($Connection.UserName, $SecurePassword);
+            $ReturnValue = New-SFTPSession -ComputerName $Connection.HostAddress -Port $Connection.Port -Credential $Credential -AcceptKey;
         }
-        If ($Values.AuthType -eq "KeyFile")
+        If ($Connection.AuthType -eq "KeyFile")
         {
-            If (![IO.File]::Exists($Values.KeyFile))
+            If (![IO.File]::Exists($Connection.KeyFilePath))
             {
-                Throw [System.IO.FileNotFoundException]::new("Key File not found", $Values.KeyFile);
+                Throw [System.IO.FileNotFoundException]::new("Key File not found", $Connection.KeyFilePath);
             }
-            $Result = New-SFTPSession -ComputerName $Values.HostName -Port $Values.Port -KeyFile $Values.KeyFile -AcceptKey;
+            $ReturnValue = New-SFTPSession -ComputerName $Connection.HostAddress -Port $Connection.Port -KeyFile $Connection.KeyFilePath -AcceptKey;
         }
-        Return $Result;
+        Return $ReturnValue;
     }
+#endregion Connection Methods
+
 Add-Member `
     -InputObject $Global:Session.SFTP `
     -Name "GetFileList" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -76,14 +170,14 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Int32] $DateTimeStartPosition
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         $Files = Get-SFTPChildItem -SFTPSession $Session -Path $RemotePath;
         If ([String]::IsNullOrEmpty($DateTimeFormatString))
         {
             ForEach ($SftpFile In $Files)
             {
-                [void] $Results.Add([PSCustomObject]@{
+                [void] $ReturnValue.Add([PSCustomObject]@{
                     FileNameTime = $null;
                     FilePath = $SftpFile.FullName;
                     FileName = $SftpFile.Name;
@@ -114,7 +208,7 @@ Add-Member `
                 {
                     $FileNameTime = [DateTime]::MinValue;
                 }
-                [void] $Results.Add([PSCustomObject]@{
+                [void] $ReturnValue.Add([PSCustomObject]@{
                     FileNameTime = ($FileNameTime -eq [DateTime]::MinValue) ? $null : $FileNameTime;
                     FilePath = $SftpFile.FullName;
                     FileName = $SftpFile.Name;
@@ -125,7 +219,7 @@ Add-Member `
             }
         }
         Remove-SFTPSession -SFTPSession $Session | Out-Null;
-        Return $Results
+        Return $ReturnValue
     };
 Add-Member `
     -InputObject $Global:Session.SFTP `
@@ -169,7 +263,7 @@ Add-Member `
     -Name "GetFilesNewerThan" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -193,7 +287,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $Overwrite
         )
-        [Collections.ArrayList] $Results = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
         $Files = Get-SFTPChildItem -SFTPSession $Session -Path $RemotePath -File;
         ForEach ($SftpFile In $Files)
@@ -219,7 +313,7 @@ Add-Member `
             }
             If ($IsNewer)
             {
-                [void] $Results.Add([PSCustomObject]@{
+                [void] $ReturnValue.Add([PSCustomObject]@{
                     RemoteFilePath = $SftpFile.FullName;
                     FileName = $SftpFile.Name;
                     Length = $SftpFile.Length;
@@ -233,7 +327,7 @@ Add-Member `
                 });
             }
         }
-        ForEach ($SFTPFile In $Results)
+        ForEach ($SFTPFile In $ReturnValue)
         {
             If ($SFTPFile.IsNewer)
             {
@@ -248,7 +342,7 @@ Add-Member `
             }
         }
         Remove-SFTPSession -SFTPSession $Session | Out-Null;
-        Return $Results;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Session.SFTP `

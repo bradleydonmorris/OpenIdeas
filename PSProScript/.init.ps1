@@ -3,14 +3,20 @@ Param
     [Parameter(Position=1, Mandatory=$false)]
     [String[]] $RequiredModules
 )
-[String] $JobsConfigFilePath = [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".jobs-config.json");
+[String] $JobsConfigFilePath = [IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), ".psps-config.json");
 If (![IO.File]::Exists($JobsConfigFilePath))
 {
     ConvertTo-Json -InputObject @{
+        "AlwaysLoadedModules" = @(
+            "Logging",
+            "Utilities",
+            "NuGet",
+            "Connections"
+        )
         "LoggingDefaults" = @{
             "RetentionDays" = 30
             "SMTPConnectionName" = "LoggingSMTP"
-            "EmailRecipients" = "changethis@example.com"
+            "EmailRecipients" = @("changethis@example.com")
         }
         "Directories" = @{
             "CodeRoot" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs"
@@ -289,10 +295,10 @@ If (![IO.Directory]::Exists($Global:Session.DataDirectory))
 }
 
 #These modules must always be loaded.
-[void] $Global:Session.LoadModule("Logging");
-[void] $Global:Session.LoadModule("Utilities");
-[void] $Global:Session.LoadModule("NuGet");
-[void] $Global:Session.LoadModule("Connections");
+ForEach ($ModuleName In $Global:Session.AlwaysLoadedModules)
+{
+    [void] $Global:Session.LoadModule($ModuleName);
+}
 
 #Load additional modules that may be required
 ForEach ($Module In $RequiredModules)

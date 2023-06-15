@@ -1,23 +1,27 @@
+[void] $Global:Session.LoadModule("Connections");
+
 [void] $Global:Session.NuGet.InstallPackageIfMissing("SSH.NET")
 [void] $Global:Session.NuGet.AddAssembly("Renci.SshNet", "SSH.NET.2020.0.2\lib\net40\Renci.SshNet.dll");
+
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SSHTunnel" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+
+#region Connection Methods
 Add-Member `
-    -InputObject $Global:Session.SSHTunnel `
-    -NotePropertyName "Internals" `
-    -NotePropertyValue ([Collections.Hashtable]::new());
-Add-Member `
-    -InputObject $Global:Session.SSHTunnel `
-    -Name "SetKeyAuthTunnelConnection" `
+    -InputObject $Global:Session.SFTP `
+    -Name "SetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
         Param
         (
             [Parameter(Mandatory=$true)]
             [String] $Name,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $AuthType, #Password Or KeyFile
 
             [Parameter(Mandatory=$true)]
             [String] $SSHServerAddress,
@@ -27,6 +31,9 @@ Add-Member `
 
             [Parameter(Mandatory=$true)]
             [String] $UserName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Password,
 
             [Parameter(Mandatory=$true)]
             [String] $KeyFilePath,
@@ -47,48 +54,89 @@ Add-Member `
             [Int32] $RemotePort,
     
             [Parameter(Mandatory=$false)]
-            [String] $Comments
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted
         )
-        If (![IO.File]::Exists($KeyFilePath))
+        If ($AuthType -eq "Password")
         {
-            Throw [System.IO.FileNotFoundException]::new("Key File not found", $KeyFilePath);
+            $Global:Session.Connections.Set(
+                $Name,
+                [PSCustomObject]@{
+                    "SSHServerAddress" = $SSHServerAddress;
+                    "SSHServerPort" = $SSHServerPort;
+                    "UserName" = $UserName;
+                    "Password" = $Password;
+                    "LocalAddress" = $LocalAddress;
+                    "LocalPort" = $LocalPort;
+                    "RemoteAddress" = $RemoteAddress;
+                    "RemotePort" = $RemotePort;
+                    "Comments" = $Comments;
+                },
+                $IsPersisted
+            );
         }
-        $Global:Session.Connections.Set(
-            $Name,
-            [PSCustomObject]@{
-                "SSHServerAddress" = $SSHServerAddress;
-                "SSHServerPort" = $SSHServerPort;
-                "UserName" = $UserName;
-                "KeyFilePath" = $KeyFilePath;
-                "KeyFilePassphrase" = $KeyFilePassphrase;
-                "LocalAddress" = $LocalAddress;
-                "LocalPort" = $LocalPort;
-                "RemoteAddress" = $RemoteAddress;
-                "RemotePort" = $RemotePort;
-                "Comments" = $Comments;
+        ElseIf ($AuthType -eq "KeyFile")
+        {
+            If (![IO.File]::Exists($KeyFilePath))
+            {
+                Throw [System.IO.FileNotFoundException]::new("Key File not found", $KeyFilePath);
             }
-        );
+            $Global:Session.Connections.Set(
+                $Name,
+                [PSCustomObject]@{
+                    "SSHServerAddress" = $SSHServerAddress;
+                    "SSHServerPort" = $SSHServerPort;
+                    "UserName" = $UserName;
+                    "KeyFilePath" = $KeyFilePath;
+                    "KeyFilePassphrase" = $KeyFilePassphrase;
+                    "LocalAddress" = $LocalAddress;
+                    "LocalPort" = $LocalPort;
+                    "RemoteAddress" = $RemoteAddress;
+                    "RemotePort" = $RemotePort;
+                    "Comments" = $Comments;
+                },
+                $IsPersisted
+            );
+        }
+        Else
+        {
+            Throw [System.ArgumentOutOfRangeException]::new("AuthType", "AuthType must be either UserNameAndPassword or KeyFile");
+        }
     };
 Add-Member `
     -InputObject $Global:Session.SSHTunnel `
-    -Name "GetKeyAuthTunnelConnection" `
+    -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
+        [OutputType([PSCustomObject])]
         Param
         (
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $ReturnValue = $Global:Session.Connections.Get($Name);
-        If (![IO.File]::Exists($ReturnValue.KeyFilePath))
+        [PSCustomObject] $ReturnValue = $Global:Session.Connections.Get($Name);
+        If ($ReturnValue.AuthType -eq "FileFile")
         {
-            Throw [System.IO.FileNotFoundException]::new("Key File not found", $ReturnValue.KeyFilePath);
+            If (![IO.File]::Exists($ReturnValue.KeyFilePath))
+            {
+                $ReturnValue = $null;
+                Throw [System.IO.FileNotFoundException]::new("Key File not found", $ReturnValue.KeyFilePath);
+            }
         }
         Return $ReturnValue;
     };
+#endregion Connection Methods
+
 Add-Member `
     -InputObject $Global:Session.SSHTunnel `
-    -Name "CreateKeyAuthTunnel" `
+    -NotePropertyName "Internals" `
+    -NotePropertyValue ([Collections.Hashtable]::new());
+
+Add-Member `
+    -InputObject $Global:Session.SSHTunnel `
+    -Name "CreateTunnel" `
     -MemberType "ScriptMethod" `
     -Value {
         Param
@@ -99,30 +147,45 @@ Add-Member `
         $Global:Session.SSHTunnel.Internals = [Collections.Hashtable]::new();
         $Global:Session.SSHTunnel.Internals.Clear();
 
-        $Connection = $Global:Session.SSHTunnel.GetKeyAuthTunnelConnection($ConnectionName);
-        If (![String]::IsNullOrEmpty($Connection.KeyFilePassphrase))
+        $Connection = $Global:Session.SSHTunnel.GetConnection($ConnectionName);
+        If ($Connection.AuthType -eq "KeyFile")
         {
-            [void] $Global:Session.SSHTunnel.Internals.Add(
-                "PrivateKeyFile",
-                [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath, $Connection.KeyFilePassphrase)
-            );
+            If (![String]::IsNullOrEmpty($Connection.KeyFilePassphrase))
+            {
+                [void] $Global:Session.SSHTunnel.Internals.Add(
+                    "PrivateKeyFile",
+                    [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath, $Connection.KeyFilePassphrase)
+                );
+            }
+            Else
+            {
+                [void] $Global:Session.SSHTunnel.Internals.Add(
+                    "PrivateKeyFile",
+                    [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath)
+                );
+            }
+            If ($Global:Session.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
+            {
+                [void] $Global:Session.SSHTunnel.Internals.Add(
+                    "ConnectionInfo",
+                    [Renci.SshNet.PrivateKeyConnectionInfo]::new(
+                        $Connection.SSHServerAddress,
+                        [Int32]$Connection.SSHServerPort,
+                        $Connection.UserName,
+                        $Global:Session.SSHTunnel.Internals["PrivateKeyFile"]
+                    )
+                );
+            }
         }
-        Else
-        {
-            [void] $Global:Session.SSHTunnel.Internals.Add(
-                "PrivateKeyFile",
-                [Renci.SshNet.PrivateKeyFile]::new($Connection.KeyFilePath)
-            );
-        }
-        If ($Global:Session.SSHTunnel.Internals.ContainsKey("PrivateKeyFile"))
+        ElseIf ($Connection.AuthType -eq "Password")
         {
             [void] $Global:Session.SSHTunnel.Internals.Add(
                 "ConnectionInfo",
-                [Renci.SshNet.PrivateKeyConnectionInfo]::new(
+                [Renci.SshNet.PasswordConnectionInfo]::new(
                     $Connection.SSHServerAddress,
                     [Int32]$Connection.SSHServerPort,
                     $Connection.UserName,
-                    $Global:Session.SSHTunnel.Internals["PrivateKeyFile"]
+                    $Connection.Password
                 )
             );
         }
@@ -210,4 +273,3 @@ Add-Member `
         $Global:Session.SSHTunnel.Internals.Clear();
         $Global:Session.SSHTunnel.Internals = [Collections.Hashtable]::new();
     }
-

@@ -71,7 +71,7 @@ Add-Member `
     -Name "GetConnection" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([String])]
+        [OutputType([PSCustomObject])]
         Param
         (
             [Parameter(Mandatory=$true)]

@@ -20,10 +20,8 @@ Add-Member `
             [String] $OrgUnitJSON
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "Google",
-            "ImportOrganizationalUnit",
-            @{ "OrgUnitJSON" = $OrgUnitJSON }
+            $ConnectionName, "Google", "ImportOrganizationalUnit",
+            @{ "OrgUnitJSON" = $OrgUnitJSON; }
         );
     };
 Add-Member `
@@ -40,10 +38,8 @@ Add-Member `
             [String] $UserJSON
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "Google",
-            "ImportUser",
-            @{ "UserJSON" = $UserJSON }
+            $ConnectionName, "Google", "ImportUser",
+            @{ "UserJSON" = $UserJSON; }
         );
     };
 Add-Member `
@@ -60,10 +56,8 @@ Add-Member `
             [String] $GroupJSON
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "Google",
-            "ImportGroup",
-            @{ "GroupJSON" = $GroupJSON }
+            $ConnectionName, "Google", "ImportGroup",
+            @{ "GroupJSON" = $GroupJSON; }
         );
     };
 Add-Member `
@@ -77,9 +71,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "Google",
-            "ProcessGroupMembershipChanges",
+            $ConnectionName, "Google", "ProcessGroupMembershipChanges",
             $null
         );
     };
@@ -94,9 +86,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "Google",
-            "RebuildIndexes",
+            $ConnectionName, "Google", "RebuildIndexes",
             $null
         );
     };

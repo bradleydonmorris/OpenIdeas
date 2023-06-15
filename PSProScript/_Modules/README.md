@@ -1,6 +1,8 @@
 # automated-jobs/_Modules
 
-These Module scripts are loaded by `.init.ps1`. To use `.init.ps1` and these Module scripts, the first line of the collection/script should be similar to the following with the `RequiredModuleGroups` array changed to the appropriate list.
+
+
+These Module scripts are loaded by `.init.ps1`. To use `.init.ps1` and these Module scripts, the first line of the project/script should be similar to the following with the `RequiredModuleGroups` array changed to the appropriate list.
 
 Example first line (from `ActiveDirectory\ImportModifications.ps1`)
 ```powershell
@@ -13,7 +15,7 @@ Example first line (from `ActiveDirectory\ImportModifications.ps1`)
 ## ALWAYS LOADED
 The following Module scripts will ALWAYS be loaded anytime `.init.ps1` is called.
 
-- ### [Logging.ps1](Logging.md)
+- ### [Logging.ps1](Logging/Logging.md)
     This file adds methods to the `$Global:Job.Logging` object for handling logging.
 - ### [Connections.ps1](Connections.md)
     This file adds methods to the `$Global:Job.Connections` object for handling files in the Connections directory where connection information is stored.
@@ -38,3 +40,7 @@ The following Module scripts may be loaded by adding them to the `RequiredModule
     This file adds methods to the `$Global:Job.Databases.Google` object for handling calls to the stored procedures of the `Google` schema in SQL Server.
 - ### [Databases.IICS.ps1](Databases.IICS.md)
     This file adds methods to the `$Global:Job.IICS.Google` object for handling calls to the stored procedures of the `IICS` schema in SQL Server.
+
+
+
+[ActiveDirectory](ActiveDirectory/README.md)

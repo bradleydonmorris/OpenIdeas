@@ -19,15 +19,11 @@ Add-Member `
         )
         [DateTime] $ReturnValue = [DateTime]::new(1970, 1, 1, 0, 0, 0);
         [Object] $Result = $Global:Session.SQLServer.ProcGetScalar(
-            $ConnectionName,
-            "ActiveDirectory",
-            "GetUserLastWhenChangedTime",
+            $ConnectionName, "ActiveDirectory", "GetUserLastWhenChangedTime",
             $null
         );
         If ($Result -is [DateTime])
-        {
-            $ReturnValue = $Result;
-        }
+            { $ReturnValue = $Result; }
         Return $ReturnValue;
     };
 Add-Member `
@@ -43,15 +39,11 @@ Add-Member `
         )
         [DateTime] $ReturnValue = [DateTime]::new(1970, 1, 1, 0, 0, 0);
         [Object] $Result = $Global:Session.SQLServer.ProcGetScalar(
-            $ConnectionName,
-            "ActiveDirectory",
-            "GetGroupLastWhenChangedTime",
+            $ConnectionName, "ActiveDirectory", "GetGroupLastWhenChangedTime",
             $null
         );
         If ($Result -is [DateTime])
-        {
-            $ReturnValue = $Result;
-        }
+            { $ReturnValue = $Result; }
         Return $ReturnValue;
     };
 Add-Member `
@@ -68,10 +60,8 @@ Add-Member `
             [String] $UserJSON
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "ImportUser",
-            @{ "UserJSON" = $UserJSON }
+            $ConnectionName, "ActiveDirectory", "ImportUser",
+            @{ "UserJSON" = $UserJSON; }
         );
     };
 Add-Member `
@@ -88,10 +78,8 @@ Add-Member `
             [String] $GroupJSON
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "ImportGroup",
-            @{ "GroupJSON" = $GroupJSON }
+            $ConnectionName, "ActiveDirectory", "ImportGroup",
+            @{ "GroupJSON" = $GroupJSON; }
         );
     };
 Add-Member `
@@ -105,9 +93,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "ProcessManagerialChanges",
+            $ConnectionName, "ActiveDirectory", "ProcessManagerialChanges",
             $null
         );
     };
@@ -122,9 +108,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "ProcessGroupMembershipChanges",
+            $ConnectionName, "ActiveDirectory", "ProcessGroupMembershipChanges",
             $null
         );
     };
@@ -139,9 +123,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "ProcessGroupManagerChanges",
+            $ConnectionName, "ActiveDirectory", "ProcessGroupManagerChanges",
             $null
         );
     };
@@ -156,9 +138,7 @@ Add-Member `
             [String] $ConnectionName
         )
         [void] $Global:Session.SQLServer.ProcExecute(
-            $ConnectionName,
-            "ActiveDirectory",
-            "RebuildIndexes",
+            $ConnectionName, "ActiveDirectory", "RebuildIndexes",
             $null
         );
     };

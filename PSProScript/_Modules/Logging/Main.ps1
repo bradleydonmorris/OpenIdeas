@@ -1,6 +1,6 @@
 #This script creates methods to manage logs
 # that are stored in the Logs directory
-# which should be specified in the ".jobs-config.json".
+# which should be specified in the ".psps-config.json".
 
 If (![IO.Directory]::Exists($Global:Session.Directories.LogsRoot))
 {

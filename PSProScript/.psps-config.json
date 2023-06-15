@@ -1,0 +1,23 @@
+{
+  "Directories": {
+    "LogsRoot": "C:\\Integrations\\Logs",
+    "DataRoot": "C:\\Integrations\\Data",
+    "ConnectionsRoot": "C:\\Integrations\\Connections",
+    "CodeRoot": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs",
+    "Modules": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs\\_Modules",
+    "Packages": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs\\_Packages"
+  },
+  "AlwaysLoadedModules": [
+      "Logging",
+      "Utilities",
+      "NuGet",
+      "Connections"
+  ],
+  "LoggingDefaults": {
+    "SMTPConnectionName": "LoggingSMTP",
+    "RetentionDays": 30,
+    "EmailRecipients": [
+      "changethis@example.com"
+    ]
+  }
+}
