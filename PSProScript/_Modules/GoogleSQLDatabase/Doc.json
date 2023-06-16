@@ -1,11 +1,11 @@
 {
   "Name": "GoogleSQLDatabase",
   "Description": "Enteracts with the GoogleAPI schema in a specified SQL Server database.",
-  "Properties": [],
+  "Requires": ["SQLServer"],
   "Methods": [
     {
-      "Name": "ImportGroup",
-      "Description": "Imports a group object into the database",
+      "Name": "ImportOrganizationalUnit",
+      "Description": "Imports an Organization Unit object into the database",
       "Returns": "void",
       "Arguments": [
         {
@@ -14,9 +14,9 @@
           "Description": "Name of the SQL database Connection"
         },
         {
-          "Name": "GroupJSON",
+          "Name": "OrgUnitJSON",
           "Type": "System.String",
-          "Description": "The JSON representation of the Group object"
+          "Description": "The JSON representation of the Organization Unit object"
         }
       ]
     },
@@ -38,8 +38,8 @@
       ]
     },
     {
-      "Name": "ImportOrganizationalUnit",
-      "Description": "Imports an Organization Unit object into the database",
+      "Name": "ImportGroup",
+      "Description": "Imports a group object into the database",
       "Returns": "void",
       "Arguments": [
         {
@@ -48,39 +48,15 @@
           "Description": "Name of the SQL database Connection"
         },
         {
-          "Name": "OrgUnitJSON",
+          "Name": "GroupJSON",
           "Type": "System.String",
-          "Description": "The JSON representation of the Organization Unit object"
-        }
-      ]
-    },
-    {
-      "Name": "ProcessGroupManagerChanges",
-      "Description": "Processes all the changes related to group managers",
-      "Returns": "void",
-      "Arguments": [
-        {
-          "Name": "ConnectionName",
-          "Type": "System.String",
-          "Description": "Name of the SQL database Connection"
+          "Description": "The JSON representation of the Group object"
         }
       ]
     },
     {
       "Name": "ProcessGroupMembershipChanges",
       "Description": "Processes all the changes related to group memberships",
-      "Returns": "void",
-      "Arguments": [
-        {
-          "Name": "ConnectionName",
-          "Type": "System.String",
-          "Description": "Name of the SQL database Connection"
-        }
-      ]
-    },
-    {
-      "Name": "ProcessManagerialChanges",
-      "Description": "Processes all the changes related to users' managers",
       "Returns": "void",
       "Arguments": [
         {

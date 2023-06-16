@@ -5,11 +5,6 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "ActiveDirectory" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-# Add-Member `
-#     -InputObject $Global:Session.ActiveDirectory `
-#     -TypeName "System.Management.Automation.PSObject" `
-#     -NotePropertyName "Doc" `
-#     -NotePropertyValue (ConvertFrom-Json -InputObject ([IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "Doc.json"))));
 
 #region Connection Methods
 Add-Member `
@@ -22,20 +17,20 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
-            [Parameter(Mandatory=$true)]
-            [String] $RootLDIF,
-    
             [Parameter(Mandatory=$false)]
             [String] $Comments,
             
             [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [Boolean] $IsPersisted,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $RootLDIF
         )
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
-                "RootLDIF" = $RootLDIF;
                 "Comments" = $Comments;
+                "RootLDIF" = $RootLDIF;
             },
             $IsPersisted
         );

@@ -1,90 +1,114 @@
 {
   "Name": "WebServer",
-  "Description": "",
+  "Description": "Allows the running of an HTTP web server.",
   "Properties": [
     {
       "Name": "Listener",
-      "Type": "HttpListener",
-      "Description": ""
+      "Type": "System.Net.HttpListener",
+      "Description": "The HttpListener to use."
     },
     {
       "Name": "RouteFunctions",
-      "Type": "hashtable",
-      "Description": ""
+      "Type": "System.Collection.Hashtable",
+      "Description": "Hash table of routes to listen for"
     }
   ],
   "Methods": [
     {
       "Name": "AddRouteCommand",
-      "Description": "",
-      "Returns": "",
+      "Description": "Adds a route to the listener.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Route",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetRouteCommand",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "The route to listen for"
+        },
         {
-          "Name": "ArgName",
+          "Name": "Method",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The HTTP method to listen for"
+        },
+        {
+          "Name": "Method",
+          "Type": "System.String",
+          "Description": "The script to execute when the route is triggered"
         }
       ]
     },
     {
       "Name": "HasRouteCommand",
-      "Description": "",
-      "Returns": "",
+      "Description": "Checks to see if a route exists",
+      "Returns": "System.Boolean",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Route",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The route to listen for"
+        },
+        {
+          "Name": "Method",
+          "Type": "System.String",
+          "Description": "The HTTP method to listen for"
+        }
+      ]
+    },
+    {
+      "Name": "GetRouteCommand",
+      "Description": "Gets a RouteCommand",
+      "Returns": "RouteCommand",
+      "Arguments": [
+        {
+          "Name": "Route",
+          "Type": "System.String",
+          "Description": "The route to listen for"
+        },
+        {
+          "Name": "Method",
+          "Type": "System.String",
+          "Description": "The HTTP method to listen for"
         }
       ]
     },
     {
       "Name": "InvokeRouteCommand",
-      "Description": "",
-      "Returns": "",
+      "Description": "Executes the script for the RouteCommand",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Route",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "IsListening",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "The route to listen for"
+        },
         {
-          "Name": "ArgName",
+          "Name": "Method",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The HTTP method to listen for"
+        },
+        {
+          "Name": "Context",
+          "Type": "System.Net.HttpListenerContext",
+          "Description": "The context of the calling web request"
         }
       ]
     },
     {
       "Name": "Start",
-      "Description": "",
+      "Description": "Starts a web server listening on the specified URIs",
       "Returns": "",
       "Arguments": [
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "ListeningURIs",
+          "Type": "System.String[]",
+          "Description": "The list of URI to listen on"
         }
       ]
+    },
+    {
+      "Name": "Stop",
+      "Description": "Stops the web server.",
+      "Returns": "void",
+      "Arguments": [ ]
     }
   ]
 }

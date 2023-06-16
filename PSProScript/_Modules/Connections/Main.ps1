@@ -9,7 +9,7 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Session.Connections `
-    -TypeName "System.ollections.Hashtable" `
+    -TypeName "System.Collections.Hashtable" `
     -NotePropertyName "InMemory" `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `

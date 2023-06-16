@@ -1,17 +1,75 @@
 {
   "Name": "InformaticaAPI",
-  "Description": "",
+  "Description": "Enteracts with Informatica's API to manage user and group information.",
+  "Requires": ["Connections"],
   "Properties": [],
   "Methods": [
+		{
+      "Name": "SetConnection",
+      "Description": "Sets a InformaticaAPI connection either in memory or persisted.",
+      "Returns": "void",
+      "Arguments": [
+          { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" },
+          { "Name": "Comments", "Type": "System.String", "Description": "Comments for the Connection" },
+          { "Name": "IsPersisted", "Type": "System.String", "Description": "True to store in file system." },
+          { "Name": "V3LoginURI", "Type": "System.String", "Description": "The login URI for version 3" },
+          { "Name": "V2LoginURI", "Type": "System.String", "Description": "The login URI for version 2" },
+          { "Name": "UserName", "Type": "System.String", "Description": "The user name" },
+          { "Name": "Password", "Type": "System.String", "Description": "The password" }
+      ]
+    },
     {
-      "Name": "ExportAssets",
-      "Description": "",
-      "Returns": "",
+          "Name": "GetConnection",
+          "Description": "Gets a InformaticaAPI connection either from memory or from file storage.",
+          "Returns": "System.Management.Automation.PSCustomObject",
+          "Arguments": [
+              { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" }
+          ]
+    },
+    {
+          "Name": "GetSession",
+          "Description": "Creates the `Session` variable used by other methods to connect to the API.",
+          "Returns": "void",
+          "Arguments": [
+              { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Connection" }
+          ]
+    },
+    {
+      "Name": "GetAssets",
+      "Description": "Gets assets for the specified project",
+      "Returns": "System.Collections.Generic.List[System.String]",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Project",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the project"
+        }
+      ]
+    },
+    {
+      "Name": "ExportAssets",
+      "Description": "Gets and stores Assets locally",
+      "Returns": "System.Management.Automation.PSObject",
+      "Arguments": [
+        {
+          "Name": "Assets",
+          "Type": "System.Collections.Generic.List[System.String]",
+          "Description": "The list of asset Ids to export"
+        },
+        {
+          "Name": "OutputDirectoryPath",
+          "Type": "System.String",
+          "Description": "The path to the directory where asset files will be stored"
+        },
+        {
+          "Name": "IncludeConnections",
+          "Type": "System.Boolean",
+          "Description": "Determines whether Connections will be exported as well"
+        },
+        {
+          "Name": "IncludeSchedules",
+          "Type": "System.Boolean",
+          "Description": "Determines whether Schedules will be exported as well"
         }
       ]
     },
@@ -21,57 +79,14 @@
       "Returns": "",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "OutputDirectoryPath",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetAssets",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "The path to the directory where log files will be stored"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetSchedules",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetSession",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "SetConnection",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "LastDatabaseStartTime",
+          "Type": "System.DateTime",
+          "Description": "The date and time to pull logs since"
         }
       ]
     }

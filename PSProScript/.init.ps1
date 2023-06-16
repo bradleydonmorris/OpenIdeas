@@ -8,10 +8,10 @@ If (![IO.File]::Exists($JobsConfigFilePath))
 {
     ConvertTo-Json -InputObject @{
         "AlwaysLoadedModules" = @(
+            "Connections",
             "Logging",
             "Utilities",
-            "NuGet",
-            "Connections"
+            "NuGet"
         )
         "LoggingDefaults" = @{
             "RetentionDays" = 30
@@ -212,6 +212,25 @@ Add-Member `
             $Doc = ConvertFrom-Json -InputObject ([IO.File]::ReadAllText($DocFilePath));
             [String] $README = [String]::Format("# {0}`n", $Doc.Name);
             $README += [String]::Format("## {0}`n`n", $Doc.Description);
+            If ($Doc.Requires.Count -gt 0)
+            {
+                $RequiresList = "";
+                ForEach ($ModuleName In $Doc.Requires)
+                {
+                    $RequiresList += [String]::Format(
+                        " [{0}](_Modules/{0}/README.md),",
+                        $ModuleName
+                    );
+                }
+                If ($RequiresList.EndsWith(","))
+                {
+                    $RequiresList = $RequiresList.Substring(0, ($RequiresList.Length - 1))
+                }
+                $README += [String]::Format(
+                    "- ### Requires{0}  `n",
+                    $RequiresList
+                );
+            }
             ForEach ($Property In $Doc.Properties)
             {
                 $README += [String]::Format(
@@ -247,7 +266,7 @@ Add-Member `
                         ForEach ($Argument In $Method.Arguments)
                         {
                             $README += [String]::Format(
-                                "    - {0} ``{1}``  `n        {2}`n",
+                                "    - {0} ``{1}``  `n        {2}`n`n",
                                 $Argument.Name,
                                 $Argument.Type,
                                 $Argument.Description

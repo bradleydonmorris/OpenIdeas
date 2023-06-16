@@ -21,13 +21,13 @@ Add-Member `
             [String] $Name,
     
             [Parameter(Mandatory=$false)]
-            [String] $FilePath,
-    
-            [Parameter(Mandatory=$false)]
             [String] $Comments,
             
             [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [Boolean] $IsPersisted,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $FilePath
         )
         $Global:Session.Connections.Set(
             $Name,
@@ -72,54 +72,6 @@ Add-Member `
 #endregion Connection Methods
 
 #region Base Methods
-Add-Member `
-    -InputObject $Global:Session.Sqlite `
-    -Name "ConvertToDBValue" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Object])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [Object] $Value
-        )
-        [Object] $ReturnValue = $null;
-        Switch ($Value.GetType().Name)
-        {
-            "Guid" { $ReturnValue = $Value.ToString("N"); }
-            "DateTime" { $ReturnValue = $Value.ToString("yyyy-MM-dd HH:mm:ss.fffffff"); }
-            Default { $ReturnValue = $Value; }
-        }
-        #Write-Host -Object ([String]::Format("{0} -> {1}", $Value.GetType().Name, $ReturnValue.GetType().Name));
-        Return $ReturnValue;
-    }
-Add-Member `
-    -InputObject $Global:Session.Sqlite `
-    -Name "ConvertFromDBValue" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Object])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [Object] $Value,
-
-            [Parameter(Mandatory=$true)]
-            [String] $Type
-        )
-        [Object] $ReturnValue = $null;
-        Switch ($Type)
-        {
-            "Guid" { $ReturnValue = [Guid]::Parse($Value); }
-            "DateTime" { $ReturnValue = [DateTime]::Parse($Value); }
-            "Int64" { $ReturnValue = [Int64]$Value; }
-            "String" { $ReturnValue = [String]$Value; }
-            "Double" { $ReturnValue = [Double]$Value; }
-            Default { $ReturnValue = $Value; }
-        }
-        #Write-Host -Object ([String]::Format("{0} -> {1}", $Value.GetType().Name, $ReturnValue.GetType().Name));
-        Return $ReturnValue;
-    }
 Add-Member `
     -InputObject $Global:Session.Sqlite `
     -Name "Execute" `
@@ -311,55 +263,6 @@ Add-Member `
         Return $ReturnValue;
     }
 #endregion Base Methods
-Add-Member `
-    -InputObject $Global:Session.Sqlite `
-    -Name "CreateIfNotFound" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $ConnectionName,
-
-            [Parameter(Mandatory=$true)]
-            [String] $CommandText,
-    
-            [Parameter(Mandatory=$false)]
-            [Collections.Hashtable] $Parameters
-        )
-        $ConnectionValues = $Global:Session.Connections.Get($ConnectionName);
-        If (![IO.File]::Exists($ConnectionValues.FilePath))
-        {
-            [Data.Sqlite.SqliteConnection] $Connection = $null;
-            [Data.Sqlite.SqliteCommand] $Command = $null;
-            Try
-            {
-                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
-                $Connection.Open();
-                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
-                $Command.CommandType = [Data.CommandType]::Text;
-                ForEach ($ParameterKey In $Parameters.Keys)
-                {
-                    [String] $Name = $ParameterKey;
-                    If (!$Name.StartsWith("@"))
-                        { $Name = "@" + $Name}
-                    [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
-                }
-                [void] $Command.ExecuteNonQuery();
-            }
-            Finally
-            {
-                If ($Command)
-                    { [void] $Command.Dispose(); }
-                If ($Connection)
-                {
-                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
-                        { [void] $Connection.Close(); }
-                    [void] $Connection.Dispose();
-                }
-            }
-        }
-    }
 
 Add-Member `
     -InputObject $Global:Session.Sqlite `
@@ -491,3 +394,105 @@ Add-Member `
         }
         Return $ReturnValue
     };
+Add-Member `
+    -InputObject $Global:Session.Sqlite `
+    -Name "ConvertToDBValue" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Object])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [Object] $Value
+        )
+        [Object] $ReturnValue = $null;
+        Switch ($Value.GetType().Name)
+        {
+            {($_ -eq "Guid") -or ($_ -eq "System.Guid")}
+                { $ReturnValue = $Value.ToString("N"); }
+            {($_ -eq "DateTime") -or ($_ -eq "System.DateTime")}
+                { $ReturnValue = $Value.ToString("yyyy-MM-dd HH:mm:ss.fffffff"); }
+            Default { $ReturnValue = $Value; }
+        }
+        Return $ReturnValue;
+    }
+Add-Member `
+    -InputObject $Global:Session.Sqlite `
+    -Name "ConvertFromDBValue" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Object])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [Object] $Value,
+
+            [Parameter(Mandatory=$true)]
+            [String] $Type
+        )
+        [Object] $ReturnValue = $null;
+        Switch ($Type)
+        {
+            {($_ -eq "Guid") -or ($_ -eq "System.Guid")}
+                { $ReturnValue = [Guid]::Parse($Value); }
+            {($_ -eq "DateTime") -or ($_ -eq "System.DateTime")}
+                { $ReturnValue = [DateTime]::Parse($Value); }
+            {($_ -eq "Int64") -or ($_ -eq "System.Int64")}
+                { $ReturnValue = [Int64]$Value; }
+            {($_ -eq "String") -or ($_ -eq "System.String")}
+                { $ReturnValue = [String]$Value; }
+            {($_ -eq "Double") -or ($_ -eq "System.Double")}
+                { $ReturnValue = [Double]$Value; }
+            Default { $ReturnValue = $Value; }
+        }
+        Return $ReturnValue;
+    }
+Add-Member `
+    -InputObject $Global:Session.Sqlite `
+    -Name "CreateIfNotFound" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $CommandText,
+    
+            [Parameter(Mandatory=$false)]
+            [Collections.Hashtable] $Parameters
+        )
+        $ConnectionValues = $Global:Session.Connections.Get($ConnectionName);
+        If (![IO.File]::Exists($ConnectionValues.FilePath))
+        {
+            [Data.Sqlite.SqliteConnection] $Connection = $null;
+            [Data.Sqlite.SqliteCommand] $Command = $null;
+            Try
+            {
+                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
+                $Connection.Open();
+                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
+                $Command.CommandType = [Data.CommandType]::Text;
+                ForEach ($ParameterKey In $Parameters.Keys)
+                {
+                    [String] $Name = $ParameterKey;
+                    If (!$Name.StartsWith("@"))
+                        { $Name = "@" + $Name}
+                    [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                }
+                [void] $Command.ExecuteNonQuery();
+            }
+            Finally
+            {
+                If ($Command)
+                    { [void] $Command.Dispose(); }
+                If ($Connection)
+                {
+                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
+                        { [void] $Connection.Close(); }
+                    [void] $Connection.Dispose();
+                }
+            }
+        }
+    }

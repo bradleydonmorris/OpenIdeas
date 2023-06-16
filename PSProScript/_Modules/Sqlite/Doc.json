@@ -1,149 +1,247 @@
 {
   "Name": "Sqlite",
-  "Description": "",
+  "Description": "Used to enteract with SQLite Databases",
+  "Requires": [
+    "Connections"
+  ],
   "Properties": [],
   "Methods": [
     {
-      "Name": "ClearTable",
-      "Description": "",
-      "Returns": "",
+      "Name": "SetConnection",
+      "Description": "Sets a SQLite connection either in memory or persisted.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "ConvertFromDBValue",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "Name of the Connection"
+        },
         {
-          "Name": "ArgName",
+          "Name": "Comments",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "ConvertToDBValue",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "Comments for the Connection"
+        },
         {
-          "Name": "ArgName",
+          "Name": "IsPersisted",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "CreateIfNotFound",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "True to store in file system."
+        },
         {
-          "Name": "ArgName",
+          "Name": "FilePath",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "DoesTableHaveColumn",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "Execute",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Description": "The path to the SQLite file"
         }
       ]
     },
     {
       "Name": "GetConnection",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets a SQLite connection either from memory or from file storage.",
+      "Returns": "System.Management.Automation.PSCustomObject",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
         }
       ]
     },
     {
       "Name": "GetConnectionString",
-      "Description": "",
-      "Returns": "",
+      "Description": "Returns the connection string for the SQLite connection.",
+      "Returns": "System.String",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
+        }
+      ]
+    },
+    {
+      "Name": "Execute",
+      "Description": "Executes the provided script against the connection.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
         }
       ]
     },
     {
       "Name": "GetRecords",
-      "Description": "",
-      "Returns": "",
+      "Description": "Executes the provided script against the connection and returns the records.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSCustomObject]",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        },
+        {
+          "Name": "Fields",
+          "Type": "System.Collections.Generic.List[System.String]",
+          "Description": "The fields to return. If * is used all fields will be returned."
+        },
+        {
+          "Name": "FieldConversion",
+          "Type": "System.Collections.Hashtable",
+          "Description": "If provided any fields in this list will be converted to the specified type"
         }
       ]
     },
     {
       "Name": "GetScalar",
-      "Description": "",
-      "Returns": "",
+      "Description": "Executes the provided script against the connection and returns the first field from the first record.",
+      "Returns": "System.Object",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        }
+      ]
+    },
+    {
+      "Name": "ClearTable",
+      "Description": "Clears all records from the specified table",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table to clear"
         }
       ]
     },
     {
       "Name": "GetTableRowCount",
-      "Description": "",
-      "Returns": "",
+      "Description": "Returns the number of record in the table.",
+      "Returns": "System.Int64",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table to clear"
+        },
+        {
+          "Name": "Filters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "If provided the fields and values will be used to filter the count. These are AND conditions."
         }
       ]
     },
     {
-      "Name": "SetConnection",
-      "Description": "",
-      "Returns": "",
+      "Name": "DoesTableHaveColumn",
+      "Description": "Checks to see if a column exists on a table.",
+      "Returns": "System.Boolean",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table name"
+        },
+        {
+          "Name": "Column",
+          "Type": "System.String",
+          "Description": "The column name"
+        }
+      ]
+    },
+    {
+      "Name": "ConvertToDBValue",
+      "Description": "Handles conversion of some known types to types supported by SQLite.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "Value",
+          "Type": "System.Object",
+          "Description": "The value to convert"
+        }
+      ]
+    },
+    {
+      "Name": "ConvertFromDBValue",
+      "Description": "Handles conversion of data stored in types supported by SQLite to the specified type.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "Value",
+          "Type": "System.Object",
+          "Description": "The value to convert"
+        },
+        {
+          "Name": "Type",
+          "Type": "System.String",
+          "Description": "The type to convert to"
+        }
+      ]
+    },
+    {
+      "Name": "CreateIfNotFound",
+      "Description": "Creates the speficied SQLite database file if it doesn't exists.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
         }
       ]
     }

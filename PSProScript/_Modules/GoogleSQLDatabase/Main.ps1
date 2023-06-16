@@ -1,4 +1,3 @@
-[void] $Global:Session.LoadModule("Connections");
 [void] $Global:Session.LoadModule("SQLServer");
 
 Add-Member `

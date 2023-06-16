@@ -1,113 +1,152 @@
 {
   "Name": "IICSSQLDatabase",
-  "Description": "",
+  "Description": "Enteracts with the IICS schema in a specified SQL Server database.",
+  "Requires": ["SQLServer"],
   "Properties": [],
   "Methods": [
     {
       "Name": "ClearStaged",
-      "Description": "",
-      "Returns": "",
+      "Description": "Clears staging tables",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetActivityLogLastStartTime",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "Name of the SQL database Connection"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "Parse",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Name": "ClearAsset",
+          "Type": "System.Boolean",
+          "Description": "If true, clears the StagedAsset table"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "ParseActivityLogs",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Name": "ClearAssetFile",
+          "Type": "System.Boolean",
+          "Description": "If true, clears the StagedAssetFile table"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "PostStagedActivityLogs",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "PostStagedAssetFiles",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "ClearActivityLog",
+          "Type": "System.Boolean",
+          "Description": "If true, clears the StagedActivityLog table"
         }
       ]
     },
     {
       "Name": "PostStagedAssets",
-      "Description": "",
-      "Returns": "",
+      "Description": "Imports asset objects into the database",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "AssetsJSON",
+          "Type": "System.String",
+          "Description": "The JSON representation of the Assets"
         }
       ]
     },
     {
-      "Name": "PostTempBDM",
-      "Description": "",
-      "Returns": "",
+      "Name": "PostStagedAssetFiles",
+      "Description": "Clears staging tables",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "FederatedId",
+          "Type": "System.String",
+          "Description": "The FederatedId of the asset the file is related to"
+        },
+        {
+          "Name": "FileName",
+          "Type": "System.String",
+          "Description": "The file name"
+        },
+        {
+          "Name": "FileType",
+          "Type": "System.String",
+          "Description": "The type of file"
+        },
+        {
+          "Name": "Content",
+          "Type": "System.String",
+          "Description": "The content of the file"
+        }
+      ]
+    },
+    {
+      "Name": "PostStagedActivityLogs",
+      "Description": "Clears staging tables",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "JSON",
+          "Type": "System.String",
+          "Description": "The JSON representation of the activity log entries"
+        }
+      ]
+    },
+    {
+      "Name": "Parse",
+      "Description": "Parses all staged asset data",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
+        }
+      ]
+    },
+    {
+      "Name": "ParseActivityLogs",
+      "Description": "Parses all staged activity log data",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
+        }
+      ]
+    },
+    {
+      "Name": "GetActivityLogLastStartTime",
+      "Description": "Gets the start time of the last activity log entry",
+      "Returns": "System.DateTime",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
         }
       ]
     },
     {
       "Name": "RemoveOldActivityLogs",
-      "Description": "",
-      "Returns": "",
+      "Description": "Removes old activity log entries",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "KeepLogsForDays",
+          "Type": "System.Int32",
+          "Description": "The number of days of logs to keep"
         }
       ]
     }

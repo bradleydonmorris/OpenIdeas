@@ -17,6 +17,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
+    
             [Parameter(Mandatory=$true)]
             [String] $Instance,
     
@@ -30,13 +36,7 @@ Add-Member `
             [String] $UserName,
     
             [Parameter(Mandatory=$true)]
-            [String] $Password,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [String] $Password
         )
         $Global:Session.Connections.Set(
             $Name,

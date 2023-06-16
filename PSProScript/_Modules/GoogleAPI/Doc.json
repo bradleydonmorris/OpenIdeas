@@ -1,15 +1,50 @@
 {
   "Name": "GoogleAPI",
-  "Description": "",
+  "Description": "Enteracts with Google's API to manage user and group information.",
+  "Requires": ["Connections"],
   "Properties": [],
   "Methods": [
+		{
+      "Name": "SetConnection",
+      "Description": "Sets a GoogleAPI connection either in memory or persisted.",
+      "Returns": "void",
+      "Arguments": [
+          { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" },
+          { "Name": "Comments", "Type": "System.String", "Description": "Comments for the Connection" },
+          { "Name": "IsPersisted", "Type": "System.String", "Description": "True to store in file system." },
+          { "Name": "ClientId", "Type": "System.String", "Description": "" },
+          { "Name": "ProjectId", "Type": "System.String", "Description": "" },
+          { "Name": "AuthURI", "Type": "System.String", "Description": "" },
+          { "Name": "TokenURI", "Type": "System.String", "Description": "" },
+          { "Name": "AuthProviderx509CertURI", "Type": "System.String", "Description": "" },
+          { "Name": "ClientSecret", "Type": "System.String", "Description": "" },
+          { "Name": "RedirectURI", "Type": "System.String", "Description": "" },
+          { "Name": "Scopes", "Type": "System.Collections.Generic.List[System.String]", "Description": "" },
+          { "Name": "RefreshToken", "Type": "System.String", "Description": "" }
+      ]
+    },
     {
-      "Name": "GetGroupMembers",
-      "Description": "Gets all members of the specified group.",
+          "Name": "GetConnection",
+          "Description": "Gets a GoogleAPI connection either from memory or from file storage.",
+          "Returns": "System.Management.Automation.PSCustomObject",
+          "Arguments": [
+              { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" }
+          ]
+    },
+    {
+          "Name": "GetRefreshedToken",
+          "Description": "Returns the refresh token needed for API calls, and stores the token on the connection.",
+          "Returns": "System.String",
+          "Arguments": [
+              { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Connection" }
+          ]
+    },
+    {
+      "Name": "GetUsers",
+      "Description": "Gets All Google users.",
       "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
       "Arguments": [
-        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" },
-        { "Name": "GroupId", "Type": "System.String", "Description": "The Id of the group to retrieve members of" }
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
       ]
     },
     {
@@ -21,39 +56,20 @@
       ]
     },
     {
+      "Name": "GetGroupMembers",
+      "Description": "Gets all members of the specified group.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" },
+        { "Name": "GroupId", "Type": "System.String", "Description": "The Id of the group to retrieve members of" }
+      ]
+    },
+    {
       "Name": "GetOrgUnits",
       "Description": "Gets all Organizational Units",
       "Returns": "System.Collections.Generic.List[System.String]",
       "Arguments": [
         { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
-      ]
-    },
-    {
-      "Name": "GetRefreshedToken",
-      "Description": "Attempts to refresh the authentication token and store it in the connection.",
-      "Returns": "System.String",
-      "Arguments": [
-        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
-      ]
-    },
-    {
-      "Name": "GetUsers",
-      "Description": "Gets All Google users.",
-      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
-      "Arguments": [
-        { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the Google Connection" }
-      ]
-    },
-    {
-      "Name": "NewConnection",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
       ]
     }
   ]

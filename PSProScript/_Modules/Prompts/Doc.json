@@ -1,77 +1,106 @@
 {
   "Name": "Prompts",
-  "Description": "",
+  "Description": "Allows interation with the user.",
   "Properties": [],
   "Methods": [
     {
-      "Name": "BooleanResponse",
-      "Description": "",
-      "Returns": "",
+      "Name": "PressEnter",
+      "Description": "Causes a wait for the user to press ENTER.",
+      "Returns": "void",
+      "Arguments": [ ]
+    },
+    {
+      "Name": "StringResponse",
+      "Description": "Requests a string response from the user.",
+      "Returns": "System.String",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PromptText",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The text to show the user"
+        },
+        {
+          "Name": "Default",
+          "Type": "System.String",
+          "Description": "The value to return if the user presses ENTER"
+        }
+      ]
+    },
+    {
+      "Name": "BooleanResponse",
+      "Description": "Requests a yes or no response from the user.",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "PromptText",
+          "Type": "System.String",
+          "Description": "The text to show the user"
+        },
+        {
+          "Name": "Default",
+          "Type": "System.Boolean",
+          "Description": "The value to return if the user presses ENTER"
         }
       ]
     },
     {
       "Name": "DisplayHashTable",
-      "Description": "",
-      "Returns": "",
+      "Description": "Displays the contents of a name/value pair collection",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "SetName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Can be null. The name to give the values that are to be displayed"
+        },
+        {
+          "Name": "MaximumLineLength",
+          "Type": "System.Int64",
+          "Description": "The maximum length to use when establishing the lines. Defaults to 180"
+        },
+        {
+          "Name": "Values",
+          "Type": "System.Collections.Specialized.OrderedDictionary",
+          "Description": "The name/values to display"
         }
       ]
     },
     {
       "Name": "OutputHashTableToText",
-      "Description": "",
-      "Returns": "",
+      "Description": "Generates the text output for a hash table.",
+      "Returns": "System.String",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "SetName",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "PressEnter",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "Can be null. The name to give the values that are to be displayed"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "MaximumLineLength",
+          "Type": "System.Int64",
+          "Description": "The maximum length to use when establishing the lines. Defaults to 180"
+        },
+        {
+          "Name": "Values",
+          "Type": "System.Collections.Specialized.OrderedDictionary",
+          "Description": "The name/values to output"
         }
       ]
     },
     {
       "Name": "ShowMenu",
-      "Description": "",
-      "Returns": "",
+      "Description": "Displays a menu for a user to choose from.",
+      "Returns": "System.String",
       "Arguments": [
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "StringResponse",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Name": "MaximumLineLength",
+          "Type": "System.Int64",
+          "Description": "The maximum length to use when establishing the lines. Defaults to 180"
+        },
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "Options",
+          "Type": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+          "Description": "An array of options to display"
         }
       ]
     }

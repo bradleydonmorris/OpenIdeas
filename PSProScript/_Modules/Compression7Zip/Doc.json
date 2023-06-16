@@ -1,6 +1,7 @@
 {
   "Name": "Compression7Zip",
-  "Description": "",
+  "Description": "A wrapper for the 7Zip executable. This Module require 7-Zip to be installed.",
+  "Requires": [],
   "Properties": [
     {
       "Name": "ExecutablePath",

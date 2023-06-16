@@ -17,7 +17,6 @@ If (-not (Get-Module -Name "Posh-SSH"))
     Import-Module -Name "Posh-SSH"
 } 
 
-
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
@@ -35,6 +34,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
+    
             [Parameter(Mandatory=$true)]
             [String] $AuthType, #Password Or KeyFile
     
@@ -51,13 +56,7 @@ Add-Member `
             [String] $Password,
     
             [Parameter(Mandatory=$false)]
-            [String] $KeyFilePath,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [String] $KeyFilePath
         )
         If ($AuthType -eq "Password")
         {
@@ -223,43 +222,6 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Session.SFTP `
-    -Name "GetFile" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $ConnectionName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $RemoteFilePath,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $LocalDirectoryPath,
-    
-            [Parameter(Mandatory=$true)]
-            [Boolean] $Overwrite
-        )
-        If (
-            [IO.File]::Exists([IO.Path]::Combine($LocalDirectoryPath, [IO.Path]::GetFileName($RemoteFilePath))) -and
-            -not $Overwrite
-        )
-        {
-            Throw [System.IO.IOException]::new("File Already Exists.");
-        }
-        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
-        If ($Overwrite)
-        {
-            Get-SFTPItem -SFTPSession $Session -Path $RemoteFilePath -Destination $LocalDirectoryPath -Force;
-        }
-        Else
-        {
-            Get-SFTPItem -SFTPSession $Session -Path $RemoteFilePath -Destination $LocalDirectoryPath;
-        }
-        Remove-SFTPSession -SFTPSession $Session | Out-Null;
-    };
-Add-Member `
-    -InputObject $Global:Session.SFTP `
     -Name "GetFilesNewerThan" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -343,6 +305,43 @@ Add-Member `
         }
         Remove-SFTPSession -SFTPSession $Session | Out-Null;
         Return $ReturnValue;
+    };
+Add-Member `
+    -InputObject $Global:Session.SFTP `
+    -Name "GetFile" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $RemoteFilePath,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $LocalDirectoryPath,
+    
+            [Parameter(Mandatory=$true)]
+            [Boolean] $Overwrite
+        )
+        If (
+            [IO.File]::Exists([IO.Path]::Combine($LocalDirectoryPath, [IO.Path]::GetFileName($RemoteFilePath))) -and
+            -not $Overwrite
+        )
+        {
+            Throw [System.IO.IOException]::new("File Already Exists.");
+        }
+        [SSH.SftpSession] $Session = $Global:Session.SFTP.GetSession($ConnectionName);
+        If ($Overwrite)
+        {
+            Get-SFTPItem -SFTPSession $Session -Path $RemoteFilePath -Destination $LocalDirectoryPath -Force;
+        }
+        Else
+        {
+            Get-SFTPItem -SFTPSession $Session -Path $RemoteFilePath -Destination $LocalDirectoryPath;
+        }
+        Remove-SFTPSession -SFTPSession $Session | Out-Null;
     };
 Add-Member `
     -InputObject $Global:Session.SFTP `

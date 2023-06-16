@@ -7,70 +7,6 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Session.SQLServerFileImport `
-    -Name "DeleteTableRows" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $ConnectionName,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Schema,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Table,
-
-            [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Filters
-        )
-        [String] $WhereClause = "";
-        [Collections.Hashtable] $Parameters = [Collections.Hashtable]::new();
-        If ($Filters)
-        {
-            If ($Filters.Count -gt 0)
-            {
-                $WhereClause = " WHERE ";
-                [Int32] $FilterIndex = 0;
-                ForEach ($FilterKey In $Filters.Keys)
-                {
-                    $WhereClause += [String]::Format(
-                        (
-                            ($FilterIndex -eq 0) ?    
-                                "[{0}] = @Param{1}" :
-                                " AND [{0}] = @Param{1}"
-                        ),
-                        $FilterKey,
-                        $FilterIndex
-                    );
-                    [void] $Parameters.Add(
-                        [String]::Format("@Param{0}", $FilterIndex),
-                        $Filters[$FilterKey]
-                    );
-                }
-            }
-        }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnection($ConnectionName));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new(
-            [String]::Format("DELETE FROM [{0}].[{1}]{2}",
-                $Schema,
-                $Table,
-                $WhereClause # May be an empty string if $Filters is null or empty
-            ),
-            $SqlConnection
-        );
-        ForEach ($ParameterKey In $Parameters.Keys)
-        {
-            [void] $SqlCommand.Parameters.AddWithValue($ParameterKey, $Parameters[$ParameterKey]);
-        }
-        [void] $SqlCommand.ExecuteNonQuery();
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
-    };
-Add-Member `
-    -InputObject $Global:Session.SQLServerFileImport `
     -Name "CSVToDataTable" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -124,7 +60,29 @@ Add-Member `
             }
             $ReturnValue.Rows.Add($DataRow)   
         }
-        Return ,$ReturnValue;
+        Return $ReturnValue;
+    };
+Add-Member `
+    -InputObject $Global:Session.SQLServerFileImport `
+    -Name "GetCSVRowCount" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Int64])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $FilePath,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $Delimiter
+        )
+        [Int64] $ReturnValue = (-1);
+        If ([String]::IsNullOrEmpty($Delimiter))
+        {
+            $Delimiter = ",";
+        }
+        $ReturnValue = (Import-Csv -Path $FilePath -Delimiter $Delimiter).Rows.Count;
+        Return $ReturnValue;
     };
 Add-Member `
     -InputObject $Global:Session.SQLServerFileImport `
@@ -141,6 +99,9 @@ Add-Member `
     
             [Parameter(Mandatory=$true)]
             [String] $Table,
+    
+            [Parameter(Mandatory=$true)]
+            [String] $FilePath,
     
             [Parameter(Mandatory=$true)]
             [String] $Delimiter,
@@ -186,26 +147,4 @@ Add-Member `
         [void] $SqlConnection.Close();
         [void] $SqlConnection.Dispose();
         [void] $DataTable.Dispose();
-    };
-Add-Member `
-    -InputObject $Global:Session.SQLServerFileImport `
-    -Name "GetCSVRowCount" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Int64])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $FilePath,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Delimiter
-        )
-        [Int64] $ReturnValue = (-1);
-        If ([String]::IsNullOrEmpty($Delimiter))
-        {
-            $Delimiter = ",";
-        }
-        $ReturnValue = (Import-Csv -Path $FilePath -Delimiter $Delimiter).Rows.Count;
-        Return $ReturnValue;
     };

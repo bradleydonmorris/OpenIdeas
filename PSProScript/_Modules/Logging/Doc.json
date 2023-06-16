@@ -1,211 +1,254 @@
 {
   "Name": "Logging",
-  "Description": "",
-  "Properties": [
-    {
-      "Name": "CloseLogTime",
-      "Type": "datetime",
-      "Description": ""
-    },
-    {
-      "Name": "Config",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "ConfigFilePath",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "CurrentLogFilePath",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "DirectoryPath",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "ElapsedLogTime",
-      "Type": "datetime",
-      "Description": ""
-    },
-    {
-      "Name": "Entries",
-      "Type": "ArrayList",
-      "Description": ""
-    },
-    {
-      "Name": "JSONFilePath",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "LastEntryNumber",
-      "Type": "System.Int32",
-      "Description": ""
-    },
-    {
-      "Name": "LastLogFileNumber",
-      "Type": "System.Int32",
-      "Description": ""
-    },
+  "Description": "Allows management of logging.",
+  "ChildObjects": [
     {
       "Name": "LevelCounts",
-      "Type": "System.Int32",
-      "Description": ""
-    },
-    {
-      "Name": "LogFileNameTemplate",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "LogFilePathTemplate",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "LogFileTimestamp",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "OpenLogTime",
-      "Type": "datetime",
-      "Description": ""
-    },
-    {
-      "Name": "Timers",
-      "Type": "System.String",
-      "Description": ""
-    },
-    {
-      "Name": "Variables",
-      "Type": "hashtable",
-      "Description": ""
-    }
-  ],
-  "Methods": [
-    {
-      "Name": "ClearLogs",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+      "Description": "Parent of the level counts.",
+      "Properties": [
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "Information",
+          "Type": "System.Int32",
+          "Description": "Count of information entries."
+        },
+        {
+          "Name": "Warning",
+          "Type": "System.Int32",
+          "Description": "Count of warning entries."
+        },
+        {
+          "Name": "Error",
+          "Type": "System.Int32",
+          "Description": "Count of error entries."
+        },
+        {
+          "Name": "Debug",
+          "Type": "System.Int32",
+          "Description": "Count of debug entries."
+        },
+        {
+          "Name": "Fatal",
+          "Type": "System.Int32",
+          "Description": "Count of fatal entries."
         }
       ]
     },
     {
-      "Name": "Close",
-      "Description": "",
-      "Returns": "",
+      "Name": "Timers",
+      "Description": "Parent of the timers.",
+      "Properties": [
+        {
+          "Name": "TimerCollection",
+          "Type": "System.Collections.Hashtable",
+          "Description": "Collections of timers."
+        },
+        {
+          "Name": "TimerOrder",
+          "Type": "System.Collections.Generic.List[System.String]",
+          "Description": "Collections of timer names in order of creation."
+        },
+        {
+          "Name": "TimersFilePath",
+          "Type": "System.String",
+          "Description": "Path to file where timer information is stored."
+        }
+      ],
+      "Methods": []
+    },
+    {
+      "Name": "Config",
+      "Description": "The configuration for logging. This is loaded from the config file for the specific script.",
+      "Properties": [
+        {
+          "Name": "RetentionDays",
+          "Type": "System.Int32",
+          "Description": "Collections of timers."
+        },
+        {
+          "Name": "EmailRecipients",
+          "Type": "System.String[]",
+          "Description": "Array of email addresses to send log info to."
+        },
+        {
+          "Name": "SMTPConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection that contains the SMTP server information."
+        }
+      ],
+      "Methods": [
+        {
+          "Name": "Save",
+          "Description": "Saves the current config to the config file",
+          "Returns": "void",
+          "Arguments": [ ]
+        }
+      ]
+    }
+  ],
+  "Properties": [
+    {
+      "Name": "OpenLogTime",
+      "Type": "System.DateTime",
+      "Description": "The time the Log was opened."
+    },
+    {
+      "Name": "CloseLogTime",
+      "Type": "System.DateTime",
+      "Description": "The time the Log was closed."
+    },
+    {
+      "Name": "ElapsedLogTime",
+      "Type": "System.DateTime",
+      "Description": "The time span the log was opened."
+    },
+    {
+      "Name": "DirectoryPath",
+      "Type": "System.String",
+      "Description": "The path to the directory of log storage."
+    },
+    {
+      "Name": "ConfigFilePath",
+      "Type": "System.String",
+      "Description": "The path to the configuration file."
+    },
+    {
+      "Name": "LogFileTimestamp",
+      "Type": "System.String",
+      "Description": "The time stamp used in the log file name."
+    },
+    {
+      "Name": "LogFileNameTemplate",
+      "Type": "System.String",
+      "Description": "The template used for the log file name."
+    },
+    {
+      "Name": "LogFilePathTemplate",
+      "Type": "System.String",
+      "Description": "The template used for the log file path."
+    },
+    {
+      "Name": "LastLogFileNumber",
+      "Type": "System.Int32",
+      "Description": "Last number used for log files."
+    },
+    {
+      "Name": "CurrentLogFilePath",
+      "Type": "System.String",
+      "Description": "The path to the current log file."
+    },
+    {
+      "Name": "JSONFilePath",
+      "Type": "System.String",
+      "Description": "The path to the current log file in JSON format."
+    },
+    {
+      "Name": "LastEntryNumber",
+      "Type": "System.Int32",
+      "Description": "Last number used for entries."
+    },
+    {
+      "Name": "Entries",
+      "Type": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Description": "Collection of log entires."
+    },
+    {
+      "Name": "Variables",
+      "Type": "hashtable",
+      "Description": "A hash table of variables used by other methods."
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "WriteEntry",
+      "Description": "Writes an entry to the log",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Level",
           "Type": "System.String",
-          "Description": ""
+          "Description": "One of Information, Warning, Error, Debug, or Fatal"
         }
       ]
     },
     {
       "Name": "GetNextLogFile",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "Send",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "TimedExecute",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "TimedExecuteAll",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "WriteEntry",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
+      "Description": "Gets the next log file to use to store extended exception information.",
+      "Returns": "System.Collections.Hashtable",
+      "Arguments": [ ]
     },
     {
       "Name": "WriteException",
-      "Description": "",
-      "Returns": "",
+      "Description": "Stores an exception in the file system.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Name": "Exception",
+          "Type": "System.Exception",
+          "Description": "The exception to write"
         }
       ]
     },
     {
       "Name": "WriteExceptionWithData",
-      "Description": "",
-      "Returns": "",
+      "Description": "Stores an exception in the file system with additional data.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Exception",
+          "Type": "System.Exception",
+          "Description": "The exception to write"
+        },
+        {
+          "Name": "AdditionalData",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The additional data to write"
         }
       ]
     },
     {
       "Name": "WriteVariables",
-      "Description": "",
-      "Returns": "",
+      "Description": "Writes a collection of variables to the log.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "SetName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "A name given to the set of variables"
+        },
+        {
+          "Name": "Variables",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The variables to write"
+        }
+      ]
+    },
+    {
+      "Name": "Close",
+      "Description": "Closes the log.",
+      "Returns": "void",
+      "Arguments": [ ]
+    },
+    {
+      "Name": "ClearLogs",
+      "Description": "Removes old log files.",
+      "Returns": "void",
+      "Arguments": [ ]
+    },
+    {
+      "Name": "Send",
+      "Description": "Emails log information to the recipients specified in the config file.",
+      "Returns": "void",
+      "Arguments": [ ]
+    },
+    {
+      "Name": "TimedExecute",
+      "Description": "Creates timers and executes the script.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "The name given to the timer"
         }
       ]
     }

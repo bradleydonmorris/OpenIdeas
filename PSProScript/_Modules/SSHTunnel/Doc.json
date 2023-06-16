@@ -1,73 +1,129 @@
 {
   "Name": "SSHTunnel",
-  "Description": "",
+  "Description": "Used to manage SSH Tunnels",
+  "Requires": [
+    "Connections"
+  ],
   "Properties": [
     {
       "Name": "Internals",
-      "Type": "hashtable",
-      "Description": ""
+      "Type": "System.Collections.Hashtable",
+      "Description": "Stores tunnel information for later use"
     }
   ],
   "Methods": [
     {
-      "Name": "CreateKeyAuthTunnel",
-      "Description": "",
-      "Returns": "",
+      "Name": "SetConnection",
+      "Description": "Sets a SSHTunnel connection either in memory or persisted.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
+        },
+        {
+          "Name": "Comments",
+          "Type": "System.String",
+          "Description": "Comments for the Connection"
+        },
+        {
+          "Name": "IsPersisted",
+          "Type": "System.String",
+          "Description": "True to store in file system."
+        },
+        {
+          "Name": "AuthType",
+          "Type": "System.String",
+          "Description": "Either Passowrd or KeyFile"
+        },
+        {
+          "Name": "SSHServerAddress",
+          "Type": "System.String",
+          "Description": "The address of the SSH server"
+        },
+        {
+          "Name": "SSHServerPort",
+          "Type": "System.Int32",
+          "Description": "The port of the SSH server"
+        },
+        {
+          "Name": "UserName",
+          "Type": "System.String",
+          "Description": "The user name"
+        },
+        {
+          "Name": "Password",
+          "Type": "System.String",
+          "Description": "The password for the user account. Ignored for KeyFile auth type"
+        },
+        {
+          "Name": "KeyFilePath",
+          "Type": "System.String",
+          "Description": "The path to the key file. Ignored for Password auth type"
+        },
+        {
+          "Name": "KeyFilePassphrase",
+          "Type": "System.String",
+          "Description": "The passphrase for the key file. Ignored for Password auth type"
+        },
+        {
+          "Name": "LocalAddress",
+          "Type": "System.String",
+          "Description": "The address of the local system to map. Typically localhost"
+        },
+        {
+          "Name": "LocalPort",
+          "Type": "System.Int32",
+          "Description": "The port of the local system to map"
+        },
+        {
+          "Name": "RemoteAddress",
+          "Type": "System.String",
+          "Description": "The address of the remote system to map"
+        },
+        {
+          "Name": "RemotePort",
+          "Type": "System.Int32",
+          "Description": "The port of the remote system to map"
         }
       ]
     },
     {
-      "Name": "DestroyTunnel",
-      "Description": "",
-      "Returns": "",
+      "Name": "GetConnection",
+      "Description": "Gets a SSHTunnel connection either from memory or from file storage.",
+      "Returns": "System.Management.Automation.PSCustomObject",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
         }
       ]
     },
     {
-      "Name": "GetKeyAuthTunnelConnection",
-      "Description": "",
-      "Returns": "",
+      "Name": "CreateTunnel",
+      "Description": "Creates the SSH tunnel",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to create the tunnel"
         }
       ]
     },
     {
       "Name": "IsTunnelEstablished",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
+      "Description": "Checks if a tunnel is establised",
+      "Returns": "System.Boolean",
+      "Arguments": []
     },
     {
-      "Name": "SetKeyAuthTunnelConnection",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
+      "Name": "DestroyTunnel",
+      "Description": "Destroys the active tunnel.",
+      "Returns": "void",
+      "Arguments": []
     }
   ]
 }

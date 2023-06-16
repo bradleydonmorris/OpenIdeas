@@ -20,6 +20,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
+    
             [Parameter(Mandatory=$true)]
             [String] $Server,
     
@@ -33,13 +39,7 @@ Add-Member `
             [String] $UserName,
     
             [Parameter(Mandatory=$false)]
-            [String] $Password,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [String] $Password
         )
         $Global:Session.Connections.Set(
             $Name,
@@ -230,10 +230,7 @@ Add-Member `
             [String] $CommandText,
 
             [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Parameters,
-
-            [Parameter(Mandatory=$true)]
-            [Collections.Generic.List[String]] $Fields
+            [Collections.Hashtable] $Parameters
         )
         [Object] $ReturnValue = $null;
         [Npgsql.NpgsqlConnection] $Connection = $null;

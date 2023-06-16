@@ -17,6 +17,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
+    
             [Parameter(Mandatory=$true)]
             [String] $V3LoginURI,
     
@@ -27,13 +33,7 @@ Add-Member `
             [String] $UserName,
     
             [Parameter(Mandatory=$false)]
-            [String] $Password,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [String] $Password
         )
         $Global:Session.Connections.Set(
             $Name,
@@ -594,25 +594,6 @@ Add-Member `
                     Else { $Offset += 1000 }
             }
         }
-        $global:ProgressPreference = $PreviousProgressPreference;
-        Return $ReturnValue;
-    };
-Add-Member `
-    -InputObject $Global:Session.InformaticaAPI `
-    -Name "GetSchedules" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Object])]
-        $PreviousProgressPreference = $global:ProgressPreference;
-        $global:ProgressPreference = "SilentlyContinue";
-        [Object] $ReturnValue = $null;
-        $ReturnValue = (
-            Invoke-WebRequest `
-                -Uri ([String]::Format("{0}/public/core/v3/schedule", $Global:Session.InformaticaAPI.Session.V3.APIURL)) `
-                -Headers $Global:Session.InformaticaAPI.Session.V3.Headers `
-                -Method Get
-        ).Content |
-                ConvertFrom-Json -Depth 100;
         $global:ProgressPreference = $PreviousProgressPreference;
         Return $ReturnValue;
     };

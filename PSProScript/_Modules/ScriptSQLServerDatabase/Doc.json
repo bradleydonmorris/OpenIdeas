@@ -1,161 +1,331 @@
 {
   "Name": "ScriptSQLServerDatabase",
-  "Description": "",
+  "Description": "A group of methods for scripting and importing SQL Server database objects.",
   "Properties": [],
   "Methods": [
     {
-      "Name": "CreateScriptArrayFromJSON",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GenerateFunctionScript",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GenerateProcedureScript",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GenerateScriptsByDependency",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GenerateTableScript",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GenerateViewScript",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetFunctionInfo",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetObjectsByDependency",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetProcedureInfo",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
       "Name": "GetTableInfo",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets information about a table.",
+      "Returns": "System.Object",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "The object name"
         }
       ]
     },
     {
       "Name": "GetViewInfo",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets information about a view.",
+      "Returns": "System.Object",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "The object name"
+        }
+      ]
+    },
+    {
+      "Name": "GetFunctionInfo",
+      "Description": "Gets information about a function.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "The object name"
+        }
+      ]
+    },
+    {
+      "Name": "GetProcedureInfo",
+      "Description": "Gets information about a procedure.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "The object name"
+        }
+      ]
+    },
+    {
+      "Name": "GetObjectsByDependency",
+      "Description": "Gets objects in dependency order.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "OverrideGetDependenciesFilePath",
+          "Type": "System.String",
+          "Description": "Can be null. An alternate script to use for returning the dependencies"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "Parameters that may be needed in the override script"
+        }
+      ]
+    },
+    {
+      "Name": "GetJSONExport",
+      "Description": "Generates a JSON file and object definition files that can be used later for import.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name"
+        },
+        {
+          "Name": "OverrideGetDependenciesFilePath",
+          "Type": "System.String",
+          "Description": "Can be null. An alternate script to use for returning the dependencies"
+        },
+        {
+          "Name": "OutputDirectoryPath",
+          "Type": "System.String",
+          "Description": "The directory where the resulting files will be placed"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "Parameters that may be needed in the override script"
+        }
+      ]
+    },
+    {
+      "Name": "GenerateTableScript",
+      "Description": "Retruns a CREATE TABLE script based on the data provided in the TableInfo object.",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "TableInfo",
+          "Type": "System.Object",
+          "Description": "The TableInfo object to build the script from"
+        }
+      ]
+    },
+    {
+      "Name": "GenerateViewScript",
+      "Description": "Retruns a CREATE VIEW script based on the data provided in the ViewInfo object and the content file.",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "ViewInfo",
+          "Type": "System.Object",
+          "Description": "The ViewInfo object to build the script from"
+        },
+        {
+          "Name": "ModuleBodyFilePath",
+          "Type": "System.Object",
+          "Description": "The path to the file that contains the contents of the module body"
+        }
+      ]
+    },
+    {
+      "Name": "GenerateFunctionScript",
+      "Description": "Retruns a CREATE FUNCTION script based on the data provided in the FunctionInfo object and the content file.",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "FunctionInfo",
+          "Type": "System.Object",
+          "Description": "The FunctionInfo object to build the script from"
+        },
+        {
+          "Name": "ModuleBodyFilePath",
+          "Type": "System.Object",
+          "Description": "The path to the file that contains the contents of the module body"
+        }
+      ]
+    },
+    {
+      "Name": "GenerateProcedureScript",
+      "Description": "Retruns a CREATE PROCEDURE script based on the data provided in the ProcedureInfo object and the content file.",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "ProcedureInfo",
+          "Type": "System.Object",
+          "Description": "The ProcedureInfo object to build the script from"
+        },
+        {
+          "Name": "ModuleBodyFilePath",
+          "Type": "System.Object",
+          "Description": "The path to the file that contains the contents of the module body"
+        }
+      ]
+    },
+    {
+      "Name": "CreateScriptArrayFromJSON",
+      "Description": "Creates an array of scripts based on the files from GetJSONExport.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "JSONFilePath",
+          "Type": "System.String",
+          "Description": "The path to the JSON file generated by GetJSONExport"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name to use in place of _SCHEMANAME_"
+        },
+        {
+          "Name": "HeapFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _HEAPFILEGROUP_"
+        },
+        {
+          "Name": "LobFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _LOBFILEGROUP_"
+        },
+        {
+          "Name": "IndexFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _INDEXFILEGROUP_"
+        },
+        {
+          "Name": "IncludeDrops",
+          "Type": "System.Boolean",
+          "Description": "If true, drop scripts will be generated before create scripts"
         }
       ]
     },
     {
       "Name": "ImportFromJSON",
-      "Description": "",
-      "Returns": "",
+      "Description": "Imports objects based on files from GetJSONExport. Returns a string stating what was done.",
+      "Returns": "System.String",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "JSONFilePath",
+          "Type": "System.String",
+          "Description": "The path to the JSON file generated by GetJSONExport"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name to use in place of _SCHEMANAME_"
+        },
+        {
+          "Name": "HeapFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _HEAPFILEGROUP_"
+        },
+        {
+          "Name": "LobFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _LOBFILEGROUP_"
+        },
+        {
+          "Name": "IndexFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _INDEXFILEGROUP_"
+        },
+        {
+          "Name": "IncludeDrops",
+          "Type": "System.Boolean",
+          "Description": "If true, drops will be performed before creates"
         }
       ]
     },
     {
       "Name": "ImportFromJSONWhatIf",
-      "Description": "",
-      "Returns": "",
+      "Description": "Generates a text file that shows what would have happened if ImportFromJSON was ran.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "JSONFilePath",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The path to the JSON file generated by GetJSONExport"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name to use in place of _SCHEMANAME_"
+        },
+        {
+          "Name": "HeapFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _HEAPFILEGROUP_"
+        },
+        {
+          "Name": "LobFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _LOBFILEGROUP_"
+        },
+        {
+          "Name": "IndexFileGroup",
+          "Type": "System.String",
+          "Description": "The file group name to use in place of _INDEXFILEGROUP_"
+        },
+        {
+          "Name": "IncludeDrops",
+          "Type": "System.Boolean",
+          "Description": "If true, drops will be performed before creates"
         }
       ]
     }

@@ -1,95 +1,116 @@
 {
   "Name": "NuGet",
-  "Description": "",
+  "Description": "This module can be used to install NuGet packages.",
+  "Requires": [],
   "Properties": [
     {
-      "Name": "ExecPath",
+      "Name": "ExecutablePath",
       "Type": "System.String",
-      "Description": ""
+      "Description": "The path to nuget.exe"
     }
   ],
   "Methods": [
     {
       "Name": "AddAssembly",
-      "Description": "",
-      "Returns": "",
+      "Description": "Adds an assembly reference for use by scripts.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the assembly"
+        },
+        {
+          "Name": "RelativePath",
+          "Type": "System.String",
+          "Description": "The the path to the assembly relative to the Packages directory"
         }
       ]
     },
     {
       "Name": "InstallPackage",
-      "Description": "",
-      "Returns": "",
+      "Description": "Installs the latest version of a package.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
         }
       ]
     },
     {
       "Name": "InstallPackageIfMissing",
-      "Description": "",
-      "Returns": "",
+      "Description": "Installs the latest version of a package if it is not installed.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
         }
       ]
     },
     {
       "Name": "InstallPackageVersion",
-      "Description": "",
-      "Returns": "",
+      "Description": "Installs the specified version of a package.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
+        },
+        {
+          "Name": "Version",
+          "Type": "System.String",
+          "Description": "The version of the package"
         }
       ]
     },
     {
       "Name": "InstallPackageVersionIfMissing",
-      "Description": "",
-      "Returns": "",
+      "Description": "Installs the specified version of a package if it is not installed.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
+        },
+        {
+          "Name": "Version",
+          "Type": "System.String",
+          "Description": "The version of the package"
         }
       ]
     },
     {
       "Name": "IsPackageInstalled",
-      "Description": "",
-      "Returns": "",
+      "Description": "Determines if a package is installed.",
+      "Returns": "System.Boolean",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
         }
       ]
     },
     {
       "Name": "IsPackageVersionInstalled",
-      "Description": "",
-      "Returns": "",
+      "Description": "Determines if a specific version of a package is installed.",
+      "Returns": "System.Boolean",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "PackageName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The name of the package"
+        },
+        {
+          "Name": "Version",
+          "Type": "System.String",
+          "Description": "The version of the package"
         }
       ]
     }

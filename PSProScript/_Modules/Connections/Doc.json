@@ -1,17 +1,30 @@
 {
   "Name": "Connections",
   "Description": "Manages named connections in files and in memory.",
+  "Requires": [],
   "Properties": [
     {
       "Name": "InMemory",
-      "Type": "hashtable",
-      "Description": "Contains all connections retreived or created to be in memory only."
+      "Type": "System.Collections.Hashtable",
+      "Description": "Contains all connections retreived from file storage or created to be in memory only."
     }
   ],
   "Methods": [
     {
       "Name": "Exists",
-      "Description": "Checks if a file exists for named connection",
+      "Description": "Checks if a named connection exists",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "Name of the connection"
+        }
+      ]
+    },
+    {
+      "Name": "IsPersisted",
+      "Description": "Checks if a named connection has been persisted to file storage",
       "Returns": "System.Boolean",
       "Arguments": [
         {
@@ -23,7 +36,7 @@
     },
     {
       "Name": "Get",
-      "Description": "Retrieves a connection either from in memobry of the file system.",
+      "Description": "Retrieves a connection either from in memory of file storage.",
       "Returns": "System.Management.Automation.PSCustomObject",
       "Arguments": [
         {
@@ -35,7 +48,7 @@
     },
     {
       "Name": "Set",
-      "Description": "Saves a connection either in membory or on the file system.",
+      "Description": "Saves a connection either in membory or file storage.",
       "Returns": "",
       "Arguments": [
         {
@@ -51,7 +64,24 @@
         {
           "Name": "IsPersisted",
           "Type": "System.Boolean",
-          "Description": "If true, the connection will be persisted to a file"
+          "Description": "If true, the connection will be persisted to file storage"
+        }
+      ]
+    },
+    {
+      "Name": "Update",
+      "Description": "Updates an existing connection. If the connection has been persisted, also updates the file.",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "Name of the connection"
+        },
+        {
+          "Name": "Connection",
+          "Type": "System.String",
+          "Description": "The connection object to store"
         }
       ]
     }

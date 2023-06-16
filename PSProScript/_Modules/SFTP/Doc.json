@@ -1,65 +1,203 @@
 {
   "Name": "SFTP",
-  "Description": "",
+  "Description": "Used to enteract with an SFTP server",
+  "Requires": [
+    "Connections"
+  ],
   "Properties": [],
   "Methods": [
     {
-      "Name": "GetFile",
-      "Description": "",
-      "Returns": "",
+      "Name": "SetConnection",
+      "Description": "Sets an SFTP connection either in memory or persisted.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
+        },
+        {
+          "Name": "Comments",
+          "Type": "System.String",
+          "Description": "Comments for the Connection"
+        },
+        {
+          "Name": "IsPersisted",
+          "Type": "System.String",
+          "Description": "True to store in file system."
+        },
+        {
+          "Name": "AuthType",
+          "Type": "System.String",
+          "Description": "Either Passowrd or KeyFile"
+        },
+        {
+          "Name": "HostAddress",
+          "Type": "System.String",
+          "Description": "The address of the SFTP server"
+        },
+        {
+          "Name": "Port",
+          "Type": "System.Int32",
+          "Description": "The port of the SFTP server"
+        },
+        {
+          "Name": "UserName",
+          "Type": "System.String",
+          "Description": "The user name"
+        },
+        {
+          "Name": "Password",
+          "Type": "System.String",
+          "Description": "The password for the user account. Ignored for KeyFile auth type"
+        },
+        {
+          "Name": "KeyFilePath",
+          "Type": "System.String",
+          "Description": "The path to the key file. Ignored for Password auth type"
         }
       ]
     },
     {
-      "Name": "GetFileList",
-      "Description": "",
-      "Returns": "",
+      "Name": "GetConnection",
+      "Description": "Gets an SFTP connection either from memory or from file storage.",
+      "Returns": "System.Management.Automation.PSCustomObject",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "Name",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "GetFilesNewerThan",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
-        {
-          "Name": "ArgName",
-          "Type": "System.String",
-          "Description": ""
+          "Description": "Name of the Connection"
         }
       ]
     },
     {
       "Name": "GetSession",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets an SFTP seesion.",
+      "Returns": "SSH.SftpSession",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to create the session for"
+        }
+      ]
+    },
+    {
+      "Name": "GetFileList",
+      "Description": "Gets a list of files in a remote directory. This method will aslo attempt to parse date/time from file name if format string and starting position are provided.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection"
+        },
+        {
+          "Name": "RemotePath",
+          "Type": "System.String",
+          "Description": "The remote directrory to get the file list for"
+        },
+        {
+          "Name": "DateTimeFormatString",
+          "Type": "System.String",
+          "Description": "Can be null. The date/time format string that is used for any dates and times in file names"
+        },
+        {
+          "Name": "DateTimeStartPosition",
+          "Type": "System.Int32",
+          "Description": "The starting position of any date/times in the file name"
+        }
+      ]
+    },
+
+    {
+      "Name": "GetFilesNewerThan",
+      "Description": "Downloads files from a remote directory where the date/time in the file name is newer than that provided.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection"
+        },
+        {
+          "Name": "RemotePath",
+          "Type": "System.String",
+          "Description": "The remote directrory to get the file list for"
+        },
+        {
+          "Name": "LocalDirectoryPath",
+          "Type": "System.String",
+          "Description": "The local directory to store the file in"
+        },
+        {
+          "Name": "DateTimeFormatString",
+          "Type": "System.String",
+          "Description": "Can be null. The date/time format string that is used for any dates and times in file names"
+        },
+        {
+          "Name": "DateTimeStartPosition",
+          "Type": "System.Int32",
+          "Description": "The starting position of any date/times in the file name"
+        },
+        {
+          "Name": "NewerThan",
+          "Type": "System.DateTime",
+          "Description": "The DateTime that the file date/time must be newer than"
+        },
+        {
+          "Name": "Overwrite",
+          "Type": "System.Boolean",
+          "Description": "If true, any local file with the same name will be overwritten"
+        }
+      ]
+    },
+    {
+      "Name": "GetFile",
+      "Description": "Downloads a file from an SFTP server to the local file stoarge.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection"
+        },
+        {
+          "Name": "RemoteFilePath",
+          "Type": "System.String",
+          "Description": "The path to the remote file to download"
+        },
+        {
+          "Name": "LocalDirectoryPath",
+          "Type": "System.String",
+          "Description": "The local directory to store the file in"
+        },
+        {
+          "Name": "Overwrite",
+          "Type": "System.Boolean",
+          "Description": "If true, any local file with the same name will be overwritten"
         }
       ]
     },
     {
       "Name": "WriteFile",
-      "Description": "",
-      "Returns": "",
+      "Description": "Uploads a file to an SFTP server from the local file stoarge.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection"
+        },
+        {
+          "Name": "RemoteDirectoryPath",
+          "Type": "System.String",
+          "Description": "The remote directory to write the file to"
+        },
+        {
+          "Name": "LocalFilePath",
+          "Type": "System.String",
+          "Description": "The local file to upload"
         }
       ]
     }

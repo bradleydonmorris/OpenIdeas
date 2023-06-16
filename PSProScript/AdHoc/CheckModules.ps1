@@ -14,22 +14,20 @@ $Modules = @(
     "Connections"
     "GoogleAPI"
     "GoogleSQLDatabase"
-    <#
-IICSSQLDatabase
-InformaticaAPI
-Logging
-NuGet
-PostgreSQL
-PreciousMetalsTracking
-Prompts
-ScriptSQLServerDatabase
-SFTP
-Sqlite
-SQLServer
-SQLServerFileImport
-SSHTunnel
-WebServer
-    #>
+    "IICSSQLDatabase"
+    "InformaticaAPI"
+    "Logging"
+    "NuGet"
+    "PostgreSQL"
+    #"PreciousMetalsTracking"
+    "Prompts"
+    "ScriptSQLServerDatabase"
+    "SFTP"
+    "Sqlite"
+    "SQLServer"
+    "SQLServerFileImport"
+    "SSHTunnel"
+    "WebServer"
 );
 ForEach ($Module In $Modules)
 {

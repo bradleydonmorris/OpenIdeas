@@ -1,4 +1,5 @@
 [void] $Global:Session.LoadModule("Connections");
+
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
@@ -15,6 +16,12 @@ Add-Member `
         (
             [Parameter(Mandatory=$true)]
             [String] $Name,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
     
             [Parameter(Mandatory=$true)]
             [String] $ClientId,
@@ -41,13 +48,7 @@ Add-Member `
             [Collections.Generic.List[String]] $Scopes,
     
             [Parameter(Mandatory=$true)]
-            [String] $RefreshToken,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [String] $RefreshToken
         )
         $Global:Session.Connections.Set(
             $Name,

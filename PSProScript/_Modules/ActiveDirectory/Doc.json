@@ -1,12 +1,39 @@
 {
     "Name": "ActiveDirectory",
     "Description": "Enteracts with ActiveDirectory to manage user and group information.",
-    "Requires": [],
+    "Requires": ["Connections"],
     "Properties": [],
     "Methods": [
 		{
-            "Name": "GetChangedGroups",
-            "Description": "Gets all ActiveDirectory groups modified sinced the specified time.",
+            "Name": "SetConnection",
+            "Description": "Sets an ActiveDirectory connection either in memory or persisted.",
+            "Returns": "void",
+            "Arguments": [
+                { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" },
+                { "Name": "Comments", "Type": "System.String", "Description": "Comments for the Connection" },
+                { "Name": "IsPersisted", "Type": "System.String", "Description": "True to store in file system." },
+                { "Name": "RoodLDIF", "Type": "System.String", "Description": "The LDIF Root for the ActiveDirectory (e.g. LDAP://dc=domainName,dc=local)" }
+            ]
+		},
+		{
+            "Name": "GetConnection",
+            "Description": "Gets an ActiveDirectory connection either from memory or from file storage.",
+            "Returns": "System.Management.Automation.PSCustomObject",
+            "Arguments": [
+                { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" }
+            ]
+		},
+		{
+            "Name": "GetConnectionString",
+            "Description": "Returns the Root LDIF for the ActiveDirectory connection.",
+            "Returns": "System.String",
+            "Arguments": [
+                { "Name": "Name", "Type": "System.String", "Description": "Name of the Connection" }
+            ]
+		},
+		{
+			"Name": "GetChangedUsers",
+            "Description": "Gets all ActiveDirectory users modified sinced the specified time.",
             "Returns": "System.Collections.Generic.List[System.String]",
             "Arguments": [
                 { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
@@ -14,8 +41,17 @@
             ]
 		},
 		{
-			"Name": "GetChangedUsers",
-            "Description": "Gets all ActiveDirectory users modified sinced the specified time.",
+			"Name": "GetUser",
+            "Description": "Gets an ActiveDirectory User.",
+            "Returns": "System.Management.Automation.PSCustomObject",
+            "Arguments": [
+                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
+                { "Name": "DistinguishedName", "Type": "System.String", "Description": "DN of the user to retrieve" }
+            ]
+		},
+        {
+            "Name": "GetChangedGroups",
+            "Description": "Gets all ActiveDirectory groups modified sinced the specified time.",
             "Returns": "System.Collections.Generic.List[System.String]",
             "Arguments": [
                 { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
@@ -29,23 +65,6 @@
             "Arguments": [
                 { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
                 { "Name": "DistinguishedName", "Type": "System.String", "Description": "DN of the group to retrieve" }
-            ]
-		},
-		{
-			"Name": "GetLDAPConnection",
-            "Description": "Gets LDAP Root LDIF from a named connection.",
-            "Returns": "System.String",
-            "Arguments": [
-                { "Name": "Name", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" }
-            ]
-		},
-		{
-			"Name": "GetUser",
-            "Description": "Gets an ActiveDirectory User.",
-            "Returns": "System.Management.Automation.PSCustomObject",
-            "Arguments": [
-                { "Name": "ConnectionName", "Type": "System.String", "Description": "Name of the ActiveDirectory Connection" },
-                { "Name": "DistinguishedName", "Type": "System.String", "Description": "DN of the user to retrieve" }
             ]
 		}
     ]

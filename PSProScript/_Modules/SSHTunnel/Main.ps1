@@ -20,6 +20,12 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name,
     
+            [Parameter(Mandatory=$false)]
+            [String] $Comments,
+            
+            [Parameter(Mandatory=$true)]
+            [Boolean] $IsPersisted,
+    
             [Parameter(Mandatory=$true)]
             [String] $AuthType, #Password Or KeyFile
 
@@ -51,13 +57,7 @@ Add-Member `
             [String] $RemoteAddress,
 
             [Parameter(Mandatory=$true)]
-            [Int32] $RemotePort,
-    
-            [Parameter(Mandatory=$false)]
-            [String] $Comments,
-            
-            [Parameter(Mandatory=$true)]
-            [Boolean] $IsPersisted
+            [Int32] $RemotePort
         )
         If ($AuthType -eq "Password")
         {

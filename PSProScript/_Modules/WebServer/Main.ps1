@@ -13,6 +13,8 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "WebServer" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+
+#region Properties
 Add-Member `
     -InputObject $Global:Session.WebServer `
     -TypeName "Collections.Hashtable" `
@@ -23,6 +25,9 @@ Add-Member `
     -TypeName "System.Net.HttpListener" `
     -NotePropertyName "Listener" `
     -NotePropertyValue ([System.Net.HttpListener]::new());
+#region Properties
+
+#region Methods
 Add-Member `
     -InputObject $Global:Session.WebServer `
     -Name "IsListening" `
@@ -44,7 +49,7 @@ Add-Member `
             [String] $Method,
 
             [Parameter(Mandatory=$true)]
-            [scriptblock] $Command
+            [ScriptBlock] $Command
         )
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
         [RouteCommand] $RouteCommand = [RouteCommand]::new();
@@ -87,7 +92,7 @@ Add-Member `
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
         Return $Global:Session.WebServer.RouteFunctions[$Key];
     };
-    Add-Member `
+Add-Member `
     -InputObject $Global:Session.WebServer `
     -Name "InvokeRouteCommand" `
     -MemberType "ScriptMethod" `
@@ -105,7 +110,7 @@ Add-Member `
         )
         [String] $Key = $Method.ToUpper() + "|" + $Route.ToLower();
         [RouteCommand] $routeCommand = $Global:Session.WebServer.RouteFunctions[$Key];
-        $routeCommand.Invoke($Context);
+        [void] $routeCommand.Invoke($Context);
     };
 Add-Member `
     -InputObject $Global:Session.WebServer `
@@ -119,10 +124,15 @@ Add-Member `
         )
         ForEach ($ListeningURI In $ListeningURIs)
         {
-            $Global:Session.WebServer.Listener.Prefixes.Add($ListeningURI);
+            [void] $Global:Session.WebServer.Listener.Prefixes.Add($ListeningURI);
         }
-        $Global:Session.WebServer.Listener.Start();
+        [void] $Global:Session.WebServer.Listener.Start();
     };
-
-
-
+Add-Member `
+    -InputObject $Global:Session.WebServer `
+    -Name "Stop" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [void] $Global:Session.WebServer.Listener.Stop();
+    };
+#region Methods

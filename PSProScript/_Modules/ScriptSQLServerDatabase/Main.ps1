@@ -1,4 +1,3 @@
-[void] $Global:Session.LoadModule("Connections");
 [void] $Global:Session.LoadModule("SQLServer");
 
 #region Gather from SQL Server
@@ -16,10 +15,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -28,37 +24,18 @@ Add-Member `
             [String] $Name
         )
         [Object] $ReturnValue = $null;
-        [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetTableJSON.sql"));
-        [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($Instance, $Database));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
-        $SqlCommand.CommandType = [Data.CommandType]::Text;
-        $SqlCommand.CommandTimeout = 0;
-    
-        [Data.SqlClient.SqlParameter] $SqlParameter_Schema = $SqlCommand.CreateParameter();
-        $SqlParameter_Schema.ParameterName = "@Schema";
-        $SqlParameter_Schema.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Schema.Size = 128;
-        $SqlParameter_Schema.SqlValue = $Schema;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Schema);
-
-        [Data.SqlClient.SqlParameter] $SqlParameter_Name = $SqlCommand.CreateParameter();
-        $SqlParameter_Name.ParameterName = "@Name";
-        $SqlParameter_Name.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Name.Size = 128;
-        $SqlParameter_Name.SqlValue = $Name;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Name);
-    
-        [Object] $ScalerValue = $SqlCommand.ExecuteScalar();
+        [Object] $ScalerValue = $Global:Session.SQLServer.GetScalar(
+            $ConnectionName,
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetTableJSON.sql")),
+            @{
+                "@Schema" = $Schema;
+                "@Name" = $Name;
+            }
+        )
         If ($ScalerValue -is [String])
         {
             $Json = $ScalerValue;
         }
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
-
         $ReturnValue = $Json | ConvertFrom-Json -Depth 100;
         Return $ReturnValue;
     }
@@ -71,10 +48,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -83,36 +57,18 @@ Add-Member `
             [String] $Name
         )
         [Object] $ReturnValue = $null;
-        [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetViewJSON.sql"));
-        [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
-        $SqlCommand.CommandType = [Data.CommandType]::Text;
-        $SqlCommand.CommandTimeout = 0;
-    
-        [Data.SqlClient.SqlParameter] $SqlParameter_Schema = $SqlCommand.CreateParameter();
-        $SqlParameter_Schema.ParameterName = "@Schema";
-        $SqlParameter_Schema.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Schema.Size = 128;
-        $SqlParameter_Schema.SqlValue = $Schema;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Schema);
-
-        [Data.SqlClient.SqlParameter] $SqlParameter_Name = $SqlCommand.CreateParameter();
-        $SqlParameter_Name.ParameterName = "@Name";
-        $SqlParameter_Name.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Name.Size = 128;
-        $SqlParameter_Name.SqlValue = $Name;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Name);
-    
-        [Object] $ScalerValue = $SqlCommand.ExecuteScalar();
+        [Object] $ScalerValue = $Global:Session.SQLServer.GetScalar(
+            $ConnectionName,
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetViewJSON.sql")),
+            @{
+                "@Schema" = $Schema;
+                "@Name" = $Name;
+            }
+        )
         If ($ScalerValue -is [String])
         {
             $Json = $ScalerValue;
         }
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
         $ReturnValue = $Json | ConvertFrom-Json -Depth 100;
         Return $ReturnValue;
     }
@@ -125,10 +81,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -137,39 +90,21 @@ Add-Member `
             [String] $Name
         )
         [Object] $ReturnValue = $null;
-        [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetFunctionJSON.sql"));
-        [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
-        $SqlCommand.CommandType = [Data.CommandType]::Text;
-        $SqlCommand.CommandTimeout = 0;
-    
-        [Data.SqlClient.SqlParameter] $SqlParameter_Schema = $SqlCommand.CreateParameter();
-        $SqlParameter_Schema.ParameterName = "@Schema";
-        $SqlParameter_Schema.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Schema.Size = 128;
-        $SqlParameter_Schema.SqlValue = $Schema;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Schema);
-
-        [Data.SqlClient.SqlParameter] $SqlParameter_Name = $SqlCommand.CreateParameter();
-        $SqlParameter_Name.ParameterName = "@Name";
-        $SqlParameter_Name.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Name.Size = 128;
-        $SqlParameter_Name.SqlValue = $Name;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Name);
-    
-        [Object] $ScalerValue = $SqlCommand.ExecuteScalar();
+        [Object] $ScalerValue = $Global:Session.SQLServer.GetScalar(
+            $ConnectionName,
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetFunctionJSON.sql")),
+            @{
+                "@Schema" = $Schema;
+                "@Name" = $Name;
+            }
+        )
         If ($ScalerValue -is [String])
         {
             $Json = $ScalerValue;
         }
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
         $ReturnValue = $Json | ConvertFrom-Json -Depth 100;
         Return $ReturnValue;
-    }
+   }
 Add-Member `
     -InputObject $Global:Session.ScriptSQLServerDatabase `
     -Name "GetProcedureInfo" `
@@ -179,10 +114,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -191,36 +123,18 @@ Add-Member `
             [String] $Name
         )
         [Object] $ReturnValue = $null;
-        [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetProcedureJSON.sql"));
-        [String] $Json = $null;
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
-        $SqlCommand.CommandType = [Data.CommandType]::Text;
-        $SqlCommand.CommandTimeout = 0;
-    
-        [Data.SqlClient.SqlParameter] $SqlParameter_Schema = $SqlCommand.CreateParameter();
-        $SqlParameter_Schema.ParameterName = "@Schema";
-        $SqlParameter_Schema.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Schema.Size = 128;
-        $SqlParameter_Schema.SqlValue = $Schema;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Schema);
-
-        [Data.SqlClient.SqlParameter] $SqlParameter_Name = $SqlCommand.CreateParameter();
-        $SqlParameter_Name.ParameterName = "@Name";
-        $SqlParameter_Name.SqlDbType = [Data.SqlDbType]::NVarChar;
-        $SqlParameter_Name.Size = 128;
-        $SqlParameter_Name.SqlValue = $Name;
-        [void] $SqlCommand.Parameters.Add($SqlParameter_Name);
-    
-        [Object] $ScalerValue = $SqlCommand.ExecuteScalar();
+        [Object] $ScalerValue = $Global:Session.SQLServer.GetScalar(
+            $ConnectionName,
+            [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetProcedureJSON.sql")),
+            @{
+                "@Schema" = $Schema;
+                "@Name" = $Name;
+            }
+        )
         If ($ScalerValue -is [String])
         {
             $Json = $ScalerValue;
         }
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
         $ReturnValue = $Json | ConvertFrom-Json -Depth 100;
         Return $ReturnValue;
     }
@@ -233,10 +147,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -248,7 +159,6 @@ Add-Member `
             [Collections.Hashtable] $Parameters
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
-    
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetAllObjectDependencies.sql"));
         If (![String]::IsNullOrEmpty($OverrideGetDependenciesFilePath))
         {
@@ -262,64 +172,29 @@ Add-Member `
         {
             $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetSchemaObjectDependencies.sql"));
         }
-        ForEach ($ParameterKey In $Parameters.Keys)
-        {
-            $CommandText = $CommandText.Replace("`$($ParameterKey)", $Parameters[$ParameterKey].ToString());
-        }
-        [Data.SqlClient.SqlConnection] $SqlConnection = [Data.SqlClient.SqlConnection]::new($Global:Session.Databases.GetConnectionString($Instance, $Database));
-        [void] $SqlConnection.Open();
-        [Data.SqlClient.SqlCommand] $SqlCommand = [Data.SqlClient.SqlCommand]::new($CommandText, $SqlConnection);
-        $SqlCommand.CommandType = [Data.CommandType]::Text
-        $SqlCommand.CommandTimeout = 0;
+        [Collections.Hashtable] $Parameters = [Collections.Hashtable]::new();
         If (![String]::IsNullOrEmpty($Schema))
         {
-            [Data.SqlClient.SqlParameter] $SqlParameter_Schema = $SqlCommand.CreateParameter();
-            $SqlParameter_Schema.ParameterName = "@Schema";
-            $SqlParameter_Schema.SqlDbType = [Data.SqlDbType]::NVarChar;
-            $SqlParameter_Schema.Size = 128;
-            $SqlParameter_Schema.SqlValue = $Schema;
-            [void] $SqlCommand.Parameters.Add($SqlParameter_Schema);
+            [void] $Parameters.Add("@Schema", $Schema);
         }
-
-        [Data.SqlClient.SqlDataReader] $SqlDataReader =  $SqlCommand.ExecuteReader();
-        While ($SqlDataReader.Read())
-        {
-            [void] $ReturnValue.Add([PSObject]@{
-                "Schema" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Schema"));
-                "Name" = (
-                            !$SqlDataReader.IsDBNull($SqlDataReader.GetOrdinal("Name")) ?
-                                $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Name")) :
-                                $null
-                );
-                "Type" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Type"));
-                "SimpleType" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("SimpleType"));
-                "CreateOrder" = $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("CreateOrder"));
-                "DropOrder" = $SqlDataReader.GetInt64($SqlDataReader.GetOrdinal("DropOrder"));
-            });
-        }
-        [void] $SqlDataReader.Close();
-        [void] $SqlDataReader.Dispose();
-        [void] $SqlCommand.Dispose();
-        [void] $SqlConnection.Close();
-        [void] $SqlConnection.Dispose();
-
-        $IncludeDetailedInfo
-
+        $ReturnValue = $Global:Session.SQLServer.GetRecords(
+            $ConnectionName,
+            $CommandText,
+            $Parameters,
+            @("Schema", "Name", "Type", "SimpleType", "CreateOrder", "DropOrder")
+        );
         Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Session.ScriptSQLServerDatabase `
-    -Name "GenerateScriptsByDependency" `
+    -Name "GetJSONExport" `
     -MemberType "ScriptMethod" `
     -Value {
         [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
-            [String] $Instance,
-    
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
+            [String] $ConnectionName,
     
             [Parameter(Mandatory=$true)]
             [String] $Schema,
@@ -334,8 +209,7 @@ Add-Member `
             [Collections.Hashtable] $Parameters
         )
         [Collections.Generic.List[PSObject]] $SQLObjectInfos = $Global:Session.ScriptSQLServerDatabase.GetObjectsByDependency(
-            $SQLInstance,
-            $Database,
+            $ConnectionName,
             $Schema,
             $OverrideGetDependenciesFilePath,
             $Parameters
@@ -352,7 +226,7 @@ Add-Member `
             {
                 "Table"
                 {
-                    $TableInfo = $Global:Session.ScriptSQLServerDatabase.GetTableInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $TableInfo = $Global:Session.ScriptSQLServerDatabase.GetTableInfo($ConnectionName, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("HeapFileGroupName", $TableInfo.HeapFileGroupName);
                     [void] $SQLObjectInfo.Add("LobFileGroupName", $TableInfo.LobFileGroupName);
                     [void] $SQLObjectInfo.Add("Columns", $TableInfo.Columns);
@@ -362,7 +236,7 @@ Add-Member `
                 }
                 "View"
                 {
-                    $ViewInfo = $Global:Session.ScriptSQLServerDatabase.GetViewInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $ViewInfo = $Global:Session.ScriptSQLServerDatabase.GetViewInfo($ConnectionName, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Columns", $ViewInfo.Columns);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
                     [void] [IO.File]::WriteAllText(
@@ -378,7 +252,7 @@ Add-Member `
                 }
                 "Function"
                 {
-                    $FunctionInfo = $Global:Session.ScriptSQLServerDatabase.GetFunctionInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $FunctionInfo = $Global:Session.ScriptSQLServerDatabase.GetFunctionInfo($ConnectionName, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Returns", $FunctionInfo.Returns);
                     [void] $SQLObjectInfo.Add("Parameters", $FunctionInfo.Parameters);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
@@ -395,7 +269,7 @@ Add-Member `
                 }
                 "Procedure"
                 {
-                    $ProcedureInfo = $Global:Session.ScriptSQLServerDatabase.GetProcedureInfo($Instance, $Database, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
+                    $ProcedureInfo = $Global:Session.ScriptSQLServerDatabase.GetProcedureInfo($ConnectionName, $SQLObjectInfo.Schema, $SQLObjectInfo.Name);
                     [void] $SQLObjectInfo.Add("Parameters", $ProcedureInfo.Parameters);
                     [void] $SQLObjectInfo.Add("ModuleBodyFileRef", [String]::Format("DatabaseObjectsDefinitions\{0}.sql", $SQLObjectInfo.Name));
                     [void] [IO.File]::WriteAllText(
@@ -933,17 +807,15 @@ Add-Member `
     -Name "ImportFromJSON" `
     -MemberType "ScriptMethod" `
     -Value {
+        [OutputType([String])]
         Param
         (
             [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+                
+            [Parameter(Mandatory=$true)]
             [String] $JSONFilePath,
 
-            [Parameter(Mandatory=$true)]
-            [String] $Instance,
-                
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
-                
             [Parameter(Mandatory=$true)]
             [String] $Schema,
     
@@ -959,6 +831,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeDrops
         )
+        [String] $ReturnValue = "";
         [Collections.Generic.List[PSObject]] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
@@ -969,13 +842,13 @@ Add-Member `
                                             Sort-Object -Property "Sequence"
             ))
             {
-                Write-Host ([String]::Format(
+                $ReturnValue += [String]::Format(
                     "{0} - {1} - {2}",
                     $NamedSQLScript.Mode,
                     $NamedSQLScript.Type,
                     $NamedSQLScript.Name
-                ));
-                [void] $Global:Session.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+                );
+                [void] $Global:Session.SQLServer.Execute($ConnectionName, $NamedSQLScript.Script, $null);
             }
         }
         ForEach ($NamedSQLScript In ($NamedSQLScripts |
@@ -983,14 +856,15 @@ Add-Member `
                                         Sort-Object -Property "Sequence"
         ))
         {
-            Write-Host ([String]::Format(
+            $ReturnValue += [String]::Format(
                 "{0} - {1} - {2}",
                 $NamedSQLScript.Mode,
                 $NamedSQLScript.Type,
                 $NamedSQLScript.Name
-            ));
-            [void] $Global:Session.Databases.ExecuteScript($Instance, $Database, $NamedSQLScript.Script, $null);
+            );
+            [void] $Global:Session.SQLServer.Execute($ConnectionName, $NamedSQLScript.Script, $null);
         }
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Session.ScriptSQLServerDatabase `
@@ -1002,12 +876,6 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $JSONFilePath,
 
-            [Parameter(Mandatory=$true)]
-            [String] $Instance,
-                
-            [Parameter(Mandatory=$true)]
-            [String] $Database,
-                
             [Parameter(Mandatory=$true)]
             [String] $Schema,
     

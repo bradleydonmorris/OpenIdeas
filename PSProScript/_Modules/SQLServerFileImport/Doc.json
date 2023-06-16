@@ -1,53 +1,81 @@
 {
   "Name": "SQLServerFileImport",
-  "Description": "",
+  "Description": "A set of methods for importing delimited files into SQL server.",
   "Properties": [],
   "Methods": [
     {
       "Name": "CSVToDataTable",
-      "Description": "",
+      "Description": "Converts a CSV file into a DataTable.",
       "Returns": "",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "FilePath",
           "Type": "System.String",
-          "Description": ""
-        }
-      ]
-    },
-    {
-      "Name": "DeleteTableRows",
-      "Description": "",
-      "Returns": "",
-      "Arguments": [
+          "Description": "The path to the CSV file"
+        },
         {
-          "Name": "ArgName",
+          "Name": "Delimiter",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The field delimiter used in the CSV. Defaults to \",\"."
         }
       ]
     },
     {
       "Name": "GetCSVRowCount",
-      "Description": "",
-      "Returns": "",
+      "Description": "Gets the number of rows in a CSV.",
+      "Returns": "System.Int64",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "FilePath",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The path to the CSV file"
+        },
+        {
+          "Name": "Delimiter",
+          "Type": "System.String",
+          "Description": "The field delimiter used in the CSV. Defaults to \",\"."
         }
       ]
     },
     {
       "Name": "ImportCSV",
-      "Description": "",
-      "Returns": "",
+      "Description": "Imports a CSV file into a SQL Server table.",
+      "Returns": "void",
       "Arguments": [
         {
-          "Name": "ArgName",
+          "Name": "ConnectionName",
           "Type": "System.String",
-          "Description": ""
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema of the table to import to"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table to import to"
+        },
+        {
+          "Name": "FilePath",
+          "Type": "System.String",
+          "Description": "The path to the CSV file"
+        },
+        {
+          "Name": "Delimiter",
+          "Type": "System.String",
+          "Description": "The field delimiter used in the CSV. Defaults to \",\"."
+        },
+        {
+          "Name": "BatchSize",
+          "Type": "System.Int32",
+          "Description": "The number of records to import in each batch"
+        },
+        {
+          "Name": "AdditionalDataItems",
+          "Type": "System.Collections.Generic.List[System.Management.Automation.PSObject]",
+          "Description": "Addtional columns to add to the DataTable prior to import"
         }
       ]
     }

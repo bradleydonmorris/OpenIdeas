@@ -1,20 +1,9 @@
 {
   "Name": "ActiveDirectorySQLDatabase",
   "Description": "Enteracts with the ActiveDirectory schema in a specified SQL Server database.",
+  "Requires": ["SQLServer"],
   "Properties": [],
   "Methods": [
-    {
-      "Name": "GetGroupLastWhenChangedTime",
-      "Description": "Gets the latest time any group was changed from the database.",
-      "Returns": "System.DateTime",
-      "Arguments": [
-        {
-          "Name": "ConnectionName",
-          "Type": "System.String",
-          "Description": "Name of the SQL database Connection"
-        }
-      ]
-    },
     {
       "Name": "GetUserLastWhenChangedTime",
       "Description": "Gets the latest time any user was changed from the database.",
@@ -28,19 +17,14 @@
       ]
     },
     {
-      "Name": "ImportGroup",
-      "Description": "Imports a group object into the database",
-      "Returns": "void",
+      "Name": "GetGroupLastWhenChangedTime",
+      "Description": "Gets the latest time any group was changed from the database.",
+      "Returns": "System.DateTime",
       "Arguments": [
         {
           "Name": "ConnectionName",
           "Type": "System.String",
           "Description": "Name of the SQL database Connection"
-        },
-        {
-          "Name": "GroupJSON",
-          "Type": "System.String",
-          "Description": "The JSON representation of the Group object"
         }
       ]
     },
@@ -62,8 +46,25 @@
       ]
     },
     {
-      "Name": "ProcessGroupManagerChanges",
-      "Description": "Processes all the changes related to group managers",
+      "Name": "ImportGroup",
+      "Description": "Imports a group object into the database",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "Name of the SQL database Connection"
+        },
+        {
+          "Name": "GroupJSON",
+          "Type": "System.String",
+          "Description": "The JSON representation of the Group object"
+        }
+      ]
+    },
+    {
+      "Name": "ProcessManagerialChanges",
+      "Description": "Processes all the changes related to users' managers",
       "Returns": "void",
       "Arguments": [
         {
@@ -86,8 +87,8 @@
       ]
     },
     {
-      "Name": "ProcessManagerialChanges",
-      "Description": "Processes all the changes related to users' managers",
+      "Name": "ProcessGroupManagerChanges",
+      "Description": "Processes all the changes related to group managers",
       "Returns": "void",
       "Arguments": [
         {

@@ -26,6 +26,8 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Logging" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+
+#region Properties
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "System.DateTime" `
@@ -41,11 +43,6 @@ Add-Member `
     -TypeName "System.TimeSpan" `
     -NotePropertyName "ElapsedLogTime" `
     -NotePropertyValue ([DateTime]::MinValue);
-Add-Member `
-    -InputObject $Global:Session.Logging `
-    -TypeName "System.Management.Automation.PSObject" `
-    -NotePropertyName "Config" `
-    -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "String" `
@@ -105,20 +102,18 @@ Add-Member `
     -NotePropertyName "LastEntryNumber" `
     -NotePropertyValue (0);
 Add-Member `
-    -InputObject $Global:Session.Logging.Config `
-    -TypeName "Int32" `
-    -NotePropertyName "RetentionDays" `
-    -NotePropertyValue $Config.RetentionDays;
+    -InputObject $Global:Session.Logging `
+    -TypeName "System.Collections.Generic.List[PSObject]" `
+    -NotePropertyName "Entries" `
+    -NotePropertyValue ([Collections.Generic.List[PSObject]]::new());
 Add-Member `
-    -InputObject $Global:Session.Logging.Config `
-    -TypeName "String[]" `
-    -NotePropertyName "EmailRecipients" `
-    -NotePropertyValue $Config.EmailRecipients;
-Add-Member `
-    -InputObject $Global:Session.Logging.Config `
-    -TypeName "String" `
-    -NotePropertyName "SMTPConnectionName" `
-    -NotePropertyValue $Config.SMTPConnectionName;
+    -InputObject $Global:Session.Logging `
+    -TypeName "System.Collections.Hashtable" `
+    -NotePropertyName "Variables" `
+    -NotePropertyValue ([System.Collections.Hashtable]::new());
+#endregion Properties
+
+#region LevelCounts
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "System.Management.Automation.PSObject" `
@@ -149,23 +144,14 @@ Add-Member `
     -TypeName "Int32" `
     -NotePropertyName "Fatal" `
     -NotePropertyValue 0;
-    Add-Member `
-    -InputObject $Global:Session.Logging `
-    -TypeName "System.Collections.Generic.List[PSObject]" `
-    -NotePropertyName "Entries" `
-    -NotePropertyValue ([Collections.Generic.List[PSObject]]::new());
-Add-Member `
-    -InputObject $Global:Session.Logging `
-    -TypeName "System.Collections.Hashtable" `
-    -NotePropertyName "Variables" `
-    -NotePropertyValue ([System.Collections.Hashtable]::new());
+#endregion LevelCounts
+
+#region Timers
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Timers" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-
-#region Timers
 Add-Member `
     -InputObject $Global:Session.Logging.Timers `
     -TypeName "System.Collections.Hashtable" `
@@ -380,6 +366,27 @@ Add-Member `
     };
 #endregion Timers
 
+#region Config
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -TypeName "System.Management.Automation.PSObject" `
+    -NotePropertyName "Config" `
+    -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+Add-Member `
+    -InputObject $Global:Session.Logging.Config `
+    -TypeName "Int32" `
+    -NotePropertyName "RetentionDays" `
+    -NotePropertyValue $Config.RetentionDays;
+Add-Member `
+    -InputObject $Global:Session.Logging.Config `
+    -TypeName "String[]" `
+    -NotePropertyName "EmailRecipients" `
+    -NotePropertyValue $Config.EmailRecipients;
+Add-Member `
+    -InputObject $Global:Session.Logging.Config `
+    -TypeName "String" `
+    -NotePropertyName "SMTPConnectionName" `
+    -NotePropertyValue $Config.SMTPConnectionName;
 Add-Member `
     -InputObject $Global:Session.Logging.Config `
     -Name "Save" `
@@ -391,6 +398,9 @@ Add-Member `
             "SMTPConnectionName" = $Global:Session.Logging.Config.SMTPConnectionName
         } | Set-Content -Path $Global:Session.Logging.ConfigFilePath;
     };
+#endregion Config
+
+#region Methods
 Add-Member `
     -InputObject $Global:Session.Logging `
     -Name "WriteEntry" `
@@ -433,11 +443,7 @@ Add-Member `
     -MemberType "ScriptMethod" `
     -Value {
             [OutputType([Collections.Hashtable])]
-            Param
-            (
-                [Parameter(Mandatory=$true)]
-                [Exception] $Exception
-            )
+            Param ( )
             $Global:Session.Logging.LastLogFileNumber ++;
             [String] $FileNumber = $Global:Session.Logging.LastLogFileNumber.ToString().PadLeft(3, "0");
             Return [Collections.Hashtable]@{
@@ -540,7 +546,7 @@ Add-Member `
         If ($Global:Session.Logging.Config.RetentionDays -ne 0)
         {
             [DateTime] $DeleteOlderThan = [DateTime]::UtcNow.AddDays(-$Global:Session.Logging.Config.RetentionDays);
-            ForEach ($File In (Get-ChildItem -Path "C:\JobsWorkspace\Logs\Informatica\Export" -Filter "*.*"))
+            ForEach ($File In (Get-ChildItem -Path $Global:Session.Logging.DirectoryPath -Filter "*.*"))
             {
                 If ($File.Name.Length -ge 15)
                 {
@@ -612,31 +618,7 @@ Add-Member `
         $ScriptBlock.Invoke();
         $Global:Session.Logging.Timers.Stop($Name);
     };
-Add-Member `
-    -InputObject $Global:Session.Logging `
-    -Name "TimedExecuteAll" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [CmdletBinding()]
-        Param (
-            [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Scripts
-        )
-        ForEach ($ScriptKey In $Scripts.Keys)
-        {
-            If ($Scripts[$ScriptKey] -is [ScriptBlock])
-            {
-                $Global:Session.Logging.WriteEntry("Information", [String]::Format("Executing {0}", $ScriptKey));
-                $Global:Session.Logging.Timers.Add($ScriptKey);
-                $Global:Session.Logging.Timers.Start($ScriptKey);
-                $Scripts[$ScriptKey].Invoke();
-                $Global:Session.Logging.Timers.Stop($ScriptKey);
-            }
-        }
-    };
+#endregion Methods
 
-
-
-
-Set-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value ([DateTime]::UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`tINFORMATION`tOpening Log");
 $Global:Session.Logging.OpenLogTime = [DateTime]::UtcNow;
+Set-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value ($Global:Session.Logging.OpenLogTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`tINFORMATION`tOpening Log");

@@ -1,55 +1,182 @@
 # ScriptSQLServerDatabase
-## 
+## A group of methods for scripting and importing SQL Server database objects.
 
-- ### CreateScriptArrayFromJSON
-      
-    - ArgName (System.String)  
-        
-- ### GenerateFunctionScript
-      
-    - ArgName (System.String)  
-        
-- ### GenerateProcedureScript
-      
-    - ArgName (System.String)  
-        
-- ### GenerateScriptsByDependency
-      
-    - ArgName (System.String)  
-        
-- ### GenerateTableScript
-      
-    - ArgName (System.String)  
-        
-- ### GenerateViewScript
-      
-    - ArgName (System.String)  
-        
-- ### GetFunctionInfo
-      
-    - ArgName (System.String)  
-        
-- ### GetObjectsByDependency
-      
-    - ArgName (System.String)  
-        
-- ### GetProcedureInfo
-      
-    - ArgName (System.String)  
-        
-- ### GetTableInfo
-      
-    - ArgName (System.String)  
-        
-- ### GetViewInfo
-      
-    - ArgName (System.String)  
-        
-- ### ImportFromJSON
-      
-    - ArgName (System.String)  
-        
-- ### ImportFromJSONWhatIf
-      
-    - ArgName (System.String)  
-        
+- ### GetTableInfo `[method]`
+    Returns: `System.Object`  
+    Gets information about a table.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - Name `System.String`  
+        The object name
+
+- ### GetViewInfo `[method]`
+    Returns: `System.Object`  
+    Gets information about a view.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - Name `System.String`  
+        The object name
+
+- ### GetFunctionInfo `[method]`
+    Returns: `System.Object`  
+    Gets information about a function.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - Name `System.String`  
+        The object name
+
+- ### GetProcedureInfo `[method]`
+    Returns: `System.Object`  
+    Gets information about a procedure.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - Name `System.String`  
+        The object name
+
+- ### GetObjectsByDependency `[method]`
+    Returns: `System.Collections.Generic.List[System.Management.Automation.PSObject]`  
+    Gets objects in dependency order.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - OverrideGetDependenciesFilePath `System.String`  
+        Can be null. An alternate script to use for returning the dependencies
+
+    - Parameters `System.Collections.Hashtable`  
+        Parameters that may be needed in the override script
+
+- ### GetJSONExport `[method]`
+    Returns: `System.Collections.Generic.List[System.Management.Automation.PSObject]`  
+    Generates a JSON file and object definition files that can be used later for import.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - Schema `System.String`  
+        The schema name
+
+    - OverrideGetDependenciesFilePath `System.String`  
+        Can be null. An alternate script to use for returning the dependencies
+
+    - OutputDirectoryPath `System.String`  
+        The directory where the resulting files will be placed
+
+    - Parameters `System.Collections.Hashtable`  
+        Parameters that may be needed in the override script
+
+- ### GenerateTableScript `[method]`
+    Returns: `System.String`  
+    Retruns a CREATE TABLE script based on the data provided in the TableInfo object.  
+    - TableInfo `System.Object`  
+        The TableInfo object to build the script from
+
+- ### GenerateViewScript `[method]`
+    Returns: `System.String`  
+    Retruns a CREATE VIEW script based on the data provided in the ViewInfo object and the content file.  
+    - ViewInfo `System.Object`  
+        The ViewInfo object to build the script from
+
+    - ModuleBodyFilePath `System.Object`  
+        The path to the file that contains the contents of the module body
+
+- ### GenerateFunctionScript `[method]`
+    Returns: `System.String`  
+    Retruns a CREATE FUNCTION script based on the data provided in the FunctionInfo object and the content file.  
+    - FunctionInfo `System.Object`  
+        The FunctionInfo object to build the script from
+
+    - ModuleBodyFilePath `System.Object`  
+        The path to the file that contains the contents of the module body
+
+- ### GenerateProcedureScript `[method]`
+    Returns: `System.String`  
+    Retruns a CREATE PROCEDURE script based on the data provided in the ProcedureInfo object and the content file.  
+    - ProcedureInfo `System.Object`  
+        The ProcedureInfo object to build the script from
+
+    - ModuleBodyFilePath `System.Object`  
+        The path to the file that contains the contents of the module body
+
+- ### CreateScriptArrayFromJSON `[method]`
+    Returns: `System.Collections.Generic.List[System.Management.Automation.PSObject]`  
+    Creates an array of scripts based on the files from GetJSONExport.  
+    - JSONFilePath `System.String`  
+        The path to the JSON file generated by GetJSONExport
+
+    - Schema `System.String`  
+        The schema name to use in place of _SCHEMANAME_
+
+    - HeapFileGroup `System.String`  
+        The file group name to use in place of _HEAPFILEGROUP_
+
+    - LobFileGroup `System.String`  
+        The file group name to use in place of _LOBFILEGROUP_
+
+    - IndexFileGroup `System.String`  
+        The file group name to use in place of _INDEXFILEGROUP_
+
+    - IncludeDrops `System.Boolean`  
+        If true, drop scripts will be generated before create scripts
+
+- ### ImportFromJSON `[method]`
+    Returns: `System.String`  
+    Imports objects based on files from GetJSONExport. Returns a string stating what was done.  
+    - ConnectionName `System.String`  
+        The named connection to execute against
+
+    - JSONFilePath `System.String`  
+        The path to the JSON file generated by GetJSONExport
+
+    - Schema `System.String`  
+        The schema name to use in place of _SCHEMANAME_
+
+    - HeapFileGroup `System.String`  
+        The file group name to use in place of _HEAPFILEGROUP_
+
+    - LobFileGroup `System.String`  
+        The file group name to use in place of _LOBFILEGROUP_
+
+    - IndexFileGroup `System.String`  
+        The file group name to use in place of _INDEXFILEGROUP_
+
+    - IncludeDrops `System.Boolean`  
+        If true, drops will be performed before creates
+
+- ### `Method` ImportFromJSONWhatIf
+    Generates a text file that shows what would have happened if ImportFromJSON was ran.  
+    - JSONFilePath `System.String`  
+        The path to the JSON file generated by GetJSONExport
+
+    - Schema `System.String`  
+        The schema name to use in place of _SCHEMANAME_
+
+    - HeapFileGroup `System.String`  
+        The file group name to use in place of _HEAPFILEGROUP_
+
+    - LobFileGroup `System.String`  
+        The file group name to use in place of _LOBFILEGROUP_
+
+    - IndexFileGroup `System.String`  
+        The file group name to use in place of _INDEXFILEGROUP_
+
+    - IncludeDrops `System.Boolean`  
+        If true, drops will be performed before creates
+

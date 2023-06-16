@@ -1,5 +1,7 @@
-#These Modules require 7-Zip to be installed.
-
+If (![IO.File]::Exists($Global:Session.Compression7Zip.ExecutablePath))
+{
+    Throw [IO.FileNotFoundException]::new($Global:Session.Compression7Zip.ExecutablePath);
+}
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
@@ -10,62 +12,6 @@ Add-Member `
     -TypeName "String" `
     -NotePropertyName "ExecutablePath" `
     -NotePropertyValue "C:\Program Files\7-Zip\7z.exe";
-Add-Member `
-    -InputObject $Global:Session.Compression7Zip `
-    -Name "ExtractAsset" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([String])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [String] $CompressedFilePath,
-
-            [Parameter(Mandatory=$true)]
-            [String] $AssetPath,
-
-            [Parameter(Mandatory=$true)]
-            [String] $OutputDirectoryPath
-        )
-        [String] $ReturnValue = [IO.Path]::Combine($DecompressedDirectoryPath, [IO.Path]::GetFileName($AssetPath));
-        If (![IO.Directory]::Exists($OutputDirectoryPath))
-        {
-            [void] [IO.Directory]::CreateDirectory($OutputDirectoryPath);
-        }
-        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
-        [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
-        $ProcessStartInfo.FileName = "C:\Program Files\7-Zip\7z.exe"
-        $ProcessStartInfo.RedirectStandardError = $true
-        $ProcessStartInfo.RedirectStandardOutput = $true
-        $ProcessStartInfo.UseShellExecute = $false
-        $ProcessStartInfo.Arguments = @(
-            "e",
-            "`"$CompressedFilePath`"",
-            "-o`"$OutputDirectoryPath`"",
-            "`"$AssetPath`"",
-            "-y"
-        );
-        [System.Diagnostics.Process] $Process = [System.Diagnostics.Process]::new()
-        $Process.StartInfo = $ProcessStartInfo
-        [void] $Process.Start()
-        [void] $Process.WaitForExit()
-        [String] $Output = $Process.StandardOutput.ReadToEnd();
-        [void] $Process.Dispose();
-        If ($Output.Contains("No files to process"))
-        {
-            Throw [System.Exception]::new([String]::Format("Asset `"{0}`" not found.", $AssetPath));
-        }
-        ElseIf (!$Output.Contains("Everything is Ok"))
-        {
-            [String] $ErrorFilePath = [IO.Path]::Combine($OutputDirectoryPath, [String]::Format("Error_{0}.txt", [DateTime]::UtcNow.ToString("yyyyMMddHHmmssfffffff")));
-            [void] [IO.File]::WriteAllText(
-                $ErrorFilePath,
-                $Output
-            );
-            Throw [System.Exception]::new([String]::Format("Errors encountered. Please review {0}", $ErrorFilePath));
-        }
-        Return $ReturnValue;
-    };
 Add-Member `
     -InputObject $Global:Session.Compression7Zip `
     -Name "GetAssets" `
@@ -157,7 +103,59 @@ Add-Member `
         [void] $Process.Dispose();
         Return $ReturnValue;
     };
-If (![IO.File]::Exists($Global:Session.Compression7Zip.ExecutablePath))
-{
-    Throw [IO.FileNotFoundException]::new($Global:Session.Compression7Zip.ExecutablePath);
-}
+Add-Member `
+    -InputObject $Global:Session.Compression7Zip `
+    -Name "ExtractAsset" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $CompressedFilePath,
+
+            [Parameter(Mandatory=$true)]
+            [String] $AssetPath,
+
+            [Parameter(Mandatory=$true)]
+            [String] $OutputDirectoryPath
+        )
+        [String] $ReturnValue = [IO.Path]::Combine($DecompressedDirectoryPath, [IO.Path]::GetFileName($AssetPath));
+        If (![IO.Directory]::Exists($OutputDirectoryPath))
+        {
+            [void] [IO.Directory]::CreateDirectory($OutputDirectoryPath);
+        }
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
+        [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
+        $ProcessStartInfo.FileName = "C:\Program Files\7-Zip\7z.exe"
+        $ProcessStartInfo.RedirectStandardError = $true
+        $ProcessStartInfo.RedirectStandardOutput = $true
+        $ProcessStartInfo.UseShellExecute = $false
+        $ProcessStartInfo.Arguments = @(
+            "e",
+            "`"$CompressedFilePath`"",
+            "-o`"$OutputDirectoryPath`"",
+            "`"$AssetPath`"",
+            "-y"
+        );
+        [System.Diagnostics.Process] $Process = [System.Diagnostics.Process]::new()
+        $Process.StartInfo = $ProcessStartInfo
+        [void] $Process.Start()
+        [void] $Process.WaitForExit()
+        [String] $Output = $Process.StandardOutput.ReadToEnd();
+        [void] $Process.Dispose();
+        If ($Output.Contains("No files to process"))
+        {
+            Throw [System.Exception]::new([String]::Format("Asset `"{0}`" not found.", $AssetPath));
+        }
+        ElseIf (!$Output.Contains("Everything is Ok"))
+        {
+            [String] $ErrorFilePath = [IO.Path]::Combine($OutputDirectoryPath, [String]::Format("Error_{0}.txt", [DateTime]::UtcNow.ToString("yyyyMMddHHmmssfffffff")));
+            [void] [IO.File]::WriteAllText(
+                $ErrorFilePath,
+                $Output
+            );
+            Throw [System.Exception]::new([String]::Format("Errors encountered. Please review {0}", $ErrorFilePath));
+        }
+        Return $ReturnValue;
+    };
