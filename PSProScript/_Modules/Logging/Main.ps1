@@ -151,9 +151,9 @@ Add-Member `
     -NotePropertyValue 0;
     Add-Member `
     -InputObject $Global:Session.Logging `
-    -TypeName "System.Collections.ArrayList" `
+    -TypeName "System.Collections.Generic.List[PSObject]" `
     -NotePropertyName "Entries" `
-    -NotePropertyValue ([System.Collections.ArrayList]::new());
+    -NotePropertyValue ([Collections.Generic.List[PSObject]]::new());
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "System.Collections.Hashtable" `
@@ -173,9 +173,9 @@ Add-Member `
     -NotePropertyValue ([Collections.Hashtable]::new());
 Add-Member `
     -InputObject $Global:Session.Logging.Timers `
-    -TypeName "System.Collections.ArrayList" `
+    -TypeName "System.Collections.Generic.List[String]" `
     -NotePropertyName "TimerOrder" `
-    -NotePropertyValue ([Collections.ArrayList]::new());
+    -NotePropertyValue ([Collections.Generic.List[String]]::new());
 Add-Member `
     -InputObject $Global:Session.Logging.Timers `
     -TypeName "String" `
@@ -364,12 +364,11 @@ Add-Member `
     -Name "GetTimersSimplified" `
     -MemberType "ScriptMethod" `
     -Value {
-            [OutputType([Collections.ArrayList])]
-            [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
-            #ForEach ($Key In $Global:Session.Logging.Timers.TimerCollection.Keys)
+            [OutputType([Collections.Generic.List[PSObject]])]
+            [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
             ForEach ($Key In $Global:Session.Logging.Timers.TimerOrder)
             {
-                [void] $ReturnValue.Add(@{
+                [void] $ReturnValue.Add([PSObject]@{
                     "Sequence" = ($Global:Session.Logging.Timers.TimerOrder.IndexOf($Key) + 1);
                     "Name" = $Key;
                     "BeginTime" = $Global:Session.Logging.Timers.TimerCollection[$Key].BeginTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ");

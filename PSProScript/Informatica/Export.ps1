@@ -15,8 +15,8 @@ $Global:Session.Logging.WriteVariables("Paths", @{
     "ExtractedDirectoryPath" = $ExtractedDirectoryPath;
 });
 
-[Collections.ArrayList] $Global:AssetIds = [Collections.ArrayList]::new();
-[Collections.Hashtable] $Global:Export = $null;
+[Collections.Generic.List[String]] $Global:AssetIds = [Collections.Generic.List[String]]::new();
+[Collections.Generic.List[PSObject]] $Global:Export = $null;
 
 #region Establish IICS Session
 $Global:Session.Execute("Establish IICS Session", {

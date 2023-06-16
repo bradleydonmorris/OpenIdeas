@@ -235,7 +235,7 @@ Add-Member `
         Param
         (
             [Parameter(Mandatory=$false)]
-            [Collections.ArrayList] $Assets,
+            [Collections.Generic.List[String]] $Assets,
     
             [Parameter(Mandatory=$false)]
             [String] $OutputDirectoryPath,
@@ -249,8 +249,8 @@ Add-Member `
         $PreviousProgressPreference = $global:ProgressPreference;
         $global:ProgressPreference = "SilentlyContinue";
         [PSObject] $ReturnValue = [PSObject]@{
-            "Assets" = [System.Collections.ArrayList]::new();
-            "AssetFiles" = [System.Collections.ArrayList]::new();
+            "Assets" = [Collections.Generic.List[PSObject]]::new();
+            "AssetFiles" = [Collections.Generic.List[PSObject]]::new();
         };
     
         [String] $TempExportDirectory = [IO.Path]::Combine([IO.Path]::GetTempPath(), [Guid]::NewGuid().ToString("N"));
@@ -268,14 +268,14 @@ Add-Member `
 
         If ($Assets.Count -gt 0)
         {
-            [System.Collections.ArrayList] $ExportBatches = [System.Collections.ArrayList]::new();
+            [Collections.Generic.List[PSObject]] $ExportBatches = [Collections.Generic.List[PSObject]]::new();
             [Int32] $ObjecthNumber = 0;
             [Int32] $BatchNumber = 1;
             [System.Collections.Hashtable] $Batch = @{
                 "BatchNumber" = $BatchNumber;
                 "Body" = @{
                     "name" = ([Guid]::NewGuid());
-                    "objects" = [System.Collections.ArrayList]::new();
+                    "objects" = [Collections.Generic.List[PSObject]]::new();
                 };
                 "ExportId" = $null;
                 "Status" = $null;
@@ -291,7 +291,7 @@ Add-Member `
                         "BatchNumber" = $BatchNumber;
                         "Body" = @{
                             "name" = ([Guid]::NewGuid());
-                            "objects" = [System.Collections.ArrayList]::new();
+                            "objects" = [Collections.Generic.List[PSObject]]::new();
                         };
                         "ExportId" = $null;
                         "Status" = $null;
@@ -421,7 +421,7 @@ Add-Member `
                         "ZIPFilePath" = $ObjectZIPFilePath;
                         "ZIPFileExists" = [IO.File]::Exists($ObjectZIPFilePath);
                         "ExtractDirectoryPath" = $ObjectExtractDirectoryPath;
-                        "Files" = [Collections.ArrayList]::new();
+                        "Files" = [Collections.Generic.List[String]]::new();
                     };
                     If ($Asset.ZIPFileExists)
                     {

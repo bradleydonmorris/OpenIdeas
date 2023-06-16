@@ -149,7 +149,7 @@ Add-Member `
             [Int32] $BatchSize,
 
             [Parameter(Mandatory=$true)]
-            [Collections.ArrayList] $AdditionalDataItems
+            [Collections.Generic.List[PSObject]] $AdditionalDataItems
                 <#
                     Array of 
                         @{

@@ -106,7 +106,7 @@ $Global:Session.WebServer.AddRouteCommand("/logs", "Get", [scriptblock]::Create(
     ElseIf ($Level -eq "Job")
     {
         [void] $StringBuilder.Append("<h1>Logs</h1>");
-        [Collections.ArrayList] $LogGroups = [Collections.ArrayList]::new()
+        [Collections.Generic.List[String]] $LogGroups = [Collections.Generic.List[String]]::new()
         ForEach ($LogFileItem In (Get-ChildItem -Path ([IO.Path]::Combine($Global:Session.Directories.LogsRoot, $Project, $Job)) -Filter "*.json" | Where-Object -FilterScript { -not $_.PSIsContainer } ))
         {
             If ($LogFileItem.Name.Length -gt 14)

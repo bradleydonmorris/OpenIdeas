@@ -1,12 +1,30 @@
-. ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1"));
+ . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1"));
 #$Global:Session.LoadModule("SQLServer");
 #$Global:Session.LoadModule("Compression7Zip");
-$Global:Session.LoadModule("GoogleAPI");
+$Global:Session.LoadModule("Prompts");
+#$Global:Session.IsModuleLoaded("NuGet");
 
+
+
+#$Global:Session.Prompts.PressEnter();
+
+# $Global:Session.Prompts.ShowMenu(0,
+#                 @(
+#                     @{ "Selector" = "L"; "Name" = "Lookups"; "Text" = "Lookup Data"; },
+#                     @{ "Selector" = "V"; "Name" = "Vendors"; "Text" = "Vendors"; },
+#                     @{ "Selector" = "I"; "Name" = "Items"; "Text" = "Items"; },
+#                     @{ "Selector" = "T"; "Name" = "Transactions"; "Text" = "Transactions"; },
+#                     @{ "Selector" = "XX"; "Name" = "ExitApplication"; "Text" = "Exit Application"; }
+#                 )
+#             )
+
+$S = [Collections.Generic.List[Object]]::new();
+$S.AddRange(@("asdf", "ASdf"));
+$S
 #$Global:Session.Connections.Get("GoogleAPI");
 #$Global:Session.GoogleAPI.GetConnection("GoogleAPI");
 #$Global:Session.GoogleAPI.GetRefreshedToken("GoogleAPI");
-$Global:Session.GoogleAPI.GetUsers("GoogleAPI", $true);
+#$Global:Session.GoogleAPI.GetUsers("GoogleAPI", $true);
 #$Global:Session.GoogleAPI.GetGroups("GoogleAPI", $true);
 #$tii = $Global:Session.GoogleAPI.GetOrgUnits("GoogleAPI");
 #$tii

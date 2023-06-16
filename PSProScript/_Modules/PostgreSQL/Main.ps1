@@ -154,7 +154,7 @@ Add-Member `
             [Collections.Hashtable] $Parameters,
 
             [Parameter(Mandatory=$true)]
-            [Collections.ArrayList] $Fields
+            [Collections.Generic.List[String]] $Fields
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [Npgsql.NpgsqlConnection] $Connection = $null;
@@ -233,7 +233,7 @@ Add-Member `
             [Collections.Hashtable] $Parameters,
 
             [Parameter(Mandatory=$true)]
-            [Collections.ArrayList] $Fields
+            [Collections.Generic.List[String]] $Fields
         )
         [Object] $ReturnValue = $null;
         [Npgsql.NpgsqlConnection] $Connection = $null;

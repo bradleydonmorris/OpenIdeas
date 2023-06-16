@@ -13,12 +13,11 @@ Add-Member `
     -Name "ShowMainMenu" `
     -MemberType "ScriptMethod" `
     -Value {
-        [Boolean] $ShowInvalidChoiceMessage = $false;
         [Boolean] $ExitMenu = $false;
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $MenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $MenuResponse = $Global:Session.Prompts.ShowMenu(0,
                 @(
                     @{ "Selector" = "L"; "Name" = "Lookups"; "Text" = "Lookup Data"; },
                     @{ "Selector" = "V"; "Name" = "Vendors"; "Text" = "Vendors"; },
@@ -32,25 +31,21 @@ Add-Member `
                 "Lookups"
                 {
                     [void] $Global:Session.PreciousMetalsTracking.Menus.ShowLookupsMenu();
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Vendors"
                 {
                     [void] $Global:Session.PreciousMetalsTracking.Menus.ShowVendorsMenu();
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Items"
                 {
                     [void] $Global:Session.PreciousMetalsTracking.Menus.ShowItemsMenu();
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Transactions"
                 {
                     [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotImpletemented("Transactions");
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitApplication"
@@ -59,14 +54,12 @@ Add-Member `
                 }
                 Default
                 {
-                    $ShowInvalidChoiceMessage = $true;
                     $ExitMenu = $false;
                 }
             }
             If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
                 $Global:Session.PreciousMetalsTracking.Exit();
-                $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
             }
         }
@@ -76,12 +69,11 @@ Add-Member `
     -Name "ShowLookupsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
-        [Boolean] $ShowInvalidChoiceMessage = $false;
         [Boolean] $ExitMenu = $false
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0,
                 @(
                     @{ "Selector" = "MT"; "Name" = "MetalTypes"; "Text" = "Metal Types"; },
                     @{ "Selector" = "X"; "Name" = "ExitMenu"; "Text" = "Return to Main Menu"; },
@@ -93,12 +85,10 @@ Add-Member `
                 "MetalTypes"
                 {
                     [void] $Global:Session.PreciousMetalsTracking.Menus.ShowLookupMenu("Metal Types", "Metal Type", "MetalType");
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitMenu"
                 {
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $true;
                 }
                 "ExitApplication"
@@ -107,13 +97,11 @@ Add-Member `
                 }
                 Default
                 {
-                    $ShowInvalidChoiceMessage = $true;
                     $ExitMenu = $false;
                 }
             }
             If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
-                $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
             }
         }
@@ -134,12 +122,11 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $LookupTableName
         )
-        [Boolean] $ShowInvalidChoiceMessage = $false;
         [Boolean] $ExitMenu = $false
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0,
                 @(
                     @{ "Selector" = "L"; "Name" = "List"; "Text" = "List $LookupDisplayNamePlural"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add $LookupDisplayNameSingular"; },
@@ -169,7 +156,6 @@ Add-Member `
                     {
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound($LookupDisplayNamePlural);
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Add"
@@ -179,7 +165,6 @@ Add-Member `
                     {
                         [void] $Global:Session.PreciousMetalsTracking.Data.Lookups.Add($LookupTableName, $LookupValue);
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }   
                 "Modify"
@@ -204,7 +189,6 @@ Add-Member `
                     {
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound([String]::Format("{0} `"{1}`"", $LookupDisplayNameSingular, $OldLookupValue));
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Remove"
@@ -221,12 +205,10 @@ Add-Member `
                             [void] $Global:Session.PreciousMetalsTracking.Data.Lookups.Remove($LookupTableName, $LookupValue);
                         }
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitMenu"
                 {
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $true;
                 }
                 "ExitApplication"
@@ -235,13 +217,11 @@ Add-Member `
                 }
                 Default
                 {
-                    $ShowInvalidChoiceMessage = $true;
                     $ExitMenu = $false;
                 }
             }
             If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
-                $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
             }
         }
@@ -251,12 +231,11 @@ Add-Member `
     -Name "ShowVendorsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
-        [Boolean] $ShowInvalidChoiceMessage = $false;
         [Boolean] $ExitMenu = $false
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0,
                 @(
                     @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Vendor"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Vendor"; },
@@ -281,7 +260,6 @@ Add-Member `
                     {
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound("Vendor");
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Add"
@@ -308,7 +286,6 @@ Add-Member `
                     [String] $VendorWebSite = $Global:Session.Prompts.StringResponse("Enter Vendor Web Site", "");
                     [PSObject] $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.Add($VendorName, $VendorWebSite);
                     [void] $Global:Session.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Modify"
@@ -366,7 +343,6 @@ Add-Member `
                         [PSObject] $Vendor = $Global:Session.PreciousMetalsTracking.Data.Vendors.Modify($Vendor.VendorGUID, $Vendor.Name, $Vendor.WebSite);
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowVendor($Vendor);
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Remove"
@@ -400,12 +376,10 @@ Add-Member `
                             }
                         }
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitMenu"
                 {
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $true;
                 }
                 "ExitApplication"
@@ -414,7 +388,6 @@ Add-Member `
                 }
                 Default
                 {
-                    $ShowInvalidChoiceMessage = $true;
                     $ExitMenu = $false;
                 }
             }
@@ -430,12 +403,11 @@ Add-Member `
     -Name "ShowItemsMenu" `
     -MemberType "ScriptMethod" `
     -Value {
-        [Boolean] $ShowInvalidChoiceMessage = $false;
         [Boolean] $ExitMenu = $false
         While (!$ExitMenu)
         {
             Clear-Host;
-            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0, $ShowInvalidChoiceMessage,
+            [String] $VendorMenuResponse = $Global:Session.Prompts.ShowMenu(0,
                 @(
                     @{ "Selector" = "G"; "Name" = "Get"; "Text" = "Get Item"; },
                     @{ "Selector" = "A"; "Name" = "Add"; "Text" = "Add Item"; },
@@ -460,7 +432,6 @@ Add-Member `
                     {
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowNotFound("Item");
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Add"
@@ -561,7 +532,6 @@ Add-Member `
                     }
                     [PSObject] $Item = $Global:Session.PreciousMetalsTracking.Data.Items.Add($ItemName, $ItemMetalType, $Purity, $Ounces);
                     [void] $Global:Session.PreciousMetalsTracking.Messages.ShowItem($Item);
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Modify"
@@ -693,7 +663,6 @@ Add-Member `
                         [PSObject] $Item = $Global:Session.PreciousMetalsTracking.Data.Items.Modify($Item.ItemGUID, $Item.Name, $Item.MetalType,  $Item.Purity,  $Item.Ounces);
                         [void] $Global:Session.PreciousMetalsTracking.Messages.ShowItem($Item);
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "Remove"
@@ -727,12 +696,10 @@ Add-Member `
                             }
                         }
                     }
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $false;
                 }
                 "ExitMenu"
                 {
-                    $ShowInvalidChoiceMessage = $false;
                     $ExitMenu = $true;
                 }
                 "ExitApplication"
@@ -741,13 +708,11 @@ Add-Member `
                 }
                 Default
                 {
-                    $ShowInvalidChoiceMessage = $true;
                     $ExitMenu = $false;
                 }
             }
             If ($Global:Session.PreciousMetalsTracking.Menus.ExitApplication -eq $true)
             {
-                $ShowInvalidChoiceMessage = $false;
                 $ExitMenu = $true;
             }
         }

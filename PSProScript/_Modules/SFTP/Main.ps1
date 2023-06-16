@@ -132,7 +132,7 @@ Add-Member `
         [SSH.SftpSession] $ReturnValue = $null;
         $Connection = $Global:Session.Connections.Get($Name);
         Get-SSHTrustedHost | Remove-SSHTrustedHost | Out-Null;
-        If ($Connection.AuthType -eq "UserNameAndPassword")
+        If ($Connection.AuthType -eq "Password")
         {
             [System.Security.SecureString] $SecurePassword = ConvertTo-SecureString -String ($Connection.Password) -AsPlainText -Force;
             [System.Management.Automation.PSCredential] $Credential = [System.Management.Automation.PSCredential]::new($Connection.UserName, $SecurePassword);

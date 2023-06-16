@@ -3,9 +3,9 @@
     "LogsRoot": "C:\\Integrations\\Logs",
     "DataRoot": "C:\\Integrations\\Data",
     "ConnectionsRoot": "C:\\Integrations\\Connections",
-    "CodeRoot": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs",
-    "Modules": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs\\_Modules",
-    "Packages": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\AutomatedJobs\\_Packages"
+    "CodeRoot": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\PSProScript",
+    "Modules": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\PSProScript\\_Modules",
+    "Packages": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\PSProScript\\_Packages"
   },
   "AlwaysLoadedModules": [
       "Logging",

@@ -55,6 +55,10 @@ Add-Member `
                 [void] $Global:Session.Modules.Add($Name, $ModuleFilePath);
                 . $ModuleFilePath;
             }
+            Else
+            {
+                Throw [System.IO.FileNotFoundException]::new("File not found for Module ", $Name);
+            }
         }
     }
 Add-Member `
@@ -301,7 +305,7 @@ ForEach ($ModuleName In $Global:Session.AlwaysLoadedModules)
 }
 
 #Load additional modules that may be required
-ForEach ($Module In $RequiredModules)
+ForEach ($ModuleName In $RequiredModules)
 {
-    [void] $Global:Session.LoadModule($Module);
+    [void] $Global:Session.LoadModule($ModuleName);
 }

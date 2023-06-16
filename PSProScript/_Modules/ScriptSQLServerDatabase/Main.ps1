@@ -229,7 +229,7 @@ Add-Member `
     -Name "GetObjectsByDependency" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -247,7 +247,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.Hashtable] $Parameters
         )
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
     
         [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "GetAllObjectDependencies.sql"));
         If (![String]::IsNullOrEmpty($OverrideGetDependenciesFilePath))
@@ -284,7 +284,7 @@ Add-Member `
         [Data.SqlClient.SqlDataReader] $SqlDataReader =  $SqlCommand.ExecuteReader();
         While ($SqlDataReader.Read())
         {
-            [void] $ReturnValue.Add(@{
+            [void] $ReturnValue.Add([PSObject]@{
                 "Schema" = $SqlDataReader.GetString($SqlDataReader.GetOrdinal("Schema"));
                 "Name" = (
                             !$SqlDataReader.IsDBNull($SqlDataReader.GetOrdinal("Name")) ?
@@ -312,7 +312,7 @@ Add-Member `
     -Name "GenerateScriptsByDependency" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -333,14 +333,14 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Collections.Hashtable] $Parameters
         )
-        $SQLObjectInfos = $Global:Session.ScriptSQLServerDatabase.GetObjectsByDependency(
+        [Collections.Generic.List[PSObject]] $SQLObjectInfos = $Global:Session.ScriptSQLServerDatabase.GetObjectsByDependency(
             $SQLInstance,
             $Database,
             $Schema,
             $OverrideGetDependenciesFilePath,
             $Parameters
         );
-        [Collections.ArrayList] $OutputArray = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $OutputArray = [Collections.Generic.List[PSObject]]::new();
         [String] $DatabaseObjectsDefinitionsDirectoryPath = [IO.Path]::Combine($OutputDirectoryPath, "DatabaseObjectsDefinitions");
         If (![IO.Directory]::Exists($DatabaseObjectsDefinitionsDirectoryPath))
         {
@@ -758,7 +758,7 @@ Add-Member `
     -Name "CreateScriptArrayFromJSON" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
+        [OutputType([Collections.Generic.List[PSObject]])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -779,7 +779,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeDrops
         )
-        [Collections.ArrayList] $ReturnValue = [Collections.ArrayList]::new();
+        [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         If (![IO.File]::Exists($JSONFilePath))
         {
             Throw [IO.FileNotFoundException]::new("File specified by `$JSONFilePath was not found.", $JSONFilePath)
@@ -905,7 +905,7 @@ Add-Member `
             }
             If ($IncludeDrops -and ![String]::IsNullOrEmpty($DropScript))
             {
-                [void] $ReturnValue.Add(@{
+                [void] $ReturnValue.Add([PSObject]@{
                     "Mode" = "Drop";
                     "Sequence" = [Int32]$ObjectInfo.DropOrder;
                     "Type" = $ObjectInfo.SimpleType;
@@ -916,7 +916,7 @@ Add-Member `
             }
             If (![String]::IsNullOrEmpty($CreateScript))
             {
-                [void] $ReturnValue.Add(@{
+                [void] $ReturnValue.Add([PSObject]@{
                     "Mode" = "Create";
                     "Sequence" = [Int32]($IncludeDrops ? ($ObjectInfos.Count + $ObjectInfo.CreateOrder) : $ObjectInfo.CreateOrder);
                     "Type" = $ObjectInfo.SimpleType;
@@ -933,7 +933,6 @@ Add-Member `
     -Name "ImportFromJSON" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -960,7 +959,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $IncludeDrops
         )
-        [Collections.ArrayList] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
+        [Collections.Generic.List[PSObject]] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
         If ($IncludeDrops)
@@ -998,7 +997,6 @@ Add-Member `
     -Name "ImportFromJSONWhatIf" `
     -MemberType "ScriptMethod" `
     -Value {
-        [OutputType([Collections.ArrayList])]
         Param
         (
             [Parameter(Mandatory=$true)]
@@ -1028,7 +1026,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $OutputFilePath
         )
-        [Collections.ArrayList] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
+        [Collections.Generic.List[PSObject]] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );
         Set-Content `

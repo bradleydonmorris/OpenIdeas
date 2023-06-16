@@ -11,7 +11,7 @@ $Global:Session.Logging.WriteVariables("Config", @{
 });
 
 [DateTime] $Global:LastDatabaseStartTime = [DateTime]::MinValue;
-[Collections.ArrayList] $Global:LogFiles = [Collections.ArrayList]::new();
+[Collections.Generic.List[String]] $Global:LogFiles = [Collections.Generic.List[String]]::new();
 
 
 #region Establish IICS Session

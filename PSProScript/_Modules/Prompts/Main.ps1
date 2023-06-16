@@ -8,7 +8,7 @@ Add-Member `
     -Name "PressEnter" `
     -MemberType "ScriptMethod" `
     -Value {
-        Write-Host -Object "Press ENTER to continue";
+        [Console]::Write("Press ENTER to continue");
         [Int32] $VirtualKeyCode = 0;
         While ($VirtualKeyCode -ne 13)
         {
@@ -29,7 +29,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Default
         )
-        [String] $Result = $null;
+        [String] $ReturnValue = $null;
         [String] $Response = $null;
         If ([String]::IsNullOrEmpty($Default))
             { $Response = Read-Host -Prompt $PromptText; }
@@ -39,8 +39,8 @@ Add-Member `
             If ([String]::IsNullOrEmpty($Response))
                 { $Response = $Default; }
         }
-        $Result = $Response;
-        Return $Result;
+        $ReturnValue = $Response;
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Session.Prompts `
@@ -56,15 +56,15 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [Boolean] $Default
         )
-        [Boolean] $Result = $false;
+        [Boolean] $ReturnValue = $false;
         [String] $Response = Read-Host -Prompt "$PromptText [Options: (Y)es, (T)rue, 1, (N)o, (F)alse, 0] [Default: $Default]";
         If ([String]::IsNullOrEmpty($Response))
-            { $Result = $Default; }
+            { $ReturnValue = $Default; }
         ElseIf (@("Y", "YES", "T", "TRUE", "1").Contains($Response.ToUpper()))
-            { $Result = $true; }
+            { $ReturnValue = $true; }
         Else
-            { $Result = $false; }
-        Return $Result;
+            { $ReturnValue = $false; }
+        Return $ReturnValue;
     }
 Add-Member `
     -InputObject $Global:Session.Prompts `
@@ -159,10 +159,7 @@ Add-Member `
             [Int32] $MaximumLineLength = 0,
 
             [Parameter(Mandatory=$true)]
-            [Boolean] $ShowInvalidChoiceMessage,
-
-            [Parameter(Mandatory=$true)]
-            [Collections.ArrayList] $Options
+            [Collections.Generic.List[PSObject]] $Options
             <#
                 Array of...
                     @{
@@ -210,17 +207,28 @@ Add-Member `
             "*`r`n"
         );
         $Prompt += ("*".PadRight($MaximumLineLength - 1, "*") + "*");
+        [Boolean] $IsChoiceValid = $false;
         Clear-Host;
         Write-Host -Object $Prompt;
-        If ($ShowInvalidChoiceMessage)
-        {
-            Write-Host -Object "Previos choice was invalid. Please try again." -ForegroundColor Red;
-        }
         [String] $Response = Read-Host -Prompt "Choose Option";
         $SelectedOption = $Options | Where-Object -FilterScript { $_.Selector -eq $Response } | Select-Object -First 1;
         If ($SelectedOption)
         {
-            $ReturnValue = $SelectedOption["Name"];
+            $IsChoiceValid = $true;
+            $ReturnValue = $SelectedOption.Name;
+        }
+        While (!$IsChoiceValid)
+        {
+            Clear-Host;
+            Write-Host -Object $Prompt;
+            Write-Host -Object "Previous choice was invalid. Please try again." -ForegroundColor Red;
+            $Response = Read-Host -Prompt "Choose Option";
+            $SelectedOption = $Options | Where-Object -FilterScript { $_.Selector -eq $Response } | Select-Object -First 1;
+            If ($SelectedOption)
+            {
+                $IsChoiceValid = $true;
+                $ReturnValue = $SelectedOption.Name;
+            }
         }
         Return $ReturnValue;
     }

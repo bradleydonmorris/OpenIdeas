@@ -185,7 +185,7 @@ Add-Member `
             }
         
             $ReturnValue.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
-            $ReturnValue.objectClass = [Collections.ArrayList]::new();
+            $ReturnValue.objectClass = [Collections.Generic.List[Object]]::new();
             $ReturnValue.objectClass.AddRange($DirectoryEntry.objectClass);
             $ReturnValue.objectCategory = $DirectoryEntry.objectCategory[0];
             $ReturnValue.UserPrincipalName = $DirectoryEntry.UserPrincipalName[0];
@@ -372,7 +372,7 @@ Add-Member `
                 }
             }
             $ReturnValue.objectGuid = [Guid]::new($DirectoryEntry.objectGuid.Value).ToString();
-            $ReturnValue.objectClass = [Collections.ArrayList]::new();
+            $ReturnValue.objectClass = [Collections.Generic.List[Object]]::new();
             $ReturnValue.objectClass.AddRange($DirectoryEntry.objectClass);
             $ReturnValue.objectCategory = $DirectoryEntry.objectCategory[0];
             $ReturnValue.distinguishedName = $DirectoryEntry.distinguishedName[0];
@@ -425,7 +425,7 @@ Add-Member `
             $ReturnValue.whenCreated = $DirectoryEntry.whenCreated[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
             $ReturnValue.whenChanged = $DirectoryEntry.whenChanged[0].ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
 
-            $ReturnValue.Members = [Collections.ArrayList]::new();
+            $ReturnValue.Members = [Collections.Generic.List[PSObject]]::new();
             If ($DirectoryEntry.Properties.Contains("member"))
             {
                 [Int32] $RangeLoop = 0;
