@@ -76,13 +76,122 @@ If error is "Invalid private key file.",
         Conversions > Export OpenSSH key
         (not the "force new file format" option)
 #>
+#[System.Security.Cryptography.HMACRIPEMD160] $r;
 
 [void] $Global:Session.SSHTunnel.CreateTunnel("GoldPlusTunnel-SSH");
 $Global:Session.PostgreSQL.GetRecords(
-    "GoldPlusTunnel-PostgreSQL-datamanagment_read", #ConnectionName - Connection file name
-    "SELECT code, name FROM public.t_language WHERE code = @Code", #CommandText - SQL command, use "@" prefix for parameters
-    @{ "Code" = "en"; }, #Parameters - The name can be prefixed with "@" or not. The code checks for this
-    @( "code", "name" ) #Fields - The fileds to return in the array.
-                         #          If all fields should be returned, then use @("*").
+    "GoldPlusTunnel-PostgreSQL-datamanagment_read",
+    "SELECT person_id, first_name, last_name FROM public.t_person WHERE person_id = @PersonId;",
+    @{ "@PersonId" = 10000001969 },
+    @( "person_id", "first_name", "last_name" )
 );
+
+
 [void] $Global:Session.SSHTunnel.DestroyTunnel();
+#[PSCustomObject] $Connection = $Global:Session.SSHTunnel.GetConnection("GoldPlusTunnel-SSH");
+# [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
+# $ProcessStartInfo.FileName = "ssh"
+# $ProcessStartInfo.RedirectStandardError = $true;
+# $ProcessStartInfo.RedirectStandardOutput = $true;
+# $ProcessStartInfo.RedirectStandardInput = $true;
+# $ProcessStartInfo.UseShellExecute = $false;
+# $ProcessStartInfo.Arguments = @(
+#     [String]::Format(
+#         "`"ssh://{0}@{1}:{2}`"",
+#         $Connection.UserName,
+#         $Connection.SSHServerAddress,
+#         $Connection.SSHServerPort
+#     ),
+#     "-i",
+#     [String]::Format(
+#         "`"{0}`"",
+#         $Connection.KeyFilePath
+#     ),
+#     "-L",
+#     [String]::Format(
+#         "{0}:{1}:{2}:{3}",
+#         $Connection.LocalAddress,
+#         $Connection.LocalPort,
+#         $Connection.RemoteAddress,
+#         $Connection.RemotePort
+#     )
+# );
+# [System.Diagnostics.Process] $Process = [System.Diagnostics.Process]::new()
+# $Process.StartInfo = $ProcessStartInfo
+# [void] $Process.Start();
+
+
+
+#Read-Host -Prompt "ASDFASDFASDF"
+# [void] $Process.StandardInput.WriteLine("logout")
+# [void] $Process.Dispose();
+
+
+# [String] $ConnectionName = "GoldPlusTunnel-PostgreSQL-datamanagment_read";
+
+# $Global:Session.PostgreSQL.GetRecords(
+#     "GoldPlusTunnel-PostgreSQL-datamanagment_read",
+#     "SELECT person_id, first_name, last_name FROM public.t_person WHERE person_id = @PersonId;",
+#     @{ "@PersonId" = 10000001969 },
+#     @( "person_id", "first_name", "last_name" )
+# );
+
+
+# [String] $ConnectionString = $Global:Session.PostgreSQL.GetConnectionString($ConnectionName);
+# [Npgsql.NpgsqlConnection] $Connection = $null;
+# [Npgsql.NpgsqlCommand] $Command = $null;
+# [Npgsql.NpgsqlDataReader] $DataReader = $null;
+# $Connection = [Npgsql.NpgsqlConnection]::new($ConnectionString);
+# $Connection.Open();
+# $Command = [Npgsql.NpgsqlCommand]::new($CommandText, $Connection);
+# $Command.CommandType = [Data.CommandType]::Text;
+# ForEach ($ParameterKey In $Parameters.Keys)
+# {
+#     [String] $Name = $ParameterKey;
+#     If (!$Name.StartsWith("@"))
+#         { $Name = "@" + $Name}
+#     [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+# }
+# $DataReader = $Command.ExecuteReader();
+# While ($DataReader.Read())
+# {
+#     Write-Host ([String]::Format("{0} === {1}",
+#         "person_id",
+#         $DataReader.GetInt64($DataReader.GetOrdinal("person_id")).ToString()
+#     ))
+#     Write-Host ([String]::Format("{0} === {1}",
+#         "first_name",
+#         $DataReader.GetString($DataReader.GetOrdinal("first_name")).ToString()
+#     ))
+#     Write-Host ([String]::Format("{0} === {1}",
+#         "last_name",
+#         $DataReader.GetString($DataReader.GetOrdinal("last_name")).ToString()
+#     ))
+# }
+# If ($DataReader)
+# {
+#     If (!$DataReader.IsClosed)
+#         { [void] $DataReader.Close(); }
+#     [void] $DataReader.Dispose();
+# }
+# If ($Command)
+#     { [void] $Command.Dispose(); }
+# If ($Connection)
+# {
+#     If (!$Connection.State -ne [Data.ConnectionState]::Closed)
+#         { [void] $Connection.Close(); }
+#     [void] $Connection.Dispose();
+# }
+
+
+
+
+
+#  $Global:Session.PostgreSQL.GetRecords(
+#      "GoldPlusTunnel-PostgreSQL-datamanagment_read", #ConnectionName - Connection file name
+#      "SELECT code, name FROM public.t_language WHERE code = @Code", #CommandText - SQL command, use "@" prefix for parameters
+#      @{ "Code" = "en"; }, #Parameters - The name can be prefixed with "@" or not. The code checks for this
+#      @( "code", "name" ) #Fields - The fileds to return in the array.
+#                           #          If all fields should be returned, then use @("*").
+# );
+# # [void] $Global:Session.SSHTunnel.DestroyTunnel();

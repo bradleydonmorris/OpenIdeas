@@ -187,11 +187,12 @@ Add-Member `
                 [PSObject] $Record = [PSObject]::new();
                 ForEach ($Field In $Fields)
                 {
+                    [Object] $Value = $DataReader.GetValue($DataReader.GetOrdinal($Field));
                     Add-Member `
                         -InputObject $Record `
                         -TypeName ($Value.GetType().Name) `
                         -NotePropertyName $Field `
-                        -NotePropertyValue $DataReader.GetValue($DataReader.GetOrdinal($Field));
+                        -NotePropertyValue $Value;
                 }
                 [void] $ReturnValue.Add([PSObject]$Record);
             }
