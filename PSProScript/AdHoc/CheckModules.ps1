@@ -12,6 +12,7 @@ $Modules = @(
     "ActiveDirectorySQLDatabase"
     "Compression7Zip"
     "Connections"
+    "GnuPG"
     "GoogleAPI"
     "GoogleSQLDatabase"
     "IICSSQLDatabase"

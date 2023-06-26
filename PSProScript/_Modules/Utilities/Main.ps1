@@ -3,7 +3,7 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "Utilities" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
-Add-Member `
+    Add-Member `
     -InputObject $Global:Session.Utilities `
     -Name "ParseFileNameTime" `
     -MemberType "ScriptMethod" `
@@ -20,7 +20,7 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Int32] $DateTimeStartPosition
         )
-        [DateTime] $Results = [DateTime]::MinValue;
+        [DateTime] $ReturnValue = [DateTime]::MinValue;
         [String] $FileName = [IO.Path]::GetFileName($FilePath);
         If ($FileName.Length -ge ($DateTimeStartPosition + $DateTimeFormatString.Length))
         {
@@ -31,12 +31,42 @@ Add-Member `
                                             [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::None,
                                             [ref]$ResultDateTime))
             {
-                $Results = $ResultDateTime;
+                $ReturnValue = $ResultDateTime;
             }
         }
         Else
         {
-            $Results = [DateTime]::MinValue;
+            $ReturnValue = [DateTime]::MinValue;
         }
-        Return $Results
+        Return $ReturnValue
+    };
+Add-Member `
+    -InputObject $Global:Session.Utilities `
+    -Name "SubstringBetween" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Text,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $BeginToken,
+    
+            [Parameter(Mandatory=$false)]
+            [String] $EndToken
+        )
+        [String] $ReturnValue = $null;
+        If (
+            $Text.Contains($BeginToken) -and
+            $Text.Contains($EndToken)
+        )
+        {
+            [Int32] $TokenBeginPosition = $Text.IndexOf($BeginToken);
+            [Int32] $TokenEndPosition = $Text.IndexOf($EndToken, $TokenBeginPosition);
+            $TokenBeginPosition += 1;
+            $ReturnValue = $Text.Substring($TokenBeginPosition, ($TokenEndPosition - $TokenBeginPosition));
+        }
+        Return $ReturnValue
     };

@@ -25,7 +25,7 @@ Add-Member `
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
         [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
-        $ProcessStartInfo.FileName = "C:\Program Files\7-Zip\7z.exe"
+        $ProcessStartInfo.FileName = $Global:Session.Compression7Zip.ExecutablePath
         $ProcessStartInfo.RedirectStandardError = $true
         $ProcessStartInfo.RedirectStandardOutput = $true
         $ProcessStartInfo.UseShellExecute = $false
@@ -87,7 +87,7 @@ Add-Member `
                     -TypeName "System.Boolean" `
                     -NotePropertyName "IsHidden" `
                     -NotePropertyValue ($Line.SubString(22, 1) -eq "H");
-                    Add-Member `
+                Add-Member `
                     -InputObject $Asset `
                     -TypeName "System.Boolean" `
                     -NotePropertyName "IsSystem" `

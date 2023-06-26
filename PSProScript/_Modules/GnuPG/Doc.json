@@ -1,0 +1,123 @@
+{
+  "Name": "GnuPG",
+  "Description": "Manages keys used by GnuPG.",
+  "Requires": [ "Utilities" ],
+  "Properties": [
+    {
+      "Name": "ExecutablePath",
+      "Type": "System.Collections.Hashtable",
+      "Description": "Path to the gpg.exe file."
+    }
+  ],
+  "Methods": [
+    {
+      "Name": "GetPublicKeys",
+      "Description": "Lists all public keys in the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "GetPrivateKeys",
+      "Description": "Lists all private keys in the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "GetKeys",
+      "Description": "Lists all private and public keys in the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "AddPrivateKey",
+      "Description": "Adds a private key to the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "FilePath",
+          "Type": "System.String",
+          "Description": "Path to the key file"
+        },
+        {
+          "Name": "Passphrase",
+          "Type": "System.String",
+          "Description": "Passphrase for the key file"
+        },
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "AddPublicKey",
+      "Description": "Adds a public key to the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "FilePath",
+          "Type": "System.String",
+          "Description": "Path to the key file"
+        },
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "RemovePrivateKey",
+      "Description": "Removes a private key from the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "Fingerprint",
+          "Type": "System.String",
+          "Description": "The fingerprint of the key to remove"
+        },
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    },
+    {
+      "Name": "RemovePublicKey",
+      "Description": "Removes a public key from the key ring",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "Fingerprint",
+          "Type": "System.String",
+          "Description": "The fingerprint of the key to remove"
+        },
+        {
+          "Name": "HomeDirectory",
+          "Type": "System.String",
+          "Description": "If null defualts to the current user's key ring"
+        }
+      ]
+    }
+  ]
+}
