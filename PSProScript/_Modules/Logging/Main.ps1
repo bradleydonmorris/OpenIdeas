@@ -403,6 +403,45 @@ Add-Member `
 #region Methods
 Add-Member `
     -InputObject $Global:Session.Logging `
+    -Name "GetNextLogFile" `
+    -MemberType "ScriptMethod" `
+    -Value {
+            [OutputType([Collections.Hashtable])]
+            Param
+            (
+                [Parameter(Mandatory=$false)]
+                [ValidateSet("Information", "Warning", "Error", "Debug", "Fatal")]
+                [String] $Level,
+
+                [Parameter(Mandatory=$false)]
+                [String] $DataFileExtension
+            )
+            $Global:Session.Logging.LastLogFileNumber ++;
+            $DataFileExtension = ([String]::IsNullOrEmpty($DataFileExtension) ? "txt" : $DataFileExtension);
+            [String] $FileNumber = $Global:Session.Logging.LastLogFileNumber.ToString().PadLeft(3, "0");
+            Return [Collections.Hashtable]@{
+                "Name" = [String]::Format(
+                        $Global:Session.Logging.LogFileNameTemplate,
+                        $FileNumber,
+                        $Level.ToUpper()
+                    );
+                "Path" = [String]::Format(
+                        $Global:Session.Logging.LogFilePathTemplate,
+                        $FileNumber,
+                        $Level.ToUpper()
+                    );
+                "DataPath" = [IO.Path]::ChangeExtension(
+                        [String]::Format(
+                                $Global:Session.Logging.LogFilePathTemplate,
+                                $FileNumber,
+                                [String]::Format("{0}_DATA", $Level.ToUpper())
+                            ),
+                        $DataFileExtension
+                    );
+            };
+    };
+Add-Member `
+    -InputObject $Global:Session.Logging `
     -Name "WriteEntry" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -439,31 +478,28 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Session.Logging `
-    -Name "GetNextLogFile" `
+    -Name "WriteEntryWithData" `
     -MemberType "ScriptMethod" `
     -Value {
-            [OutputType([Collections.Hashtable])]
-            Param ( )
-            $Global:Session.Logging.LastLogFileNumber ++;
-            [String] $FileNumber = $Global:Session.Logging.LastLogFileNumber.ToString().PadLeft(3, "0");
-            Return [Collections.Hashtable]@{
-                "Name" = [String]::Format(
-                        $Global:Session.Logging.LogFileNameTemplate,
-                        $FileNumber,
-                        "EXCEPTION"
-                    );
-                "Path" = [String]::Format(
-                        $Global:Session.Logging.LogFilePathTemplate,
-                        $FileNumber,
-                        "EXCEPTION"
-                    );
-                "DataPath" = [String]::Format(
-                        $Global:Session.Logging.LogFilePathTemplate,
-                        $FileNumber,
-                        "EXCEPTION_DATA"
-                    );
-            };
-    };
+            Param
+            (
+                [Parameter(Mandatory=$false)]
+                [ValidateSet("Information", "Warning", "Error", "Debug", "Fatal")]
+                [String] $Level,
+
+                [Parameter(Mandatory=$true)]
+                [String] $Text,
+
+                [Parameter(Mandatory=$true)]
+                [String] $AdditionalData,
+
+                [Parameter(Mandatory=$false)]
+                [String] $DataFileExtension
+            )
+            [Collections.Hashtable] $File = $Global:Session.Logging.GetNextLogFile($Level, $DataFileExtension);
+            [IO.File]::WriteAllText($File.DataPath, $AdditionalData);
+            $Global:Session.Logging.WriteEntry($Level, [String]::Format("({0}) {1}", $File.Name, $Text));
+        };
 Add-Member `
     -InputObject $Global:Session.Logging `
     -Name "WriteException" `
@@ -474,7 +510,7 @@ Add-Member `
                 [Parameter(Mandatory=$true)]
                 [Exception] $Exception
             )
-            [Collections.Hashtable] $ExceptionFile = $Global:Session.Logging.GetNextLogFile();
+            [Collections.Hashtable] $ExceptionFile = $Global:Session.Logging.GetNextLogFile("Error");
             [IO.File]::WriteAllText($ExceptionFile.Path, $Exception.ToString());
             $Global:Session.Logging.WriteEntry("Error", "(" + $ExceptionFile.Name + ") " + $Exception.Message);
     };
@@ -489,12 +525,15 @@ Add-Member `
                 [Exception] $Exception,
 
                 [Parameter(Mandatory=$true)]
-                [String] $AdditionalData
+                [String] $AdditionalData,
+
+                [Parameter(Mandatory=$false)]
+                [String] $DataFileExtension
             )
-            [Collections.Hashtable] $ExceptionFile = $Global:Session.Logging.GetNextLogFile();
-            [IO.File]::WriteAllText($ExceptionFile.Path, $Exception.ToString());
-            [IO.File]::WriteAllText($ExceptionFile.DataPath, $AdditionalData);
-            $Global:Session.Logging.WriteEntry("Error", "(" + $ExceptionFile.Name + ") " + $Exception.Message);
+            [Collections.Hashtable] $File = $Global:Session.Logging.GetNextLogFile("Error", $DataFileExtension);
+            [IO.File]::WriteAllText($File.Path, $Exception.ToString());
+            [IO.File]::WriteAllText($File.DataPath, $AdditionalData);
+            $Global:Session.Logging.WriteEntry("Error", [String]::Format("({0}) {1}", $File.Name, $Exception.Message));
     };
 Add-Member `
     -InputObject $Global:Session.Logging `

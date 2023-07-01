@@ -148,6 +148,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $ConnectionName
         )
+        [PSCustomObject] $Connection = $Global:Session.SSHTunnel.GetConnection($ConnectionName);
         [System.Diagnostics.ProcessStartInfo] $ProcessStartInfo = [System.Diagnostics.ProcessStartInfo]::new();
         $ProcessStartInfo.FileName = "ssh"
         $ProcessStartInfo.RedirectStandardError = $true;
