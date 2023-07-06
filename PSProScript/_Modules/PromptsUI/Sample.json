@@ -5,10 +5,16 @@
       "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
       "Type": "String",
       "Name": "UserName",
-      "Label": "User Name",
+      "Label": "User Name1121",
       "Description": "The user name for the user.",
       "DefaultValue": "Bradley",
-      "IsRequired": true
+      "IsRequired": true,
+      "DataBoundDisplayText": "(String) UserName",
+      "Value": null,
+      "IsValid": false,
+      "ValidationMessage": null,
+      "ControlType": "TextBox",
+      "ValueControlName": "TextBoxUserName"
     },
     {
       "$type": "PSProPrompt.Prompts.MaskedPrompt, PSProPrompt",
@@ -17,7 +23,13 @@
       "Label": "Password for User",
       "Description": "Please provide a password for this user.",
       "DefaultValue": null,
-      "IsRequired": false
+      "IsRequired": false,
+      "DataBoundDisplayText": "(Masked) Password",
+      "Value": null,
+      "IsValid": false,
+      "ValidationMessage": null,
+      "ControlType": "TextBox",
+      "ValueControlName": "TextBoxPassword"
     }
   ]
 }
