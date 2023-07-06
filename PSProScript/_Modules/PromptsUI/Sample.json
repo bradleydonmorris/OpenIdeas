@@ -1,0 +1,23 @@
+{
+  "FormTitle": "Enter Prompts",
+  "Prompts": [
+    {
+      "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
+      "Type": "String",
+      "Name": "UserName",
+      "Label": "User Name",
+      "Description": "The user name for the user.",
+      "DefaultValue": "Bradley",
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.MaskedPrompt, PSProPrompt",
+      "Type": "Masked",
+      "Name": "Password",
+      "Label": "Password for User",
+      "Description": "Please provide a password for this user.",
+      "DefaultValue": null,
+      "IsRequired": false
+    }
+  ]
+}
