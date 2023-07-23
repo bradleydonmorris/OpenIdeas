@@ -9,7 +9,7 @@ Param
 
     [Parameter(Mandatory=$true)]
     [String] $OutputDirectoryPath
- )
+)
 
 Class SQLObjectInfo {
     [Int64] $CreateOrder;

@@ -8,6 +8,7 @@ If (![IO.File]::Exists($JobsConfigFilePath))
 {
     ConvertTo-Json -InputObject @{
         "AlwaysLoadedModules" = @(
+            "Variables",
             "Connections",
             "Logging",
             "Utilities",

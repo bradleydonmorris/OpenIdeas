@@ -390,7 +390,6 @@ Add-Member `
             $ReturnValue += [String]::Format("FILLFACTOR = {0}, ", ($TableInfo.PrimaryKey.FillFactor -eq 0 ? 100 : $TableInfo.PrimaryKey.FillFactor));
             $ReturnValue += [String]::Format("PAD_INDEX = {0}, ", ($TableInfo.PrimaryKey.IsPadded ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($TableInfo.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
-            $ReturnValue += [String]::Format("IGNORE_DUP_KEY = {0}, ", ($TableInfo.PrimaryKey.IgnoreDuplicateKey ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("ALLOW_ROW_LOCKS = {0}, ", ($TableInfo.PrimaryKey.AllowRowLocks ? "ON" : "OFF"));
             $ReturnValue += [String]::Format("ALLOW_PAGE_LOCKS = {0} ", ($TableInfo.PrimaryKey.AllowPageLocks ? "ON" : "OFF"));
             $ReturnValue += ")`r`n";
@@ -832,6 +831,9 @@ Add-Member `
             [Boolean] $IncludeDrops
         )
         [String] $ReturnValue = "";
+Write-Host $JSONFilePath
+Write-Host ([IO.File]::Exists($JSONFilePath))
+
         [Collections.Generic.List[PSObject]] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops
         );

@@ -4,32 +4,115 @@
     {
       "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
       "Type": "String",
+      "Id": "4b5dea10-ec10-4c87-b479-ef3c4205d358",
       "Name": "UserName",
       "Label": "User Name1121",
-      "Description": "The user name for the user.",
+      "Description": "The user name for the user.sdfg",
       "DefaultValue": "Bradley",
-      "IsRequired": true,
-      "DataBoundDisplayText": "(String) UserName",
-      "Value": null,
-      "IsValid": false,
-      "ValidationMessage": null,
-      "ControlType": "TextBox",
-      "ValueControlName": "TextBoxUserName"
+      "IsRequired": true
     },
     {
       "$type": "PSProPrompt.Prompts.MaskedPrompt, PSProPrompt",
       "Type": "Masked",
+      "Id": "942f1478-9cb4-4ee3-819f-442ce0f64804",
       "Name": "Password",
       "Label": "Password for User",
       "Description": "Please provide a password for this user.",
       "DefaultValue": null,
-      "IsRequired": false,
-      "DataBoundDisplayText": "(Masked) Password",
-      "Value": null,
-      "IsValid": false,
-      "ValidationMessage": null,
-      "ControlType": "TextBox",
-      "ValueControlName": "TextBoxPassword"
+      "IsRequired": false
+    },
+    {
+      "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
+      "Type": "String",
+      "Id": "f76f2f33-5ea3-4a39-92dc-6e57ccd8da21",
+      "Name": "EnterStringPromptNameddddd",
+      "Label": "Enter Labeldds",
+      "Description": "Enter Descriptionsss",
+      "DefaultValue": null,
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.DatePrompt, PSProPrompt",
+      "Type": "Date",
+      "Id": "20c66514-d534-4663-a33e-ae31767f4e45",
+      "Name": "EnterStringPromptName",
+      "Label": "Enter Label",
+      "Description": "Enter Description",
+      "DefaultValue": "1970-01-01T00:00:00Z",
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.DateTimePrompt, PSProPrompt",
+      "TimeZoneInfo": {
+        "Id": "Central Standard Time",
+        "DisplayName": "(UTC-06:00) Central Time (US & Canada)",
+        "StandardName": "Central Standard Time",
+        "DaylightName": "Central Daylight Time",
+        "BaseUtcOffset": "-06:00:00",
+        "AdjustmentRules": {
+          "$type": "System.TimeZoneInfo+AdjustmentRule[], System.Private.CoreLib",
+          "$values": [
+            {
+              "DateStart": "0001-01-01T00:00:00Z",
+              "DateEnd": "2006-12-31T00:00:00Z",
+              "DaylightDelta": "01:00:00",
+              "DaylightTransitionStart": {
+                "$type": "System.TimeZoneInfo+TransitionTime, System.Private.CoreLib",
+                "TimeOfDay": "0001-01-01T02:00:00Z",
+                "Month": 4,
+                "Week": 1,
+                "Day": 1,
+                "DayOfWeek": 0,
+                "IsFixedDateRule": false
+              },
+              "DaylightTransitionEnd": {
+                "$type": "System.TimeZoneInfo+TransitionTime, System.Private.CoreLib",
+                "TimeOfDay": "0001-01-01T02:00:00Z",
+                "Month": 10,
+                "Week": 5,
+                "Day": 1,
+                "DayOfWeek": 0,
+                "IsFixedDateRule": false
+              },
+              "BaseUtcOffsetDelta": "00:00:00",
+              "NoDaylightTransitions": false
+            },
+            {
+              "DateStart": "2007-01-01T00:00:00Z",
+              "DateEnd": "9999-12-31T00:00:00Z",
+              "DaylightDelta": "01:00:00",
+              "DaylightTransitionStart": {
+                "$type": "System.TimeZoneInfo+TransitionTime, System.Private.CoreLib",
+                "TimeOfDay": "0001-01-01T02:00:00Z",
+                "Month": 3,
+                "Week": 2,
+                "Day": 1,
+                "DayOfWeek": 0,
+                "IsFixedDateRule": false
+              },
+              "DaylightTransitionEnd": {
+                "$type": "System.TimeZoneInfo+TransitionTime, System.Private.CoreLib",
+                "TimeOfDay": "0001-01-01T02:00:00Z",
+                "Month": 11,
+                "Week": 1,
+                "Day": 1,
+                "DayOfWeek": 0,
+                "IsFixedDateRule": false
+              },
+              "BaseUtcOffsetDelta": "00:00:00",
+              "NoDaylightTransitions": false
+            }
+          ]
+        },
+        "SupportsDaylightSavingTime": true
+      },
+      "Type": "DateTime",
+      "Id": "34def24b-35da-4185-b7bd-757b96bdc881",
+      "Name": "JustADaterTime",
+      "Label": "Just a Date Time",
+      "Description": "Put a data time here",
+      "DefaultValue": "2021-03-10T00:00:00Z",
+      "IsRequired": true
     }
   ]
 }

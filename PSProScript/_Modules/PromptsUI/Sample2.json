@@ -1,0 +1,49 @@
+{
+  "OutputType": "StandardOut",
+  "FormTitle": "User Data",
+  "Prompts": [
+    {
+      "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
+      "Type": "String",
+      "Id": "75970a15-446d-44a5-ad42-53ceee335ee8",
+      "Name": "FirstName",
+      "Label": "First Name",
+      "Description": "User's first name.",
+      "DefaultValue": null,
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.StringPrompt, PSProPrompt",
+      "Type": "String",
+      "Id": "cb987196-fba3-4411-9dc6-37f288bae0bb",
+      "Name": "LastName",
+      "Label": "Last Name",
+      "Description": "User's last name.",
+      "DefaultValue": null,
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.DatePrompt, PSProPrompt",
+      "Type": "Date",
+      "Id": "05133e4c-5242-49ee-b6b0-5b4d76c80c33",
+      "Name": "HireDate",
+      "Label": "Hire Date",
+      "Description": "User's hire date.",
+      "DefaultValue": null,
+      "IsRequired": true
+    },
+    {
+      "$type": "PSProPrompt.Prompts.BooleanPrompt, PSProPrompt",
+      "PositiveLabel": "You becha",
+      "NegativeLabel": "Nope",
+      "NullLabel": "Not Specified",
+      "Type": "Boolean",
+      "Id": "a1eb0551-8218-4b83-914c-d4a56dcc836c",
+      "Name": "IsHuman",
+      "Label": "Is Human",
+      "Description": "Is this user a human?",
+      "DefaultValue": null,
+      "IsRequired": true
+    }
+  ]
+}

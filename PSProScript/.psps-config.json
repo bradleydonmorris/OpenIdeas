@@ -8,6 +8,7 @@
     "Packages": "C:\\Users\\bmorris\\source\\repos\\bradleydonmorris\\OpenIdeas\\PSProScript\\_Packages"
   },
   "AlwaysLoadedModules": [
+      "Variables",
       "Logging",
       "Utilities",
       "NuGet",
