@@ -831,8 +831,6 @@ Add-Member `
             [Boolean] $IncludeDrops
         )
         [String] $ReturnValue = "";
-Write-Host $JSONFilePath
-Write-Host ([IO.File]::Exists($JSONFilePath))
 
         [Collections.Generic.List[PSObject]] $NamedSQLScripts = $Global:Session.ScriptSQLServerDatabase.CreateScriptArrayFromJSON(
             $JSONFilePath, $Schema, $HeapFileGroup, $LobFileGroup, $IndexFileGroup, $IncludeDrops

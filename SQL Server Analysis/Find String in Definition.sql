@@ -22,14 +22,14 @@ SELECT
 		INNER JOIN [{@DatabaseName}].[sys].[schemas]
 			ON [objects].[schema_id] = [schemas].[schema_id]
 	WHERE
-		[sql_modules].[definition] LIKE N''%webloyalty%''
-		--OR [sql_modules].[definition] LIKE N''%GP-SQL-AWS%''
+		[sql_modules].[definition] LIKE N''%substatus%''
+		--OR [sql_modules].[definition] LIKE N''%t_process_request_response%''
 '
 DECLARE @DatabaseName [sysname]
 
 DECLARE _Database CURSOR LOCAL FORWARD_ONLY READ_ONLY FOR
 	SELECT [name] FROM [master].[sys].[databases]
-	WHERE [name] = N'Reports' --!= N'Legacy'
+	WHERE [name] IN (N'42080', N'Reports_Library')
 OPEN _Database
 FETCH NEXT FROM _Database INTO @DatabaseName
 WHILE @@FETCH_STATUS = 0

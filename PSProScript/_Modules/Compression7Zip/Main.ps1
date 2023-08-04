@@ -1,7 +1,3 @@
-If (![IO.File]::Exists($Global:Session.Compression7Zip.ExecutablePath))
-{
-    Throw [IO.FileNotFoundException]::new($Global:Session.Compression7Zip.ExecutablePath);
-}
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "System.Management.Automation.PSObject" `
@@ -159,3 +155,8 @@ Add-Member `
         }
         Return $ReturnValue;
     };
+If (![IO.File]::Exists($Global:Session.Compression7Zip.ExecutablePath))
+{
+    Throw [IO.FileNotFoundException]::new($Global:Session.Compression7Zip.ExecutablePath);
+}
+    

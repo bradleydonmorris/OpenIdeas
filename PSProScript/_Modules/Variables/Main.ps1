@@ -25,6 +25,7 @@ Add-Member `
             [void] $Global:Session.Variables.Dictionary.Remove($Name);
         }
         [void] $Global:Session.Variables.Dictionary.Add($Name, $Value);
+        [void] $Global:Session.Logging.WriteVariableSet($Name, $Value);
     };
 Add-Member `
     -InputObject $Global:Session.Variables `

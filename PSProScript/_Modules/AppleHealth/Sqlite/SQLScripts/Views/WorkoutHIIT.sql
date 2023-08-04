@@ -1,0 +1,21 @@
+SELECT
+	`WorkoutHIIT`.`EntryGUID`,
+	`WorkoutHIIT`.`EntryDate`,
+	`WorkoutHIIT`.`EntryTime`,
+	`WorkoutHIIT`.`Key`,
+	`WorkoutHIIT`.`DataProvider`,
+	`WorkoutHIIT`.`Type`,
+	`WorkoutHIIT`.`CreationDate`,
+	`WorkoutHIIT`.`StartDate`,
+	`WorkoutHIIT`.`EndDate`,
+	`WorkoutHIIT`.`DistanceUnitOfMeasure`,
+	`WorkoutHIIT`.`Distance`,
+	`WorkoutHIIT`.`BasalEnergyBurnedUnitOfMeasure`,
+	`WorkoutHIIT`.`BasalEnergyBurned`,
+	`WorkoutHIIT`.`ActiveEnergyBurnedUnitOfMeasure`,
+	`WorkoutHIIT`.`ActiveEnergyBurned`,
+	`WorkoutHIIT`.`HeartRateMaximumUnitOfMeasure`,
+	`WorkoutHIIT`.`HeartRateMaximum`,
+	`WorkoutHIIT`.`HeartRateMinimumUnitOfMeasure`,
+	`WorkoutHIIT`.`HeartRateMinimum`	
+	FROM `WorkoutHIIT`

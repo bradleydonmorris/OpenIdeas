@@ -53,6 +53,7 @@ Add-Member `
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
+                "Type" = "GooleAPI";
                 "ClientId" = $ClientId;
                 "ProjectId" = $ProjectId;
                 "AuthURI" = $AuthURI;

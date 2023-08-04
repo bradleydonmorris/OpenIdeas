@@ -1,0 +1,2154 @@
+{
+  "Weight": {
+    "Aggregates": [
+      {
+        "Aggregation": "Lowest",
+        "Date": "2023-08-09",
+        "Weight": 236.80
+      },
+      {
+        "Aggregation": "Highest",
+        "Date": "2023-01-02",
+        "Weight": 279.20
+      },
+      {
+        "Aggregation": "First",
+        "Date": "2023-01-02",
+        "Weight": 279.20
+      },
+      {
+        "Aggregation": "Last",
+        "Date": "2023-08-10",
+        "Weight": 238.40
+      }
+    ],
+    "Values": [
+      {
+        "Date": "2023-01-02",
+        "Weight": 279.20
+      },
+      {
+        "Date": "2023-02-02",
+        "Weight": 278.60
+      },
+      {
+        "Date": "2023-03-02",
+        "Weight": 270.20
+      },
+      {
+        "Date": "2023-03-15",
+        "Weight": 261.40
+      },
+      {
+        "Date": "2023-03-16",
+        "Weight": 261.60
+      },
+      {
+        "Date": "2023-03-20",
+        "Weight": 261.20
+      },
+      {
+        "Date": "2023-03-22",
+        "Weight": 262.80
+      },
+      {
+        "Date": "2023-03-23",
+        "Weight": 261.80
+      },
+      {
+        "Date": "2023-03-25",
+        "Weight": 260.20
+      },
+      {
+        "Date": "2023-03-26",
+        "Weight": 258.40
+      },
+      {
+        "Date": "2023-03-27",
+        "Weight": 257.20
+      },
+      {
+        "Date": "2023-03-28",
+        "Weight": 255.60
+      },
+      {
+        "Date": "2023-03-29",
+        "Weight": 258.40
+      },
+      {
+        "Date": "2023-03-31",
+        "Weight": 259.80
+      },
+      {
+        "Date": "2023-04-02",
+        "Weight": 260.60
+      },
+      {
+        "Date": "2023-04-03",
+        "Weight": 259.80
+      },
+      {
+        "Date": "2023-04-14",
+        "Weight": 263.40
+      },
+      {
+        "Date": "2023-04-20",
+        "Weight": 259.60
+      },
+      {
+        "Date": "2023-04-22",
+        "Weight": 260.60
+      },
+      {
+        "Date": "2023-04-23",
+        "Weight": 259.20
+      },
+      {
+        "Date": "2023-04-24",
+        "Weight": 259.60
+      },
+      {
+        "Date": "2023-04-25",
+        "Weight": 261.00
+      },
+      {
+        "Date": "2023-04-28",
+        "Weight": 259.20
+      },
+      {
+        "Date": "2023-04-29",
+        "Weight": 261.00
+      },
+      {
+        "Date": "2023-04-30",
+        "Weight": 259.40
+      },
+      {
+        "Date": "2023-05-01",
+        "Weight": 260.80
+      },
+      {
+        "Date": "2023-05-02",
+        "Weight": 260.80
+      },
+      {
+        "Date": "2023-05-04",
+        "Weight": 259.60
+      },
+      {
+        "Date": "2023-05-05",
+        "Weight": 261.60
+      },
+      {
+        "Date": "2023-05-06",
+        "Weight": 259.40
+      },
+      {
+        "Date": "2023-05-07",
+        "Weight": 259.20
+      },
+      {
+        "Date": "2023-05-08",
+        "Weight": 257.60
+      },
+      {
+        "Date": "2023-05-09",
+        "Weight": 259.00
+      },
+      {
+        "Date": "2023-05-10",
+        "Weight": 259.60
+      },
+      {
+        "Date": "2023-05-11",
+        "Weight": 259.00
+      },
+      {
+        "Date": "2023-05-12",
+        "Weight": 259.40
+      },
+      {
+        "Date": "2023-05-17",
+        "Weight": 257.00
+      },
+      {
+        "Date": "2023-05-18",
+        "Weight": 257.20
+      },
+      {
+        "Date": "2023-05-21",
+        "Weight": 260.00
+      },
+      {
+        "Date": "2023-05-22",
+        "Weight": 257.00
+      },
+      {
+        "Date": "2023-05-23",
+        "Weight": 257.20
+      },
+      {
+        "Date": "2023-05-24",
+        "Weight": 258.00
+      },
+      {
+        "Date": "2023-05-25",
+        "Weight": 258.20
+      },
+      {
+        "Date": "2023-05-26",
+        "Weight": 258.40
+      },
+      {
+        "Date": "2023-05-27",
+        "Weight": 256.80
+      },
+      {
+        "Date": "2023-05-28",
+        "Weight": 254.40
+      },
+      {
+        "Date": "2023-05-29",
+        "Weight": 254.20
+      },
+      {
+        "Date": "2023-05-30",
+        "Weight": 254.60
+      },
+      {
+        "Date": "2023-05-31",
+        "Weight": 255.60
+      },
+      {
+        "Date": "2023-06-02",
+        "Weight": 255.60
+      },
+      {
+        "Date": "2023-06-03",
+        "Weight": 255.00
+      },
+      {
+        "Date": "2023-06-04",
+        "Weight": 255.60
+      },
+      {
+        "Date": "2023-06-06",
+        "Weight": 254.40
+      },
+      {
+        "Date": "2023-06-10",
+        "Weight": 257.00
+      },
+      {
+        "Date": "2023-06-12",
+        "Weight": 253.80
+      },
+      {
+        "Date": "2023-06-13",
+        "Weight": 253.60
+      },
+      {
+        "Date": "2023-06-14",
+        "Weight": 252.60
+      },
+      {
+        "Date": "2023-06-18",
+        "Weight": 250.40
+      },
+      {
+        "Date": "2023-06-19",
+        "Weight": 252.00
+      },
+      {
+        "Date": "2023-06-20",
+        "Weight": 250.20
+      },
+      {
+        "Date": "2023-06-21",
+        "Weight": 250.40
+      },
+      {
+        "Date": "2023-06-22",
+        "Weight": 249.80
+      },
+      {
+        "Date": "2023-06-29",
+        "Weight": 249.80
+      },
+      {
+        "Date": "2023-07-04",
+        "Weight": 248.20
+      },
+      {
+        "Date": "2023-07-06",
+        "Weight": 247.60
+      },
+      {
+        "Date": "2023-07-09",
+        "Weight": 246.80
+      },
+      {
+        "Date": "2023-07-10",
+        "Weight": 246.00
+      },
+      {
+        "Date": "2023-07-11",
+        "Weight": 246.00
+      },
+      {
+        "Date": "2023-07-12",
+        "Weight": 245.20
+      },
+      {
+        "Date": "2023-07-13",
+        "Weight": 244.20
+      },
+      {
+        "Date": "2023-07-14",
+        "Weight": 245.20
+      },
+      {
+        "Date": "2023-07-16",
+        "Weight": 243.00
+      },
+      {
+        "Date": "2023-07-17",
+        "Weight": 243.60
+      },
+      {
+        "Date": "2023-07-18",
+        "Weight": 243.40
+      },
+      {
+        "Date": "2023-07-19",
+        "Weight": 242.60
+      },
+      {
+        "Date": "2023-07-20",
+        "Weight": 241.20
+      },
+      {
+        "Date": "2023-07-21",
+        "Weight": 239.40
+      },
+      {
+        "Date": "2023-07-22",
+        "Weight": 241.20
+      },
+      {
+        "Date": "2023-07-25",
+        "Weight": 242.00
+      },
+      {
+        "Date": "2023-07-26",
+        "Weight": 241.80
+      },
+      {
+        "Date": "2023-07-27",
+        "Weight": 240.00
+      },
+      {
+        "Date": "2023-07-28",
+        "Weight": 240.40
+      },
+      {
+        "Date": "2023-07-30",
+        "Weight": 239.40
+      },
+      {
+        "Date": "2023-08-02",
+        "Weight": 238.00
+      },
+      {
+        "Date": "2023-08-03",
+        "Weight": 238.00
+      },
+      {
+        "Date": "2023-08-04",
+        "Weight": 239.00
+      },
+      {
+        "Date": "2023-08-07",
+        "Weight": 239.60
+      },
+      {
+        "Date": "2023-08-08",
+        "Weight": 238.00
+      },
+      {
+        "Date": "2023-08-09",
+        "Weight": 236.80
+      },
+      {
+        "Date": "2023-08-10",
+        "Weight": 238.40
+      }
+    ]
+  },
+  "BloodPressure": {
+    "Aggregates": [
+      {
+        "Aggregation": "Lowest",
+        "Date": "2023-07-28",
+        "Systolic": 96,
+        "Diastolic": 63,
+        "MeanArterialPressure": 74
+      },
+      {
+        "Aggregation": "Highest",
+        "Date": "2023-08-03",
+        "Systolic": 128,
+        "Diastolic": 80,
+        "MeanArterialPressure": 96
+      },
+      {
+        "Aggregation": "First",
+        "Date": "2023-07-28",
+        "Systolic": 96,
+        "Diastolic": 63,
+        "MeanArterialPressure": 74
+      },
+      {
+        "Aggregation": "Last",
+        "Date": "2023-08-10",
+        "Systolic": 112,
+        "Diastolic": 76,
+        "MeanArterialPressure": 88
+      }
+    ],
+    "Values": [
+      {
+        "Date": "2023-07-28",
+        "Systolic": 96,
+        "Diastolic": 63,
+        "MeanArterialPressure": 74.00
+      },
+      {
+        "Date": "2023-08-01",
+        "Systolic": 114,
+        "Diastolic": 74,
+        "MeanArterialPressure": 87.33
+      },
+      {
+        "Date": "2023-08-02",
+        "Systolic": 120,
+        "Diastolic": 82,
+        "MeanArterialPressure": 94.67
+      },
+      {
+        "Date": "2023-08-03",
+        "Systolic": 128,
+        "Diastolic": 80,
+        "MeanArterialPressure": 96.00
+      },
+      {
+        "Date": "2023-08-04",
+        "Systolic": 101,
+        "Diastolic": 64,
+        "MeanArterialPressure": 76.33
+      },
+      {
+        "Date": "2023-08-08",
+        "Systolic": 122,
+        "Diastolic": 82,
+        "MeanArterialPressure": 95.33
+      },
+      {
+        "Date": "2023-08-10",
+        "Systolic": 112,
+        "Diastolic": 76,
+        "MeanArterialPressure": 88.00
+      }
+    ]
+  },
+  "RestingHeartRate": {
+    "Aggregates": [
+      {
+        "Aggregation": "First",
+        "Date": "2023-02-11",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Aggregation": "Last",
+        "Date": "2023-08-10",
+        "RestingHeartRate": 50.00
+      },
+      {
+        "Aggregation": "Lowest",
+        "Date": "2023-08-01",
+        "RestingHeartRate": 46.00
+      },
+      {
+        "Aggregation": "Highest",
+        "Date": "2023-06-10",
+        "RestingHeartRate": 99.00
+      }
+    ],
+    "Values": [
+      {
+        "Date": "2023-02-11",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Date": "2023-02-12",
+        "RestingHeartRate": 56.00
+      },
+      {
+        "Date": "2023-02-15",
+        "RestingHeartRate": 63.00
+      },
+      {
+        "Date": "2023-02-21",
+        "RestingHeartRate": 65.00
+      },
+      {
+        "Date": "2023-03-02",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-03-04",
+        "RestingHeartRate": 84.00
+      },
+      {
+        "Date": "2023-03-05",
+        "RestingHeartRate": 73.00
+      },
+      {
+        "Date": "2023-03-06",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-03-10",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-03-11",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-03-12",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-03-13",
+        "RestingHeartRate": 69.00
+      },
+      {
+        "Date": "2023-03-14",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-03-15",
+        "RestingHeartRate": 63.00
+      },
+      {
+        "Date": "2023-03-16",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-03-17",
+        "RestingHeartRate": 69.00
+      },
+      {
+        "Date": "2023-03-18",
+        "RestingHeartRate": 66.00
+      },
+      {
+        "Date": "2023-03-20",
+        "RestingHeartRate": 69.00
+      },
+      {
+        "Date": "2023-03-21",
+        "RestingHeartRate": 62.00
+      },
+      {
+        "Date": "2023-03-22",
+        "RestingHeartRate": 60.00
+      },
+      {
+        "Date": "2023-03-23",
+        "RestingHeartRate": 65.00
+      },
+      {
+        "Date": "2023-03-24",
+        "RestingHeartRate": 60.00
+      },
+      {
+        "Date": "2023-03-25",
+        "RestingHeartRate": 61.00
+      },
+      {
+        "Date": "2023-03-26",
+        "RestingHeartRate": 56.00
+      },
+      {
+        "Date": "2023-03-27",
+        "RestingHeartRate": 51.00
+      },
+      {
+        "Date": "2023-03-29",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Date": "2023-03-30",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Date": "2023-03-31",
+        "RestingHeartRate": 61.00
+      },
+      {
+        "Date": "2023-04-01",
+        "RestingHeartRate": 62.00
+      },
+      {
+        "Date": "2023-04-02",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-04-03",
+        "RestingHeartRate": 60.00
+      },
+      {
+        "Date": "2023-04-04",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Date": "2023-04-05",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-04-06",
+        "RestingHeartRate": 72.00
+      },
+      {
+        "Date": "2023-04-07",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-04-08",
+        "RestingHeartRate": 72.00
+      },
+      {
+        "Date": "2023-04-09",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-04-10",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-04-11",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-04-12",
+        "RestingHeartRate": 60.00
+      },
+      {
+        "Date": "2023-04-13",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-04-14",
+        "RestingHeartRate": 77.00
+      },
+      {
+        "Date": "2023-04-16",
+        "RestingHeartRate": 65.00
+      },
+      {
+        "Date": "2023-04-17",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-04-18",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-04-19",
+        "RestingHeartRate": 63.00
+      },
+      {
+        "Date": "2023-04-20",
+        "RestingHeartRate": 64.00
+      },
+      {
+        "Date": "2023-04-21",
+        "RestingHeartRate": 58.00
+      },
+      {
+        "Date": "2023-04-22",
+        "RestingHeartRate": 78.00
+      },
+      {
+        "Date": "2023-04-23",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-04-24",
+        "RestingHeartRate": 72.00
+      },
+      {
+        "Date": "2023-04-25",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-04-26",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-04-27",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-04-29",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-04-30",
+        "RestingHeartRate": 78.00
+      },
+      {
+        "Date": "2023-05-01",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-05-02",
+        "RestingHeartRate": 92.00
+      },
+      {
+        "Date": "2023-05-03",
+        "RestingHeartRate": 91.00
+      },
+      {
+        "Date": "2023-05-04",
+        "RestingHeartRate": 87.00
+      },
+      {
+        "Date": "2023-05-05",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-05-06",
+        "RestingHeartRate": 85.00
+      },
+      {
+        "Date": "2023-05-08",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-05-10",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-05-11",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-05-12",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-05-13",
+        "RestingHeartRate": 84.00
+      },
+      {
+        "Date": "2023-05-14",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-05-15",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-05-16",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-05-17",
+        "RestingHeartRate": 90.00
+      },
+      {
+        "Date": "2023-05-18",
+        "RestingHeartRate": 69.00
+      },
+      {
+        "Date": "2023-05-19",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-05-20",
+        "RestingHeartRate": 86.00
+      },
+      {
+        "Date": "2023-05-21",
+        "RestingHeartRate": 74.00
+      },
+      {
+        "Date": "2023-05-22",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-05-23",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-05-24",
+        "RestingHeartRate": 67.00
+      },
+      {
+        "Date": "2023-05-25",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-05-26",
+        "RestingHeartRate": 73.00
+      },
+      {
+        "Date": "2023-05-28",
+        "RestingHeartRate": 95.00
+      },
+      {
+        "Date": "2023-05-29",
+        "RestingHeartRate": 87.00
+      },
+      {
+        "Date": "2023-05-30",
+        "RestingHeartRate": 67.00
+      },
+      {
+        "Date": "2023-05-31",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-06-01",
+        "RestingHeartRate": 72.00
+      },
+      {
+        "Date": "2023-06-02",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-06-03",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-06-04",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-06-05",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-06-06",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-06-07",
+        "RestingHeartRate": 74.00
+      },
+      {
+        "Date": "2023-06-08",
+        "RestingHeartRate": 80.00
+      },
+      {
+        "Date": "2023-06-09",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-06-10",
+        "RestingHeartRate": 99.00
+      },
+      {
+        "Date": "2023-06-12",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-06-13",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-06-14",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-06-15",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-06-16",
+        "RestingHeartRate": 74.00
+      },
+      {
+        "Date": "2023-06-18",
+        "RestingHeartRate": 80.00
+      },
+      {
+        "Date": "2023-06-19",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-06-20",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-06-21",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-06-22",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-06-23",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-06-24",
+        "RestingHeartRate": 97.00
+      },
+      {
+        "Date": "2023-06-25",
+        "RestingHeartRate": 81.00
+      },
+      {
+        "Date": "2023-06-27",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-06-29",
+        "RestingHeartRate": 80.00
+      },
+      {
+        "Date": "2023-07-01",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-07-02",
+        "RestingHeartRate": 78.00
+      },
+      {
+        "Date": "2023-07-03",
+        "RestingHeartRate": 83.00
+      },
+      {
+        "Date": "2023-07-05",
+        "RestingHeartRate": 78.00
+      },
+      {
+        "Date": "2023-07-06",
+        "RestingHeartRate": 75.00
+      },
+      {
+        "Date": "2023-07-07",
+        "RestingHeartRate": 84.00
+      },
+      {
+        "Date": "2023-07-09",
+        "RestingHeartRate": 82.00
+      },
+      {
+        "Date": "2023-07-10",
+        "RestingHeartRate": 79.00
+      },
+      {
+        "Date": "2023-07-11",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-07-12",
+        "RestingHeartRate": 77.00
+      },
+      {
+        "Date": "2023-07-13",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-07-14",
+        "RestingHeartRate": 76.00
+      },
+      {
+        "Date": "2023-07-15",
+        "RestingHeartRate": 70.00
+      },
+      {
+        "Date": "2023-07-16",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-07-17",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-07-18",
+        "RestingHeartRate": 69.00
+      },
+      {
+        "Date": "2023-07-19",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-07-20",
+        "RestingHeartRate": 71.00
+      },
+      {
+        "Date": "2023-07-21",
+        "RestingHeartRate": 68.00
+      },
+      {
+        "Date": "2023-07-23",
+        "RestingHeartRate": 84.00
+      },
+      {
+        "Date": "2023-07-24",
+        "RestingHeartRate": 59.00
+      },
+      {
+        "Date": "2023-07-25",
+        "RestingHeartRate": 64.00
+      },
+      {
+        "Date": "2023-07-26",
+        "RestingHeartRate": 61.00
+      },
+      {
+        "Date": "2023-07-27",
+        "RestingHeartRate": 56.00
+      },
+      {
+        "Date": "2023-07-28",
+        "RestingHeartRate": 56.00
+      },
+      {
+        "Date": "2023-07-29",
+        "RestingHeartRate": 54.00
+      },
+      {
+        "Date": "2023-07-30",
+        "RestingHeartRate": 49.00
+      },
+      {
+        "Date": "2023-07-31",
+        "RestingHeartRate": 50.00
+      },
+      {
+        "Date": "2023-08-01",
+        "RestingHeartRate": 46.00
+      },
+      {
+        "Date": "2023-08-02",
+        "RestingHeartRate": 54.00
+      },
+      {
+        "Date": "2023-08-03",
+        "RestingHeartRate": 48.00
+      },
+      {
+        "Date": "2023-08-04",
+        "RestingHeartRate": 54.00
+      },
+      {
+        "Date": "2023-08-05",
+        "RestingHeartRate": 54.00
+      },
+      {
+        "Date": "2023-08-06",
+        "RestingHeartRate": 57.00
+      },
+      {
+        "Date": "2023-08-07",
+        "RestingHeartRate": 55.00
+      },
+      {
+        "Date": "2023-08-08",
+        "RestingHeartRate": 53.00
+      },
+      {
+        "Date": "2023-08-09",
+        "RestingHeartRate": 54.00
+      },
+      {
+        "Date": "2023-08-10",
+        "RestingHeartRate": 50.00
+      }
+    ]
+  },
+  "EnergyBurned": {
+    "Aggregates": [
+      {
+        "Aggregation": "Lowest",
+        "Date": "2023-03-08",
+        "BasalEnergyBurned": 1378.60,
+        "ActiveEnergyBurned": 0.08
+      },
+      {
+        "Aggregation": "Highest",
+        "Date": "2023-03-12",
+        "BasalEnergyBurned": 2836.09,
+        "ActiveEnergyBurned": 1352.91
+      },
+      {
+        "Aggregation": "First",
+        "Date": "2023-01-01",
+        "BasalEnergyBurned": 2158.01
+      },
+      {
+        "Aggregation": "Last",
+        "Date": "2023-08-10",
+        "BasalEnergyBurned": 1366.95,
+        "ActiveEnergyBurned": 77.75
+      }
+    ],
+    "Values": [
+      {
+        "Date": "2023-01-01",
+        "BasalEnergyBurned": 2158.01
+      },
+      {
+        "Date": "2023-01-02",
+        "BasalEnergyBurned": 2166.96
+      },
+      {
+        "Date": "2023-01-03",
+        "BasalEnergyBurned": 2160.55
+      },
+      {
+        "Date": "2023-01-04",
+        "BasalEnergyBurned": 2169.84
+      },
+      {
+        "Date": "2023-01-05",
+        "BasalEnergyBurned": 2158.07
+      },
+      {
+        "Date": "2023-01-06",
+        "BasalEnergyBurned": 2174.55
+      },
+      {
+        "Date": "2023-01-07",
+        "BasalEnergyBurned": 2165.08
+      },
+      {
+        "Date": "2023-01-08",
+        "BasalEnergyBurned": 2155.62
+      },
+      {
+        "Date": "2023-01-09",
+        "BasalEnergyBurned": 2166.82
+      },
+      {
+        "Date": "2023-01-10",
+        "BasalEnergyBurned": 2172.80
+      },
+      {
+        "Date": "2023-01-11",
+        "BasalEnergyBurned": 2157.48
+      },
+      {
+        "Date": "2023-01-12",
+        "BasalEnergyBurned": 2164.85
+      },
+      {
+        "Date": "2023-01-13",
+        "BasalEnergyBurned": 2148.75
+      },
+      {
+        "Date": "2023-01-14",
+        "BasalEnergyBurned": 2154.65
+      },
+      {
+        "Date": "2023-01-15",
+        "BasalEnergyBurned": 2175.19
+      },
+      {
+        "Date": "2023-01-16",
+        "BasalEnergyBurned": 2155.06
+      },
+      {
+        "Date": "2023-01-17",
+        "BasalEnergyBurned": 2185.05
+      },
+      {
+        "Date": "2023-01-18",
+        "BasalEnergyBurned": 2145.40
+      },
+      {
+        "Date": "2023-01-19",
+        "BasalEnergyBurned": 2164.67
+      },
+      {
+        "Date": "2023-01-20",
+        "BasalEnergyBurned": 2164.71
+      },
+      {
+        "Date": "2023-01-21",
+        "BasalEnergyBurned": 2166.62
+      },
+      {
+        "Date": "2023-01-22",
+        "BasalEnergyBurned": 2163.90
+      },
+      {
+        "Date": "2023-01-23",
+        "BasalEnergyBurned": 2164.80
+      },
+      {
+        "Date": "2023-01-24",
+        "BasalEnergyBurned": 2164.26
+      },
+      {
+        "Date": "2023-01-25",
+        "BasalEnergyBurned": 2166.21
+      },
+      {
+        "Date": "2023-01-26",
+        "BasalEnergyBurned": 2165.06
+      },
+      {
+        "Date": "2023-01-27",
+        "BasalEnergyBurned": 2165.08
+      },
+      {
+        "Date": "2023-01-28",
+        "BasalEnergyBurned": 2161.27
+      },
+      {
+        "Date": "2023-01-29",
+        "BasalEnergyBurned": 2172.60
+      },
+      {
+        "Date": "2023-01-30",
+        "BasalEnergyBurned": 2161.26
+      },
+      {
+        "Date": "2023-01-31",
+        "BasalEnergyBurned": 2103.99
+      },
+      {
+        "Date": "2023-02-01",
+        "BasalEnergyBurned": 2237.61
+      },
+      {
+        "Date": "2023-02-02",
+        "BasalEnergyBurned": 2151.55
+      },
+      {
+        "Date": "2023-02-03",
+        "BasalEnergyBurned": 2164.29
+      },
+      {
+        "Date": "2023-02-04",
+        "BasalEnergyBurned": 2167.49
+      },
+      {
+        "Date": "2023-02-05",
+        "BasalEnergyBurned": 2165.65
+      },
+      {
+        "Date": "2023-02-06",
+        "BasalEnergyBurned": 2160.04
+      },
+      {
+        "Date": "2023-02-07",
+        "BasalEnergyBurned": 2166.31
+      },
+      {
+        "Date": "2023-02-08",
+        "BasalEnergyBurned": 2164.77
+      },
+      {
+        "Date": "2023-02-09",
+        "BasalEnergyBurned": 2169.20
+      },
+      {
+        "Date": "2023-02-10",
+        "BasalEnergyBurned": 1984.64
+      },
+      {
+        "Date": "2023-02-11",
+        "BasalEnergyBurned": 2639.74,
+        "ActiveEnergyBurned": 644.32
+      },
+      {
+        "Date": "2023-02-12",
+        "BasalEnergyBurned": 2595.04,
+        "ActiveEnergyBurned": 350.51
+      },
+      {
+        "Date": "2023-02-13",
+        "BasalEnergyBurned": 2171.03
+      },
+      {
+        "Date": "2023-02-14",
+        "BasalEnergyBurned": 1977.90
+      },
+      {
+        "Date": "2023-02-15",
+        "BasalEnergyBurned": 2540.12,
+        "ActiveEnergyBurned": 326.80
+      },
+      {
+        "Date": "2023-02-16",
+        "BasalEnergyBurned": 2144.40
+      },
+      {
+        "Date": "2023-02-17",
+        "BasalEnergyBurned": 2166.15
+      },
+      {
+        "Date": "2023-02-18",
+        "BasalEnergyBurned": 2165.43
+      },
+      {
+        "Date": "2023-02-19",
+        "BasalEnergyBurned": 2157.54
+      },
+      {
+        "Date": "2023-02-20",
+        "BasalEnergyBurned": 1987.07
+      },
+      {
+        "Date": "2023-02-21",
+        "BasalEnergyBurned": 2504.51,
+        "ActiveEnergyBurned": 315.59
+      },
+      {
+        "Date": "2023-02-22",
+        "BasalEnergyBurned": 2243.15
+      },
+      {
+        "Date": "2023-02-23",
+        "BasalEnergyBurned": 2158.22
+      },
+      {
+        "Date": "2023-02-24",
+        "BasalEnergyBurned": 2170.37
+      },
+      {
+        "Date": "2023-02-25",
+        "BasalEnergyBurned": 2168.96
+      },
+      {
+        "Date": "2023-02-26",
+        "BasalEnergyBurned": 2163.38
+      },
+      {
+        "Date": "2023-02-27",
+        "BasalEnergyBurned": 2163.46
+      },
+      {
+        "Date": "2023-02-28",
+        "BasalEnergyBurned": 1896.62
+      },
+      {
+        "Date": "2023-03-01",
+        "BasalEnergyBurned": 2198.70,
+        "ActiveEnergyBurned": 137.96
+      },
+      {
+        "Date": "2023-03-02",
+        "BasalEnergyBurned": 2402.62,
+        "ActiveEnergyBurned": 338.87
+      },
+      {
+        "Date": "2023-03-03",
+        "BasalEnergyBurned": 2361.94,
+        "ActiveEnergyBurned": 290.15
+      },
+      {
+        "Date": "2023-03-04",
+        "BasalEnergyBurned": 2456.05,
+        "ActiveEnergyBurned": 624.57
+      },
+      {
+        "Date": "2023-03-05",
+        "BasalEnergyBurned": 2808.34,
+        "ActiveEnergyBurned": 900.49
+      },
+      {
+        "Date": "2023-03-06",
+        "BasalEnergyBurned": 2544.41,
+        "ActiveEnergyBurned": 411.68
+      },
+      {
+        "Date": "2023-03-07",
+        "BasalEnergyBurned": 2208.94,
+        "ActiveEnergyBurned": 72.54
+      },
+      {
+        "Date": "2023-03-08",
+        "BasalEnergyBurned": 1378.60,
+        "ActiveEnergyBurned": 0.08
+      },
+      {
+        "Date": "2023-03-10",
+        "BasalEnergyBurned": 995.22,
+        "ActiveEnergyBurned": 360.82
+      },
+      {
+        "Date": "2023-03-11",
+        "BasalEnergyBurned": 2649.64,
+        "ActiveEnergyBurned": 726.94
+      },
+      {
+        "Date": "2023-03-12",
+        "BasalEnergyBurned": 2836.09,
+        "ActiveEnergyBurned": 1352.91
+      },
+      {
+        "Date": "2023-03-13",
+        "BasalEnergyBurned": 2536.78,
+        "ActiveEnergyBurned": 379.09
+      },
+      {
+        "Date": "2023-03-14",
+        "BasalEnergyBurned": 2791.11,
+        "ActiveEnergyBurned": 543.29
+      },
+      {
+        "Date": "2023-03-15",
+        "BasalEnergyBurned": 2864.79,
+        "ActiveEnergyBurned": 675.20
+      },
+      {
+        "Date": "2023-03-16",
+        "BasalEnergyBurned": 2468.51,
+        "ActiveEnergyBurned": 513.59
+      },
+      {
+        "Date": "2023-03-17",
+        "BasalEnergyBurned": 2319.87,
+        "ActiveEnergyBurned": 235.71
+      },
+      {
+        "Date": "2023-03-18",
+        "BasalEnergyBurned": 2318.60,
+        "ActiveEnergyBurned": 350.51
+      },
+      {
+        "Date": "2023-03-19",
+        "BasalEnergyBurned": 2154.46
+      },
+      {
+        "Date": "2023-03-20",
+        "BasalEnergyBurned": 2364.80,
+        "ActiveEnergyBurned": 289.32
+      },
+      {
+        "Date": "2023-03-21",
+        "BasalEnergyBurned": 2515.40,
+        "ActiveEnergyBurned": 488.43
+      },
+      {
+        "Date": "2023-03-22",
+        "BasalEnergyBurned": 2603.41,
+        "ActiveEnergyBurned": 597.08
+      },
+      {
+        "Date": "2023-03-23",
+        "BasalEnergyBurned": 2642.00,
+        "ActiveEnergyBurned": 511.99
+      },
+      {
+        "Date": "2023-03-24",
+        "BasalEnergyBurned": 2237.17,
+        "ActiveEnergyBurned": 157.22
+      },
+      {
+        "Date": "2023-03-25",
+        "BasalEnergyBurned": 2481.66,
+        "ActiveEnergyBurned": 496.07
+      },
+      {
+        "Date": "2023-03-26",
+        "BasalEnergyBurned": 2453.88,
+        "ActiveEnergyBurned": 496.94
+      },
+      {
+        "Date": "2023-03-27",
+        "BasalEnergyBurned": 2534.09,
+        "ActiveEnergyBurned": 586.23
+      },
+      {
+        "Date": "2023-03-28",
+        "BasalEnergyBurned": 2374.51,
+        "ActiveEnergyBurned": 284.98
+      },
+      {
+        "Date": "2023-03-29",
+        "BasalEnergyBurned": 2431.21,
+        "ActiveEnergyBurned": 364.33
+      },
+      {
+        "Date": "2023-03-30",
+        "BasalEnergyBurned": 2588.16,
+        "ActiveEnergyBurned": 549.96
+      },
+      {
+        "Date": "2023-03-31",
+        "BasalEnergyBurned": 2552.94,
+        "ActiveEnergyBurned": 569.29
+      },
+      {
+        "Date": "2023-04-01",
+        "BasalEnergyBurned": 2623.36,
+        "ActiveEnergyBurned": 621.88
+      },
+      {
+        "Date": "2023-04-02",
+        "BasalEnergyBurned": 2199.08,
+        "ActiveEnergyBurned": 115.00
+      },
+      {
+        "Date": "2023-04-03",
+        "BasalEnergyBurned": 2569.44,
+        "ActiveEnergyBurned": 406.73
+      },
+      {
+        "Date": "2023-04-04",
+        "BasalEnergyBurned": 2640.93,
+        "ActiveEnergyBurned": 571.57
+      },
+      {
+        "Date": "2023-04-05",
+        "BasalEnergyBurned": 2434.95,
+        "ActiveEnergyBurned": 314.04
+      },
+      {
+        "Date": "2023-04-06",
+        "BasalEnergyBurned": 2721.35,
+        "ActiveEnergyBurned": 774.14
+      },
+      {
+        "Date": "2023-04-07",
+        "BasalEnergyBurned": 2528.66,
+        "ActiveEnergyBurned": 701.44
+      },
+      {
+        "Date": "2023-04-08",
+        "BasalEnergyBurned": 2417.87,
+        "ActiveEnergyBurned": 435.71
+      },
+      {
+        "Date": "2023-04-09",
+        "BasalEnergyBurned": 2566.99,
+        "ActiveEnergyBurned": 647.23
+      },
+      {
+        "Date": "2023-04-10",
+        "BasalEnergyBurned": 2686.62,
+        "ActiveEnergyBurned": 538.71
+      },
+      {
+        "Date": "2023-04-11",
+        "BasalEnergyBurned": 2540.32,
+        "ActiveEnergyBurned": 548.13
+      },
+      {
+        "Date": "2023-04-12",
+        "BasalEnergyBurned": 2840.54,
+        "ActiveEnergyBurned": 724.08
+      },
+      {
+        "Date": "2023-04-13",
+        "BasalEnergyBurned": 2710.04,
+        "ActiveEnergyBurned": 605.49
+      },
+      {
+        "Date": "2023-04-14",
+        "BasalEnergyBurned": 2641.70,
+        "ActiveEnergyBurned": 488.35
+      },
+      {
+        "Date": "2023-04-15",
+        "BasalEnergyBurned": 2265.05,
+        "ActiveEnergyBurned": 133.10
+      },
+      {
+        "Date": "2023-04-16",
+        "BasalEnergyBurned": 2498.85,
+        "ActiveEnergyBurned": 387.46
+      },
+      {
+        "Date": "2023-04-17",
+        "BasalEnergyBurned": 2652.53,
+        "ActiveEnergyBurned": 660.83
+      },
+      {
+        "Date": "2023-04-18",
+        "BasalEnergyBurned": 2710.64,
+        "ActiveEnergyBurned": 612.98
+      },
+      {
+        "Date": "2023-04-19",
+        "BasalEnergyBurned": 2683.07,
+        "ActiveEnergyBurned": 588.15
+      },
+      {
+        "Date": "2023-04-20",
+        "BasalEnergyBurned": 2630.10,
+        "ActiveEnergyBurned": 550.77
+      },
+      {
+        "Date": "2023-04-21",
+        "BasalEnergyBurned": 2606.37,
+        "ActiveEnergyBurned": 421.52
+      },
+      {
+        "Date": "2023-04-22",
+        "BasalEnergyBurned": 2614.08,
+        "ActiveEnergyBurned": 642.47
+      },
+      {
+        "Date": "2023-04-23",
+        "BasalEnergyBurned": 2316.88,
+        "ActiveEnergyBurned": 256.20
+      },
+      {
+        "Date": "2023-04-24",
+        "BasalEnergyBurned": 2519.28,
+        "ActiveEnergyBurned": 453.53
+      },
+      {
+        "Date": "2023-04-25",
+        "BasalEnergyBurned": 2628.92,
+        "ActiveEnergyBurned": 502.15
+      },
+      {
+        "Date": "2023-04-26",
+        "BasalEnergyBurned": 2656.95,
+        "ActiveEnergyBurned": 551.89
+      },
+      {
+        "Date": "2023-04-27",
+        "BasalEnergyBurned": 2569.38,
+        "ActiveEnergyBurned": 435.04
+      },
+      {
+        "Date": "2023-04-28",
+        "BasalEnergyBurned": 2402.74,
+        "ActiveEnergyBurned": 147.96
+      },
+      {
+        "Date": "2023-04-29",
+        "BasalEnergyBurned": 2479.58,
+        "ActiveEnergyBurned": 562.06
+      },
+      {
+        "Date": "2023-04-30",
+        "BasalEnergyBurned": 2634.55,
+        "ActiveEnergyBurned": 558.35
+      },
+      {
+        "Date": "2023-05-01",
+        "BasalEnergyBurned": 2738.66,
+        "ActiveEnergyBurned": 581.29
+      },
+      {
+        "Date": "2023-05-02",
+        "BasalEnergyBurned": 2478.63,
+        "ActiveEnergyBurned": 321.37
+      },
+      {
+        "Date": "2023-05-03",
+        "BasalEnergyBurned": 2559.08,
+        "ActiveEnergyBurned": 363.05
+      },
+      {
+        "Date": "2023-05-04",
+        "BasalEnergyBurned": 2622.78,
+        "ActiveEnergyBurned": 512.24
+      },
+      {
+        "Date": "2023-05-05",
+        "BasalEnergyBurned": 2669.33,
+        "ActiveEnergyBurned": 524.31
+      },
+      {
+        "Date": "2023-05-06",
+        "BasalEnergyBurned": 1763.97,
+        "ActiveEnergyBurned": 204.83
+      },
+      {
+        "Date": "2023-05-07",
+        "BasalEnergyBurned": 714.26
+      },
+      {
+        "Date": "2023-05-08",
+        "BasalEnergyBurned": 2332.15,
+        "ActiveEnergyBurned": 233.99
+      },
+      {
+        "Date": "2023-05-09",
+        "BasalEnergyBurned": 1104.77,
+        "ActiveEnergyBurned": 116.67
+      },
+      {
+        "Date": "2023-05-10",
+        "BasalEnergyBurned": 2520.71,
+        "ActiveEnergyBurned": 311.71
+      },
+      {
+        "Date": "2023-05-11",
+        "BasalEnergyBurned": 2685.52,
+        "ActiveEnergyBurned": 508.45
+      },
+      {
+        "Date": "2023-05-12",
+        "BasalEnergyBurned": 2279.50,
+        "ActiveEnergyBurned": 185.26
+      },
+      {
+        "Date": "2023-05-13",
+        "BasalEnergyBurned": 2455.37,
+        "ActiveEnergyBurned": 474.54
+      },
+      {
+        "Date": "2023-05-14",
+        "BasalEnergyBurned": 2264.55,
+        "ActiveEnergyBurned": 99.48
+      },
+      {
+        "Date": "2023-05-15",
+        "BasalEnergyBurned": 2432.28,
+        "ActiveEnergyBurned": 336.82
+      },
+      {
+        "Date": "2023-05-16",
+        "BasalEnergyBurned": 2639.27,
+        "ActiveEnergyBurned": 487.25
+      },
+      {
+        "Date": "2023-05-17",
+        "BasalEnergyBurned": 2616.51,
+        "ActiveEnergyBurned": 474.51
+      },
+      {
+        "Date": "2023-05-18",
+        "BasalEnergyBurned": 2685.45,
+        "ActiveEnergyBurned": 503.82
+      },
+      {
+        "Date": "2023-05-19",
+        "BasalEnergyBurned": 2683.11,
+        "ActiveEnergyBurned": 564.17
+      },
+      {
+        "Date": "2023-05-20",
+        "BasalEnergyBurned": 2540.87,
+        "ActiveEnergyBurned": 439.87
+      },
+      {
+        "Date": "2023-05-21",
+        "BasalEnergyBurned": 2512.48,
+        "ActiveEnergyBurned": 468.87
+      },
+      {
+        "Date": "2023-05-22",
+        "BasalEnergyBurned": 2450.75,
+        "ActiveEnergyBurned": 371.87
+      },
+      {
+        "Date": "2023-05-23",
+        "BasalEnergyBurned": 2588.15,
+        "ActiveEnergyBurned": 461.10
+      },
+      {
+        "Date": "2023-05-24",
+        "BasalEnergyBurned": 2682.30,
+        "ActiveEnergyBurned": 556.45
+      },
+      {
+        "Date": "2023-05-25",
+        "BasalEnergyBurned": 2621.70,
+        "ActiveEnergyBurned": 588.55
+      },
+      {
+        "Date": "2023-05-26",
+        "BasalEnergyBurned": 2775.99,
+        "ActiveEnergyBurned": 621.81
+      },
+      {
+        "Date": "2023-05-27",
+        "BasalEnergyBurned": 1271.75,
+        "ActiveEnergyBurned": 158.71
+      },
+      {
+        "Date": "2023-05-28",
+        "BasalEnergyBurned": 2366.68,
+        "ActiveEnergyBurned": 280.41
+      },
+      {
+        "Date": "2023-05-29",
+        "BasalEnergyBurned": 2352.56,
+        "ActiveEnergyBurned": 292.22
+      },
+      {
+        "Date": "2023-05-30",
+        "BasalEnergyBurned": 2376.29,
+        "ActiveEnergyBurned": 369.70
+      },
+      {
+        "Date": "2023-05-31",
+        "BasalEnergyBurned": 2599.30,
+        "ActiveEnergyBurned": 469.68
+      },
+      {
+        "Date": "2023-06-01",
+        "BasalEnergyBurned": 2538.47,
+        "ActiveEnergyBurned": 442.39
+      },
+      {
+        "Date": "2023-06-02",
+        "BasalEnergyBurned": 2625.22,
+        "ActiveEnergyBurned": 512.75
+      },
+      {
+        "Date": "2023-06-03",
+        "BasalEnergyBurned": 2361.68,
+        "ActiveEnergyBurned": 337.06
+      },
+      {
+        "Date": "2023-06-04",
+        "BasalEnergyBurned": 2401.52,
+        "ActiveEnergyBurned": 303.73
+      },
+      {
+        "Date": "2023-06-05",
+        "BasalEnergyBurned": 2432.66,
+        "ActiveEnergyBurned": 394.83
+      },
+      {
+        "Date": "2023-06-06",
+        "BasalEnergyBurned": 2700.28,
+        "ActiveEnergyBurned": 562.13
+      },
+      {
+        "Date": "2023-06-07",
+        "BasalEnergyBurned": 2642.21,
+        "ActiveEnergyBurned": 479.24
+      },
+      {
+        "Date": "2023-06-08",
+        "BasalEnergyBurned": 2571.56,
+        "ActiveEnergyBurned": 453.75
+      },
+      {
+        "Date": "2023-06-09",
+        "BasalEnergyBurned": 2348.99,
+        "ActiveEnergyBurned": 342.61
+      },
+      {
+        "Date": "2023-06-10",
+        "BasalEnergyBurned": 2247.09,
+        "ActiveEnergyBurned": 124.28
+      },
+      {
+        "Date": "2023-06-11",
+        "BasalEnergyBurned": 2337.18,
+        "ActiveEnergyBurned": 190.39
+      },
+      {
+        "Date": "2023-06-12",
+        "BasalEnergyBurned": 2526.79,
+        "ActiveEnergyBurned": 412.29
+      },
+      {
+        "Date": "2023-06-13",
+        "BasalEnergyBurned": 2288.65,
+        "ActiveEnergyBurned": 256.63
+      },
+      {
+        "Date": "2023-06-14",
+        "BasalEnergyBurned": 2592.73,
+        "ActiveEnergyBurned": 396.88
+      },
+      {
+        "Date": "2023-06-15",
+        "BasalEnergyBurned": 2350.99,
+        "ActiveEnergyBurned": 360.04
+      },
+      {
+        "Date": "2023-06-16",
+        "BasalEnergyBurned": 2452.09,
+        "ActiveEnergyBurned": 385.82
+      },
+      {
+        "Date": "2023-06-17",
+        "BasalEnergyBurned": 2237.27,
+        "ActiveEnergyBurned": 147.21
+      },
+      {
+        "Date": "2023-06-18",
+        "BasalEnergyBurned": 2362.34,
+        "ActiveEnergyBurned": 281.64
+      },
+      {
+        "Date": "2023-06-19",
+        "BasalEnergyBurned": 2564.73,
+        "ActiveEnergyBurned": 383.53
+      },
+      {
+        "Date": "2023-06-20",
+        "BasalEnergyBurned": 2165.59,
+        "ActiveEnergyBurned": 184.58
+      },
+      {
+        "Date": "2023-06-21",
+        "BasalEnergyBurned": 2399.04,
+        "ActiveEnergyBurned": 260.19
+      },
+      {
+        "Date": "2023-06-22",
+        "BasalEnergyBurned": 2465.60,
+        "ActiveEnergyBurned": 377.13
+      },
+      {
+        "Date": "2023-06-23",
+        "BasalEnergyBurned": 2556.32,
+        "ActiveEnergyBurned": 554.14
+      },
+      {
+        "Date": "2023-06-24",
+        "BasalEnergyBurned": 2795.54,
+        "ActiveEnergyBurned": 922.32
+      },
+      {
+        "Date": "2023-06-25",
+        "BasalEnergyBurned": 1990.77,
+        "ActiveEnergyBurned": 198.01
+      },
+      {
+        "Date": "2023-06-26",
+        "BasalEnergyBurned": 784.44
+      },
+      {
+        "Date": "2023-06-27",
+        "BasalEnergyBurned": 2229.10,
+        "ActiveEnergyBurned": 138.87
+      },
+      {
+        "Date": "2023-06-28",
+        "BasalEnergyBurned": 1918.57,
+        "ActiveEnergyBurned": 0.21
+      },
+      {
+        "Date": "2023-06-29",
+        "BasalEnergyBurned": 2265.79,
+        "ActiveEnergyBurned": 184.25
+      },
+      {
+        "Date": "2023-06-30",
+        "BasalEnergyBurned": 939.94,
+        "ActiveEnergyBurned": 88.75
+      },
+      {
+        "Date": "2023-07-01",
+        "BasalEnergyBurned": 2148.79,
+        "ActiveEnergyBurned": 114.20
+      },
+      {
+        "Date": "2023-07-02",
+        "BasalEnergyBurned": 2315.44,
+        "ActiveEnergyBurned": 224.12
+      },
+      {
+        "Date": "2023-07-03",
+        "BasalEnergyBurned": 2278.55,
+        "ActiveEnergyBurned": 172.42
+      },
+      {
+        "Date": "2023-07-04",
+        "BasalEnergyBurned": 2163.37,
+        "ActiveEnergyBurned": 138.43
+      },
+      {
+        "Date": "2023-07-05",
+        "BasalEnergyBurned": 2143.00,
+        "ActiveEnergyBurned": 124.70
+      },
+      {
+        "Date": "2023-07-06",
+        "BasalEnergyBurned": 2325.17,
+        "ActiveEnergyBurned": 219.41
+      },
+      {
+        "Date": "2023-07-07",
+        "BasalEnergyBurned": 2249.17,
+        "ActiveEnergyBurned": 187.97
+      },
+      {
+        "Date": "2023-07-08",
+        "BasalEnergyBurned": 2077.00,
+        "ActiveEnergyBurned": 95.63
+      },
+      {
+        "Date": "2023-07-09",
+        "BasalEnergyBurned": 2220.52,
+        "ActiveEnergyBurned": 155.58
+      },
+      {
+        "Date": "2023-07-10",
+        "BasalEnergyBurned": 2267.44,
+        "ActiveEnergyBurned": 320.12
+      },
+      {
+        "Date": "2023-07-11",
+        "BasalEnergyBurned": 2583.50,
+        "ActiveEnergyBurned": 545.17
+      },
+      {
+        "Date": "2023-07-12",
+        "BasalEnergyBurned": 2479.45,
+        "ActiveEnergyBurned": 470.72
+      },
+      {
+        "Date": "2023-07-13",
+        "BasalEnergyBurned": 2101.50,
+        "ActiveEnergyBurned": 129.47
+      },
+      {
+        "Date": "2023-07-14",
+        "BasalEnergyBurned": 2376.56,
+        "ActiveEnergyBurned": 311.93
+      },
+      {
+        "Date": "2023-07-15",
+        "BasalEnergyBurned": 1923.68,
+        "ActiveEnergyBurned": 322.10
+      },
+      {
+        "Date": "2023-07-16",
+        "BasalEnergyBurned": 2242.04,
+        "ActiveEnergyBurned": 188.83
+      },
+      {
+        "Date": "2023-07-17",
+        "BasalEnergyBurned": 2498.12,
+        "ActiveEnergyBurned": 527.26
+      },
+      {
+        "Date": "2023-07-18",
+        "BasalEnergyBurned": 2167.61,
+        "ActiveEnergyBurned": 169.71
+      },
+      {
+        "Date": "2023-07-19",
+        "BasalEnergyBurned": 2525.62,
+        "ActiveEnergyBurned": 514.32
+      },
+      {
+        "Date": "2023-07-20",
+        "BasalEnergyBurned": 2392.76,
+        "ActiveEnergyBurned": 408.81
+      },
+      {
+        "Date": "2023-07-21",
+        "BasalEnergyBurned": 2670.49,
+        "ActiveEnergyBurned": 647.69
+      },
+      {
+        "Date": "2023-07-22",
+        "BasalEnergyBurned": 2195.44,
+        "ActiveEnergyBurned": 136.20
+      },
+      {
+        "Date": "2023-07-23",
+        "BasalEnergyBurned": 2248.90,
+        "ActiveEnergyBurned": 382.04
+      },
+      {
+        "Date": "2023-07-24",
+        "BasalEnergyBurned": 2517.52,
+        "ActiveEnergyBurned": 814.96
+      },
+      {
+        "Date": "2023-07-25",
+        "BasalEnergyBurned": 2583.06,
+        "ActiveEnergyBurned": 450.27
+      },
+      {
+        "Date": "2023-07-26",
+        "BasalEnergyBurned": 2293.16,
+        "ActiveEnergyBurned": 822.93
+      },
+      {
+        "Date": "2023-07-27",
+        "BasalEnergyBurned": 2391.69,
+        "ActiveEnergyBurned": 352.42
+      },
+      {
+        "Date": "2023-07-28",
+        "BasalEnergyBurned": 2516.58,
+        "ActiveEnergyBurned": 609.74
+      },
+      {
+        "Date": "2023-07-29",
+        "BasalEnergyBurned": 2524.71,
+        "ActiveEnergyBurned": 573.46
+      },
+      {
+        "Date": "2023-07-30",
+        "BasalEnergyBurned": 2396.23,
+        "ActiveEnergyBurned": 626.67
+      },
+      {
+        "Date": "2023-07-31",
+        "BasalEnergyBurned": 2571.67,
+        "ActiveEnergyBurned": 811.36
+      },
+      {
+        "Date": "2023-08-01",
+        "BasalEnergyBurned": 2289.05,
+        "ActiveEnergyBurned": 291.58
+      },
+      {
+        "Date": "2023-08-02",
+        "BasalEnergyBurned": 2383.44,
+        "ActiveEnergyBurned": 746.12
+      },
+      {
+        "Date": "2023-08-03",
+        "BasalEnergyBurned": 2559.01,
+        "ActiveEnergyBurned": 1275.78
+      },
+      {
+        "Date": "2023-08-04",
+        "BasalEnergyBurned": 2564.14,
+        "ActiveEnergyBurned": 605.07
+      },
+      {
+        "Date": "2023-08-05",
+        "BasalEnergyBurned": 2379.87,
+        "ActiveEnergyBurned": 318.26
+      },
+      {
+        "Date": "2023-08-06",
+        "BasalEnergyBurned": 2503.89,
+        "ActiveEnergyBurned": 538.85
+      },
+      {
+        "Date": "2023-08-07",
+        "BasalEnergyBurned": 2458.15,
+        "ActiveEnergyBurned": 1205.30
+      },
+      {
+        "Date": "2023-08-08",
+        "BasalEnergyBurned": 2449.10,
+        "ActiveEnergyBurned": 536.02
+      },
+      {
+        "Date": "2023-08-09",
+        "BasalEnergyBurned": 2226.78,
+        "ActiveEnergyBurned": 765.56
+      },
+      {
+        "Date": "2023-08-10",
+        "BasalEnergyBurned": 1366.95,
+        "ActiveEnergyBurned": 77.75
+      }
+    ]
+  }
+}

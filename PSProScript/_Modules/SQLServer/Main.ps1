@@ -41,6 +41,7 @@ Add-Member `
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
+                "Type" = "SQLServer";
                 "Instance" = $Instance;
                 "Database" = $Database;
                 "IntegratedSecurity" = $IntegratedSecurity.ToString();
@@ -114,6 +115,7 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Collections.Hashtable] $Parameters
         )
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
@@ -121,15 +123,32 @@ Add-Member `
             $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+            $Command.CommandTimeout = 0;
             $Command.CommandType = [Data.CommandType]::Text;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
-                    { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Name.StartsWith("@"))
+                    { $Name = $Name.Substring(1)}
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             [void] $Command.ExecuteNonQuery();
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -141,6 +160,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
     }
 Add-Member `
@@ -164,6 +187,7 @@ Add-Member `
             [Collections.Generic.List[String]] $Fields
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
@@ -172,13 +196,26 @@ Add-Member `
             $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+            $Command.CommandTimeout = 0;
             $Command.CommandType = [Data.CommandType]::Text;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
-                    { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Name.StartsWith("@"))
+                    { $Name = $Name.Substring(1)}
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             $DataReader = $Command.ExecuteReader();
             If ($Fields.Contains("*"))
@@ -204,6 +241,10 @@ Add-Member `
                 [void] $ReturnValue.Add([PSObject]$Record);
             }
         }
+        Catch
+        {
+            $Exception = $_.Exception;
+        }
         Finally
         {
             If ($DataReader)
@@ -222,6 +263,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
         Return $ReturnValue;
     }
@@ -243,6 +288,7 @@ Add-Member `
             [Collections.Hashtable] $Parameters
         )
         [Object] $ReturnValue = $null;
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         Try
@@ -250,19 +296,36 @@ Add-Member `
             $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+            $Command.CommandTimeout = 0;
             $Command.CommandType = [Data.CommandType]::Text;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
-                If (!$Name.StartsWith("@"))
-                    { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Name.StartsWith("@"))
+                    { $Name = $Name.Substring(1)}
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             $ReturnValue = $Command.ExecuteScalar();
             If ($ReturnValue -is [System.DBNull])
             {
                 $ReturnValue = $null;
             }
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -274,6 +337,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
         Return $ReturnValue;
     }
@@ -296,6 +363,7 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Collections.Hashtable] $Parameters
         )
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
@@ -305,14 +373,31 @@ Add-Member `
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
+            $Command.CommandTimeout = 0;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
                 If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             [void] $Command.ExecuteNonQuery();
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -324,6 +409,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
     }
 Add-Member `
@@ -350,6 +439,7 @@ Add-Member `
             [Collections.Generic.List[String]] $Fields
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
         [Data.SqlClient.SqlDataReader] $DataReader = $null;
@@ -359,13 +449,26 @@ Add-Member `
             $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+            $Command.CommandTimeout = 0;
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
                 If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             $DataReader = $Command.ExecuteReader();
             If ($Fields.Contains("*"))
@@ -391,6 +494,10 @@ Add-Member `
                 [void] $ReturnValue.Add([PSObject]$Record);
             }
         }
+        Catch
+        {
+            $Exception = $_.Exception;
+        }
         Finally
         {
             If ($DataReader)
@@ -409,6 +516,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
         Return $ReturnValue;
     }
@@ -433,6 +544,7 @@ Add-Member `
             [Collections.Hashtable] $Parameters
         )
         [Object] $ReturnValue = $null;
+        [Exception] $Exception = $null;
         [Data.SqlClient.SqlConnection] $Connection = $null;
         [Data.SqlClient.SqlCommand] $Command = $null;
 		[String] $CommandText = [String]::Format("[{0}].[{1}]", $Schema, $Procedure);
@@ -441,19 +553,36 @@ Add-Member `
             $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServer.GetConnectionString($ConnectionName));
             $Connection.Open();
             $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+            $Command.CommandTimeout = 0;
             $Command.CommandType = [Data.CommandType]::StoredProcedure;
             ForEach ($ParameterKey In $Parameters.Keys)
             {
                 [String] $Name = $ParameterKey;
                 If ($Name.StartsWith("@"))
                     { $Name = $Name.Substring(1)}
-                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
+                {
+                    [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
+                }
+                Else
+                {
+                    [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
+                    [void] $Command.Parameters.AddWithValue($Name, (
+                        $SqlXml.IsNull ?  
+                            [System.DBNull]::Value :
+                            $SqlXml
+                    ));
+                }
             }
             $ReturnValue = $Command.ExecuteScalar();
             If ($ReturnValue -is [System.DBNull])
             {
                 $ReturnValue = $null;
             }
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -465,6 +594,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
         Return $ReturnValue;
     }
@@ -607,3 +740,25 @@ Add-Member `
         }
         Return $ReturnValue
     };
+Add-Member `
+    -InputObject $Global:Session.SQLServer `
+    -Name "CreateSchemaIfNotFound" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $SchemaName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $CommandText,
+    
+            [Parameter(Mandatory=$false)]
+            [Collections.Hashtable] $Parameters
+        )
+        $CommandText = $CommandText.Replace("`$(SchemaName)", $SchemaName)
+        [void] $Global:Session.SQLServer.Execute($ConnectionName, $CommandText, $Parameters);
+    }
