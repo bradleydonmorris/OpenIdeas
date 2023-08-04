@@ -29,6 +29,7 @@ Add-Member `
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
+                "Type" = "ActiveDirectory";
                 "Comments" = $Comments;
                 "RootLDIF" = $RootLDIF;
             },

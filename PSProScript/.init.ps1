@@ -13,19 +13,20 @@ If (![IO.File]::Exists($JobsConfigFilePath))
             "Logging",
             "Utilities",
             "NuGet"
-        )
+        );
         "LoggingDefaults" = @{
-            "RetentionDays" = 30
-            "SMTPConnectionName" = "LoggingSMTP"
-            "EmailRecipients" = @("changethis@example.com")
+            "DatabaseConnection" = $null;
+            "RetentionDays" = 30;
+            "SMTPConnectionName" = "LoggingSMTP";
+            "EmailRecipients" = @("changethis@example.com");
         }
         "Directories" = @{
-            "CodeRoot" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs"
-            "Modules" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Modules"
-            "Packages" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Packages"
-            "DataRoot" = "C:\JobsWorkspace\Data"
-            "LogsRoot" = "C:\JobsWorkspace\Logs"
-            "ConnectionsRoot" = "C:\JobsWorkspace\Connections"
+            "CodeRoot" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs";
+            "Modules" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Modules";
+            "Packages" = "C:\Users\bmorris\source\repos\FRACDEV\automated-jobs\_Packages";
+            "DataRoot" = "C:\JobsWorkspace\Data";
+            "LogsRoot" = "C:\JobsWorkspace\Logs";
+            "ConnectionsRoot" = "C:\JobsWorkspace\Connections";
         }
     } | Set-Content -Path $JobsConfigFilePath;
 }
@@ -307,6 +308,16 @@ Add-Member `
     -TypeName "String" `
     -NotePropertyName "Script" `
     -NotePropertyValue ([IO.Path]::GetFileNameWithoutExtension($MyInvocation.PSCommandPath));
+Add-Member `
+    -InputObject $Global:Session `
+    -TypeName "String" `
+    -NotePropertyName "ScriptFilePath" `
+    -NotePropertyValue ($MyInvocation.PSCommandPath);
+Add-Member `
+    -InputObject $Global:Session `
+    -TypeName "String" `
+    -NotePropertyName "Host" `
+    -NotePropertyValue ([System.Net.Dns]::GetHostName());
 Add-Member `
     -InputObject $Global:Session `
     -TypeName "String" `

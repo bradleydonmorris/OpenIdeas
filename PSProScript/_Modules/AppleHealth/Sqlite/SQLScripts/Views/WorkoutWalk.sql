@@ -1,0 +1,21 @@
+SELECT
+	`WorkoutWalk`.`EntryGUID`,
+	`WorkoutWalk`.`EntryDate`,
+	`WorkoutWalk`.`EntryTime`,
+	`WorkoutWalk`.`Key`,
+	`WorkoutWalk`.`DataProvider`,
+	`WorkoutWalk`.`Type`,
+	`WorkoutWalk`.`CreationDate`,
+	`WorkoutWalk`.`StartDate`,
+	`WorkoutWalk`.`EndDate`,
+	`WorkoutWalk`.`DistanceUnitOfMeasure`,
+	`WorkoutWalk`.`Distance`,
+	`WorkoutWalk`.`BasalEnergyBurnedUnitOfMeasure`,
+	`WorkoutWalk`.`BasalEnergyBurned`,
+	`WorkoutWalk`.`ActiveEnergyBurnedUnitOfMeasure`,
+	`WorkoutWalk`.`ActiveEnergyBurned`,
+	`WorkoutWalk`.`HeartRateMaximumUnitOfMeasure`,
+	`WorkoutWalk`.`HeartRateMaximum`,
+	`WorkoutWalk`.`HeartRateMinimumUnitOfMeasure`,
+	`WorkoutWalk`.`HeartRateMinimum`	
+	FROM `WorkoutWalk`

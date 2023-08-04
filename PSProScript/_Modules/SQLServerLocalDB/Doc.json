@@ -1,0 +1,488 @@
+{
+  "Name": "SQLServer",
+  "Description": "Used to enteract with SQLServer Databases",
+  "Requires": [
+    "Connections"
+  ],
+  "Properties": [],
+  "Methods": [
+    {
+      "Name": "SetConnection",
+      "Description": "Sets a SQLServer connection either in memory or persisted.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "Name of the Connection"
+        },
+        {
+          "Name": "Comments",
+          "Type": "System.String",
+          "Description": "Comments for the Connection"
+        },
+        {
+          "Name": "IsPersisted",
+          "Type": "System.String",
+          "Description": "True to store in file system."
+        },
+        {
+          "Name": "Instance",
+          "Type": "System.String",
+          "Description": "The address of the server"
+        },
+        {
+          "Name": "Database",
+          "Type": "System.String",
+          "Description": "The database name"
+        },
+        {
+          "Name": "IntegratedSecurity",
+          "Type": "System.Boolean",
+          "Description": "If true will use Windows Integrated security instead of User Name and Password"
+        },
+        {
+          "Name": "UserName",
+          "Type": "System.String",
+          "Description": "The user name"
+        },
+        {
+          "Name": "Password",
+          "Type": "System.String",
+          "Description": "The password for the user account"
+        }
+      ]
+    },
+    {
+      "Name": "GetConnection",
+      "Description": "Gets a SQLServer connection either from memory or from file storage.",
+      "Returns": "System.Management.Automation.PSCustomObject",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "Name of the Connection"
+        }
+      ]
+    },
+    {
+      "Name": "GetConnectionString",
+      "Description": "Returns the connection string for the SQLServer connection.",
+      "Returns": "System.String",
+      "Arguments": [
+        {
+          "Name": "Name",
+          "Type": "System.String",
+          "Description": "Name of the Connection"
+        }
+      ]
+    },
+    {
+      "Name": "Execute",
+      "Description": "Executes the provided script against the connection.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        }
+      ]
+    },
+    {
+      "Name": "GetRecords",
+      "Description": "Executes the provided script against the connection and returns the records.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSCustomObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        },
+        {
+          "Name": "Fields",
+          "Type": "System.Collections.Generic.List[System.String]",
+          "Description": "The fields to return. If * is used all fields will be returned."
+        }
+      ]
+    },
+    {
+      "Name": "GetScalar",
+      "Description": "Executes the provided script against the connection and returns the first field from the first record.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "CommandText",
+          "Type": "System.String",
+          "Description": "The SQL script to execute"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        }
+      ]
+    },
+
+    {
+      "Name": "ProcExecute",
+      "Description": "Executes the specified procedure on the named connection.",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name for the proc"
+        },
+        {
+          "Name": "Procedure",
+          "Type": "System.String",
+          "Description": "The name for the proc"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        }
+      ]
+    },
+    {
+      "Name": "ProcGetRecords",
+      "Description": "Executes the specified procedure on the connection and returns the records.",
+      "Returns": "System.Collections.Generic.List[System.Management.Automation.PSCustomObject]",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name for the proc"
+        },
+        {
+          "Name": "Procedure",
+          "Type": "System.String",
+          "Description": "The name for the proc"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        },
+        {
+          "Name": "Fields",
+          "Type": "System.Collections.Generic.List[System.String]",
+          "Description": "The fields to return. If * is used all fields will be returned."
+        }
+      ]
+    },
+    {
+      "Name": "ProcGetScalar",
+      "Description": "Executes the specified procedure on the connection and returns the first field from the first record.",
+      "Returns": "System.Object",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema name for the proc"
+        },
+        {
+          "Name": "Procedure",
+          "Type": "System.String",
+          "Description": "The name for the proc"
+        },
+        {
+          "Name": "Parameters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "The parameter values for any parameters in the script"
+        }
+      ]
+    },
+    {
+      "Name": "ClearTable",
+      "Description": "Clears all records from the specified table",
+      "Returns": "void",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema of the table to clear"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table to clear"
+        }
+      ]
+    },
+    {
+      "Name": "GetTableRowCount",
+      "Description": "Returns the number of record in the table.",
+      "Returns": "System.Int64",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema of the table to clear"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table to clear"
+        },
+        {
+          "Name": "Filters",
+          "Type": "System.Collections.Hashtable",
+          "Description": "If provided the fields and values will be used to filter the count. These are AND conditions."
+        }
+      ]
+    },
+    {
+      "Name": "DoesTableHaveColumn",
+      "Description": "Checks to see if a column exists on a table.",
+      "Returns": "System.Boolean",
+      "Arguments": [
+        {
+          "Name": "ConnectionName",
+          "Type": "System.String",
+          "Description": "The named connection to execute against"
+        },
+        {
+          "Name": "Schema",
+          "Type": "System.String",
+          "Description": "The schema of the table"
+        },
+        {
+          "Name": "Table",
+          "Type": "System.String",
+          "Description": "The table name"
+        },
+        {
+          "Name": "Column",
+          "Type": "System.String",
+          "Description": "The column name"
+        }
+      ]
+    },
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "Name": "ClearTable",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "DoesTableHaveColumn",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "Execute",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetConnectionString",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetRecords",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetScalar",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "GetTableRowCount",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "ProcExecute",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "ProcGetRecords",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "ProcGetScalar",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    },
+    {
+      "Name": "SetConnection",
+      "Description": "",
+      "Returns": "",
+      "Arguments": [
+        {
+          "Name": "ArgName",
+          "Type": "System.String",
+          "Description": ""
+        }
+      ]
+    }
+  ]
+}

@@ -38,6 +38,7 @@ Add-Member `
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
+                "Type" = "Informatica";
                 "V3LoginURI" = $V3LoginURI;
                 "V2LoginURI" = $V2LoginURI;
                 "UserName" = $UserName;

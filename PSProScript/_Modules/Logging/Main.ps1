@@ -2,6 +2,7 @@
 # that are stored in the Logs directory
 # which should be specified in the ".psps-config.json".
 
+[void] $Global:Session.LoadModule("Connections");
 If (![IO.Directory]::Exists($Global:Session.Directories.LogsRoot))
 {
     [void] [IO.Directory]::CreateDirectory($Global:Session.Directories.LogsRoot);
@@ -17,6 +18,7 @@ If (![IO.File]::Exists($ConfigFilePath))
     ConvertTo-Json -InputObject @{
         "RetentionDays" = $Global:Session.LoggingDefaults.RetentionDays
         "EmailRecipients" = $Global:Session.LoggingDefaults.EmailRecipients
+        "DatabaseConnectionName" = $Global:Session.LoggingDefaults.DatabaseConnection;
         "SMTPConnectionName" = $Global:Session.LoggingDefaults.SMTPConnectionName
     } | Set-Content -Path $ConfigFilePath;
 }
@@ -28,6 +30,11 @@ Add-Member `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
 
 #region Properties
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -TypeName "System.Guid" `
+    -NotePropertyName "LogGUID" `
+    -NotePropertyValue ([Guid]::NewGUID());
 Add-Member `
     -InputObject $Global:Session.Logging `
     -TypeName "System.DateTime" `
@@ -98,6 +105,16 @@ Add-Member `
     ));
 Add-Member `
     -InputObject $Global:Session.Logging `
+    -TypeName "System.Boolean" `
+    -NotePropertyName "OutputToHost" `
+    -NotePropertyValue ($false);
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -TypeName "System.String" `
+    -NotePropertyName "OutputToDatabaseType" `
+    -NotePropertyValue ($null);
+Add-Member `
+    -InputObject $Global:Session.Logging `
     -TypeName "Int32" `
     -NotePropertyName "LastEntryNumber" `
     -NotePropertyValue (0);
@@ -106,11 +123,6 @@ Add-Member `
     -TypeName "System.Collections.Generic.List[PSObject]" `
     -NotePropertyName "Entries" `
     -NotePropertyValue ([Collections.Generic.List[PSObject]]::new());
-Add-Member `
-    -InputObject $Global:Session.Logging `
-    -TypeName "System.Collections.Hashtable" `
-    -NotePropertyName "Variables" `
-    -NotePropertyValue ([System.Collections.Hashtable]::new());
 #endregion Properties
 
 #region LevelCounts
@@ -375,6 +387,11 @@ Add-Member `
 Add-Member `
     -InputObject $Global:Session.Logging.Config `
     -TypeName "Int32" `
+    -NotePropertyName "DatabaseConnectionName" `
+    -NotePropertyValue $Config.DatabaseConnectionName;
+Add-Member `
+    -InputObject $Global:Session.Logging.Config `
+    -TypeName "Int32" `
     -NotePropertyName "RetentionDays" `
     -NotePropertyValue $Config.RetentionDays;
 Add-Member `
@@ -452,17 +469,39 @@ Add-Member `
                 [String] $Level,
 
                 [Parameter(Mandatory=$true)]
-                [String] $Text
+                [String] $Text,
+
+                [Parameter(Mandatory=$true)]
+                [String[]] $SupplementalFilePaths
             )
             $Global:Session.Logging.LastEntryNumber ++;
+            [DateTime] $EntryTime = [DateTime]::UtcNow;
             [void] $Global:Session.Logging.Entries.Add(@{
                 "Number" = $Global:Session.Logging.LastEntryNumber;
+                "EntryTime" = $EntryTime;
                 "Level" = $Level;
                 "Text" = $Text;
+                "SupplementalFilePath" = $SupplementalFilePaths;
             });
+            [String] $LogLine = [String]::Format("{0}`t{1}`t{2}",
+                $EntryTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ"),
+                $Level.PadRight(11).ToUpper(),
+                $Text
+            );
             If ([IO.File]::Exists($Global:Session.Logging.CurrentLogFilePath))
             {
-                Add-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value ([DateTime]::UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`t" + $Level.PadRight(11).ToUpper() + "`t" + $Text);
+                Add-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value $LogLine;
+            }
+            If ($Global:Session.Logging.OutputToHost)
+            {
+                Switch ($Level)
+                {
+                    "Information" { Write-Host -Object $LogLine -ForegroundColor Green; }
+                    "Warning" { Write-Host -Object $LogLine -ForegroundColor Yellow; }
+                    "Error" { Write-Host -Object $LogLine -ForegroundColor Red; }
+                    "Debug" { Write-Host -Object $LogLine -ForegroundColor Blue; }
+                    "Fatal" { Write-Host -Object $LogLine -ForegroundColor Red -BackgroundColor White; }
+                }
             }
             If ($Global:Session.Logging.LevelCounts)
             {
@@ -498,7 +537,7 @@ Add-Member `
             )
             [Collections.Hashtable] $File = $Global:Session.Logging.GetNextLogFile($Level, $DataFileExtension);
             [IO.File]::WriteAllText($File.DataPath, $AdditionalData);
-            $Global:Session.Logging.WriteEntry($Level, [String]::Format("({0}) {1}", $File.Name, $Text));
+            $Global:Session.Logging.WriteEntry($Level, [String]::Format("({0}) {1}", $File.Name, $Text), @( $File.DataPath ));
         };
 Add-Member `
     -InputObject $Global:Session.Logging `
@@ -512,7 +551,7 @@ Add-Member `
             )
             [Collections.Hashtable] $ExceptionFile = $Global:Session.Logging.GetNextLogFile("Error");
             [IO.File]::WriteAllText($ExceptionFile.Path, $Exception.ToString());
-            $Global:Session.Logging.WriteEntry("Error", "(" + $ExceptionFile.Name + ") " + $Exception.Message);
+            $Global:Session.Logging.WriteEntry("Error", "(" + $ExceptionFile.Name + ") " + $Exception.Message, @( $ExceptionFile.Path ));
     };
 Add-Member `
     -InputObject $Global:Session.Logging `
@@ -533,27 +572,22 @@ Add-Member `
             [Collections.Hashtable] $File = $Global:Session.Logging.GetNextLogFile("Error", $DataFileExtension);
             [IO.File]::WriteAllText($File.Path, $Exception.ToString());
             [IO.File]::WriteAllText($File.DataPath, $AdditionalData);
-            $Global:Session.Logging.WriteEntry("Error", [String]::Format("({0}) {1}", $File.Name, $Exception.Message));
+            $Global:Session.Logging.WriteEntry("Error", [String]::Format("({0}) {1}", $File.Name, $Exception.Message), @( $File.Path, $File.DataPath ));
     };
 Add-Member `
     -InputObject $Global:Session.Logging `
-    -Name "WriteVariables" `
+    -Name "WriteVariableSet" `
     -MemberType "ScriptMethod" `
     -Value {
             Param
             (
-                [Parameter(Mandatory=$false)]
-                [String] $SetName,
-        
                 [Parameter(Mandatory=$true)]
-                [Collections.Hashtable] $Variables
+                [String] $Name,
+
+                [Parameter(Mandatory=$true)]
+                [Object] $Value
             )
-            $SetName = ([String]::IsNullOrEmpty($SetName)) ? "Variables" : $SetName;
-            [void] $Global:Session.Logging.Variables.Add($SetName, $Variables);
-            ForEach ($Key In $Variables.Keys)
-            {
-                $Global:Session.Logging.WriteEntry("Information", ($SetName + ": " + $Key + " = " + $Variables[$Key]))
-            }
+            $Global:Session.Logging.WriteEntry("Information", [String]::Format("Variable Set {0} = {1}", $Name, $Value), $null);
     };
 Add-Member `
     -InputObject $Global:Session.Logging `
@@ -567,14 +601,124 @@ Add-Member `
             $Global:Session.Logging.ElapsedLogTime = $Global:Session.Logging.CloseLogTime - $Global:Session.Logging.OpenLogTime;
             $Global:Session.Logging.Timers.AddWithTimes("Total Log Time", $Global:Session.Logging.OpenLogTime, $Global:Session.Logging.CloseLogTime);
             $Global:Session.Logging.Timers.WriteTimersFile();
-            $Global:Session.Logging.WriteEntry("Information", ("Total Log Time (Minutes): " + $Global:Session.Logging.ElapsedLogTime.TotalMinutes.ToString()));
-            $Global:Session.Logging.WriteEntry("Information", "Closing Log");
-            Set-Content -Path $Global:Session.Logging.JSONFilePath `
-                -Value (ConvertTo-Json -Depth 100 -InputObject (@{
-                    "Variables" = $Global:Session.Logging.Variables;
-                    "Timers" = $Global:Session.Logging.Timers.GetTimersSimplified();
-                    "Entries" = $Global:Session.Logging.Entries;
-                }));
+            $Global:Session.Logging.WriteEntry("Information", ("Total Log Time (Minutes): " + $Global:Session.Logging.ElapsedLogTime.TotalMinutes.ToString()), $null);
+            $Global:Session.Logging.WriteEntry("Information", "Closing Log", $null);
+            [System.Collections.Specialized.OrderedDictionary] $LogObject = ([ordered]@{
+                "Log" = [ordered]@{
+                    "LogGUID" = $Global:Session.Logging.LogGUID;
+                    "OpenLogTime" = $Global:Session.Logging.OpenLogTime;
+                    "CloseLogTime" = $Global:Session.Logging.CloseLogTime;
+                    "Project" = $Global:Session.Project;
+                    "Script" = $Global:Session.Script;
+                    "ScriptFilePath" = $Global:Session.ScriptFilePath;
+                    "Host" = $Global:Session.Host;
+                };
+                "Variables" = $Global:Session.Variables.Dictionary;
+                "Timers" = $Global:Session.Logging.Timers.GetTimersSimplified();
+                "Entries" = $Global:Session.Logging.Entries;
+            })
+            [String] $LogJSON = ConvertTo-Json -Depth 100 -InputObject $LogObject;
+            Set-Content -Path $Global:Session.Logging.JSONFilePath -Value $LogJSON;
+            If (![String]::IsNullOrEmpty($Global:Session.Logging.Config.DatabaseConnectionName))
+            {
+                [void] $Global:Session.Logging.SaveToDatabase($LogJSON);
+            }
+        }
+    };
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -Name "VerifyDatabase" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param ()
+        [PSCustomObject] $Connection = $Global:Session.Connections.Get($Global:Session.Logging.Config.DatabaseConnectionName);
+        Switch ($Connection.Type)
+        {
+            "SQLServer"
+            {
+                [void] $Global:Session.LoadModule("SQLServer");
+                $Global:Session.Logging.OutputToDatabaseType = "SQLServer";
+                ForEach ($FileName In @(
+                    "FileGroup.sql",
+                    "Schema.sql",
+
+                    "Tables\Level.sql",
+                    "Tables\Project.sql",
+                    "Tables\Script.sql",
+                    "Tables\Invocation.sql",
+                    "Tables\Log.sql",
+                    "Tables\Entry.sql",
+                    "Tables\Variable.sql",
+                    "Tables\Timer.sql",
+
+                    "Views\MostRecentLog",
+                    "Views\LogEntry.sql",
+                    "Views\MostRecentLogEntry",
+
+                    "Procedures\ImportLog.sql",
+                    "Procedures\ClearLogs.sql"
+                ))
+                {
+                    $Global:Session.SQLServer.Execute(
+                        $Global:Session.Logging.Config.DatabaseConnectionName,
+                        [IO.File]::ReadAllText(
+                            [IO.Path]::Combine(
+                                [IO.Path]::GetDirectoryName($PSCommandPath),
+                                "SQLServer",
+                                $FileName)
+                        ),
+                        $null
+                    );
+                }
+            }
+            default
+            {
+                Throw [System.NotImplementedException]::new([String]::Format("{0} database type not supported.", $Global:Session.Logging.OutputToDatabaseType));
+            }
+        }
+    };
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -Name "SaveToDatabase" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param (
+            [String] $LogJSON
+        )
+        Switch ($Global:Session.Logging.OutputToDatabaseType)
+        {
+            "SQLServer"
+            {
+                $Global:Session.SQLServer.ProcExecute($Global:Session.AppleHealth.ConnectionName, "Logging", "ImportLog", @{ "LogJSON" = $LogJSON });
+            }
+            default
+            {
+                Throw [System.NotImplementedException]::new([String]::Format("{0} database type not supported.", $Global:Session.Logging.OutputToDatabaseType));
+            }
+        }
+    };
+Add-Member `
+    -InputObject $Global:Session.Logging `
+    -Name "ClearDatabaseLogs" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param ()
+        Switch ($Global:Session.Logging.OutputToDatabaseType)
+        {
+            "SQLServer"
+            {
+                $Global:Session.SQLServer.ProcExecute($Global:Session.AppleHealth.ConnectionName, "Logging", "ClearLogs", @{
+                    "Project" = $Global:Session.Project;
+                    "Script" = $Global:Session.Script;
+                    "ScriptFilePath" = $Global:Session.ScriptFilePath;
+                    "Host" = $Global:Session.Host;
+                    "RetentionDays" = $Global:Session.Logging.Config.RetentionDays;
+                });
+            }
+            default
+            {
+                Throw [System.NotImplementedException]::new([String]::Format("{0} database type not supported.", $Global:Session.Logging.OutputToDatabaseType));
+            }
         }
     };
 Add-Member `
@@ -604,6 +748,10 @@ Add-Member `
                         $File.Delete();
                     }
                 }
+            }
+            If (![String]::IsNullOrEmpty($Global:Session.Logging.Config.DatabaseConnectionName))
+            {
+                $Global:Session.Logging.ClearDatabaseLogs();
             }
         }
     };
@@ -659,5 +807,11 @@ Add-Member `
     };
 #endregion Methods
 
+If (![String]::IsNullOrEmpty($Global:Session.Logging.Config.DatabaseConnectionName))
+{
+    [void] $Global:Session.Logging.VerifyDatabase();
+}
+
 $Global:Session.Logging.OpenLogTime = [DateTime]::UtcNow;
-Set-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value ($Global:Session.Logging.OpenLogTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`tINFORMATION`tOpening Log");
+Set-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value "Time`tLevel`tMessage";
+Add-Content -Path $Global:Session.Logging.CurrentLogFilePath -Value ($Global:Session.Logging.OpenLogTime.ToString("yyyy-MM-dd HH:mm:ss.fffffffZ") + "`tINFORMATION`tOpening Log");

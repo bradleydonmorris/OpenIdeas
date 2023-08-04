@@ -64,6 +64,7 @@ Add-Member `
             $Global:Session.Connections.Set(
                 $Name,
                 [PSCustomObject]@{
+                    "Type" = "SSHTunnel";
                     "SSHServerAddress" = $SSHServerAddress;
                     "SSHServerPort" = $SSHServerPort;
                     "UserName" = $UserName;
@@ -86,6 +87,7 @@ Add-Member `
             $Global:Session.Connections.Set(
                 $Name,
                 [PSCustomObject]@{
+                    "Type" = "SSHTunnel";
                     "SSHServerAddress" = $SSHServerAddress;
                     "SSHServerPort" = $SSHServerPort;
                     "UserName" = $UserName;

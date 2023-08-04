@@ -15,6 +15,7 @@
       "Connections"
   ],
   "LoggingDefaults": {
+    "DatabaseConnectionName": "Logging-SQLServer",
     "SMTPConnectionName": "LoggingSMTP",
     "RetentionDays": 30,
     "EmailRecipients": [

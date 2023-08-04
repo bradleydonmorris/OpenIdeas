@@ -27,12 +27,13 @@ Add-Member `
             [Boolean] $IsPersisted,
     
             [Parameter(Mandatory=$false)]
-            [String] $FilePath
+            [String] $DataSource
         )
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
-                "FilePath" = $FilePath;
+                "Type" = "Sqlite";
+                "DataSource" = $DataSource;
                 "Comments" = $Comments;
             },
             $IsPersisted
@@ -62,12 +63,17 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Connection = $Global:Session.PostgreSQL.GetConnection($Name);
-        If (![IO.File]::Exists($Connection.FilePath))
-        {
-            Throw [System.IO.FileNotFoundException]::new("Database File not found", $Connection.FilePath);
-        }
-        Return [String]::Format("Data Source={0}", $Connection.FilePath);
+        $Connection = $Global:Session.Sqlite.GetConnection($Name);
+        [System.Data.Sqlite.SqliteConnectionStringBuilder] $SqliteConnectionStringBuilder = [System.Data.Sqlite.SqliteConnectionStringBuilder]::new();
+        $SqliteConnectionStringBuilder.DataSource = $Connection.DataSource;
+        $SqliteConnectionStringBuilder.FailIfMissing = $false;
+        $SqliteConnectionStringBuilder.ForeignKeys = $true;
+        $SqliteConnectionStringBuilder.JournalMode = [System.Data.Sqlite.SQLiteJournalModeEnum]::Off;
+        $SqliteConnectionStringBuilder.SyncMode = [System.Data.Sqlite.SynchronizationModes]::Normal;
+        $SqliteConnectionStringBuilder.BinaryGUID = $true;
+        $SqliteConnectionStringBuilder.DateTimeFormat = [System.Data.Sqlite.SQLiteDateFormats]::ISO8601;
+        $SqliteConnectionStringBuilder.DateTimeKind = [DateTimeKind]::Utc;
+        Return $SqliteConnectionStringBuilder.ConnectionString;
     };
 #endregion Connection Methods
 
@@ -88,6 +94,7 @@ Add-Member `
             [Parameter(Mandatory=$false)]
             [Collections.Hashtable] $Parameters
         )
+        [Exception] $Exception = $null;
         [Data.Sqlite.SqliteConnection] $Connection = $null;
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
@@ -101,9 +108,13 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
             [void] $Command.ExecuteNonQuery();
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -115,6 +126,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
     }
 Add-Member `
@@ -141,6 +156,7 @@ Add-Member `
             [Collections.Hashtable] $FieldConversion
         )
         [Collections.Generic.List[PSObject]] $ReturnValue = [Collections.Generic.List[PSObject]]::new();
+        [Exception] $Exception = $null;
         [Data.Sqlite.SqliteConnection] $Connection = $null;
         [Data.Sqlite.SqliteCommand] $Command = $null;
         [Data.Sqlite.SqliteDataReader] $DataReader = $null;
@@ -156,7 +172,7 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
             $DataReader = $Command.ExecuteReader();
             If ($Fields.Contains("*"))
@@ -174,10 +190,7 @@ Add-Member `
                 {
                     [Object] $Value = (
                         $FieldConversion.ContainsKey($Field) ?
-                            $Global:Session.Sqlite.ConvertFromDBValue(
-                                $DataReader.GetValue($DataReader.GetOrdinal($Field)),
-                                $FieldConversion[$Field]
-                            ) :
+                            $DataReader.GetValue($DataReader.GetOrdinal($Field)) :
                             $DataReader.GetValue($DataReader.GetOrdinal($Field))
                     );
                     Add-Member `
@@ -188,6 +201,10 @@ Add-Member `
                 }
                 [void] $ReturnValue.Add([PSObject]$Record);
             }
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -208,6 +225,10 @@ Add-Member `
                 [void] $Connection.Dispose();
             }
         }
+        If ($Exception)
+        {
+            Throw $Exception;
+        }
         Return $ReturnValue;
     }
 Add-Member `
@@ -225,9 +246,13 @@ Add-Member `
             [String] $CommandText,
 
             [Parameter(Mandatory=$true)]
-            [Collections.Hashtable] $Parameters
+            [Collections.Hashtable] $Parameters,
+
+            [Parameter(Mandatory=$true)]
+            [String] $FieldConversion
         )
         [Object] $ReturnValue = $null;
+        [Exception] $Exception = $null;
         [Data.Sqlite.SqliteConnection] $Connection = $null;
         [Data.Sqlite.SqliteCommand] $Command = $null;
         Try
@@ -241,13 +266,17 @@ Add-Member `
                 [String] $Name = $ParameterKey;
                 If (!$Name.StartsWith("@"))
                     { $Name = "@" + $Name}
-                [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
+                [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
             }
             $ReturnValue = $Command.ExecuteScalar();
             If ($ReturnValue -is [System.DBNull])
             {
                 $ReturnValue = $null;
             }
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
         }
         Finally
         {
@@ -259,6 +288,10 @@ Add-Member `
                     { [void] $Connection.Close(); }
                 [void] $Connection.Dispose();
             }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
         }
         Return $ReturnValue;
     }
@@ -277,7 +310,7 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Table
         )
-        [void] $Global:Session.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM ``{0}``", $Table));
+        [void] $Global:Session.Sqlite.Execute($ConnectionName, [String]::Format("DELETE FROM ``{0}``;", $Table));
     };
 Add-Member `
     -InputObject $Global:Session.Sqlite `
@@ -332,7 +365,7 @@ Add-Member `
         }
         [Object] $ScalarValue = $Global:Session.Sqlite.GetScalar(
             $ConnectionName,
-            [String]::Format("SELECT COUNT(*) FROM ``{0}``{1}",
+            [String]::Format("SELECT COUNT(*) FROM ``{0}``{1};",
                 $Table,
                 $WhereClause # May be an empty string if $Filters is null or empty
             ),
@@ -373,7 +406,7 @@ Add-Member `
                 "SELECT 1 AS HasColumn`r`n" +
                 "FROM sqlite_master`r`n" +
                 "LEFT OUTER JOIN pragma_table_info((sqlite_master.name)) AS pragma_table_info ON sqlite_master.name <> pragma_table_info.name`r`n" +
-                "WHERE sqlite_master.name = @Table AND pragma_table_info.name = @Column"
+                "WHERE sqlite_master.name = @Table AND pragma_table_info.name = @Column;"
             ),
             @{
                 "@Table" = $Table;
@@ -396,59 +429,6 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Session.Sqlite `
-    -Name "ConvertToDBValue" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Object])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [Object] $Value
-        )
-        [Object] $ReturnValue = $null;
-        Switch ($Value.GetType().Name)
-        {
-            {($_ -eq "Guid") -or ($_ -eq "System.Guid")}
-                { $ReturnValue = $Value.ToString("N"); }
-            {($_ -eq "DateTime") -or ($_ -eq "System.DateTime")}
-                { $ReturnValue = $Value.ToString("yyyy-MM-dd HH:mm:ss.fffffff"); }
-            Default { $ReturnValue = $Value; }
-        }
-        Return $ReturnValue;
-    }
-Add-Member `
-    -InputObject $Global:Session.Sqlite `
-    -Name "ConvertFromDBValue" `
-    -MemberType "ScriptMethod" `
-    -Value {
-        [OutputType([Object])]
-        Param
-        (
-            [Parameter(Mandatory=$true)]
-            [Object] $Value,
-
-            [Parameter(Mandatory=$true)]
-            [String] $Type
-        )
-        [Object] $ReturnValue = $null;
-        Switch ($Type)
-        {
-            {($_ -eq "Guid") -or ($_ -eq "System.Guid")}
-                { $ReturnValue = [Guid]::Parse($Value); }
-            {($_ -eq "DateTime") -or ($_ -eq "System.DateTime")}
-                { $ReturnValue = [DateTime]::Parse($Value); }
-            {($_ -eq "Int64") -or ($_ -eq "System.Int64")}
-                { $ReturnValue = [Int64]$Value; }
-            {($_ -eq "String") -or ($_ -eq "System.String")}
-                { $ReturnValue = [String]$Value; }
-            {($_ -eq "Double") -or ($_ -eq "System.Double")}
-                { $ReturnValue = [Double]$Value; }
-            Default { $ReturnValue = $Value; }
-        }
-        Return $ReturnValue;
-    }
-Add-Member `
-    -InputObject $Global:Session.Sqlite `
     -Name "CreateIfNotFound" `
     -MemberType "ScriptMethod" `
     -Value {
@@ -464,35 +444,35 @@ Add-Member `
             [Collections.Hashtable] $Parameters
         )
         $ConnectionValues = $Global:Session.Connections.Get($ConnectionName);
-        If (![IO.File]::Exists($ConnectionValues.FilePath))
+        If (![IO.File]::Exists($ConnectionValues.DataSource))
         {
-            [Data.Sqlite.SqliteConnection] $Connection = $null;
-            [Data.Sqlite.SqliteCommand] $Command = $null;
-            Try
-            {
-                $Connection = [Data.Sqlite.SqliteConnection]::new($Global:Session.Sqlite.GetConnectionString($ConnectionName));
-                $Connection.Open();
-                $Command = [Data.Sqlite.SqliteCommand]::new($CommandText, $Connection);
-                $Command.CommandType = [Data.CommandType]::Text;
-                ForEach ($ParameterKey In $Parameters.Keys)
-                {
-                    [String] $Name = $ParameterKey;
-                    If (!$Name.StartsWith("@"))
-                        { $Name = "@" + $Name}
-                    [void] $Command.Parameters.AddWithValue($Name, $Global:Session.Sqlite.ConvertToDBValue($Parameters[$ParameterKey]));
-                }
-                [void] $Command.ExecuteNonQuery();
-            }
-            Finally
-            {
-                If ($Command)
-                    { [void] $Command.Dispose(); }
-                If ($Connection)
-                {
-                    If (!$Connection.State -ne [Data.ConnectionState]::Closed)
-                        { [void] $Connection.Close(); }
-                    [void] $Connection.Dispose();
-                }
-            }
+            [void] $Global:Session.Sqlite.Execute($ConnectionName, $CommandText, $Parameters);
         }
+    }
+Add-Member `
+    -InputObject $Global:Session.Sqlite `
+    -Name "Reindex" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [String] $TableName
+        )
+        [void] $Global:Session.Sqlite.Execute($ConnectionName, [String]::Format("REINDEX ``{0}``;", $TableName), $null);
+    }
+Add-Member `
+    -InputObject $Global:Session.Sqlite `
+    -Name "Vacuum" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
+        )
+        [void] $Global:Session.Sqlite.Execute($ConnectionName, "VACUUM;", $null);
     }

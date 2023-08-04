@@ -63,6 +63,7 @@ Add-Member `
             $Global:Session.Connections.Set(
                 $Name,
                 [PSCustomObject]@{
+                    "Type" = "SFTP";
                     "HostAddress" = $HostAddress;
                     "Port" = $Port;
                     "UserName" = $UserName;
@@ -81,6 +82,7 @@ Add-Member `
             $Global:Session.Connections.Set(
                 $Name,
                 [PSCustomObject]@{
+                    "Type" = "SFTP";
                     "HostAddress" = $HostAddress;
                     "Port" = $Port;
                     "UserName" = $UserName;
