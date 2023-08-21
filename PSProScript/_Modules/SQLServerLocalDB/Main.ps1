@@ -5,6 +5,11 @@ Add-Member `
     -TypeName "System.Management.Automation.PSObject" `
     -NotePropertyName "SQLServerLocalDB" `
     -NotePropertyValue ([System.Management.Automation.PSObject]::new());
+Add-Member `
+    -InputObject $Global:Session.SQLServerLocalDB `
+    -TypeName "System.String" `
+    -NotePropertyName "MasterConnectionName" `
+    -NotePropertyValue "LocalDB-master";
 
 #region Connection Methods
 Add-Member `
@@ -24,13 +29,13 @@ Add-Member `
             [Boolean] $IsPersisted,
     
             [Parameter(Mandatory=$true)]
-            [String] $DatabaseFile
+            [String] $DatabaseFilePath
         )
         $Global:Session.Connections.Set(
             $Name,
             [PSCustomObject]@{
                 "Type" = "SQLServerLocalDB";
-                "DatabaseFile" = $DatabaseFile;
+                "DatabaseFilePath" = $DatabaseFilePath;
                 "Comments" = $Comments;
             },
             $IsPersisted
@@ -60,11 +65,20 @@ Add-Member `
             [Parameter(Mandatory=$true)]
             [String] $Name
         )
-        $Connection = $Global:Session.SQLServerLocalDB.GetConnection($Name);
-        Return [String]::Format(
-            "Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0};Integrated Security=True;",
-            $Connection.DatabaseFile
-        );
+        [String] $ReturnValue = $null;
+        If ($Name -eq $Global:Session.SQLServerLocalDB.MasterConnectionName)
+        {
+            $ReturnValue = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;";
+        }
+        Else
+        {
+            [PSCustomObject] $Connection = $Global:Session.Connections.Get($Name);
+            $ReturnValue = [String]::Format(
+                "Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={0};Integrated Security=True;",
+                $Connection.DatabaseFilePath
+            );
+        }
+        Return $ReturnValue;
     };
 #endregion Connection Methods
 
@@ -571,6 +585,54 @@ Add-Member `
         }
         Return $ReturnValue;
     }
+Add-Member `
+    -InputObject $Global:Session.SQLServerLocalDB `
+    -Name "ExecuteMultipleCommands" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName,
+
+            [Parameter(Mandatory=$true)]
+            [Collections.Generic.List[String]] $CommandTexts
+        )
+        [Exception] $Exception = $null;
+        [Data.SqlClient.SqlConnection] $Connection = $null;
+        [Data.SqlClient.SqlCommand] $Command = $null;
+        Try
+        {
+            $Connection = [Data.SqlClient.SqlConnection]::new($Global:Session.SQLServerLocalDB.GetConnectionString($ConnectionName));
+            $Connection.Open();
+            ForEach ($CommandText In $CommandTexts)
+            {
+                $Command = [Data.SqlClient.SqlCommand]::new($CommandText, $Connection);
+                $Command.CommandTimeout = 0;
+                $Command.CommandType = [Data.CommandType]::Text;
+                [void] $Command.ExecuteNonQuery();
+            }
+        }
+        Catch
+        {
+            $Exception = $_.Exception;
+        }
+        Finally
+        {
+            If ($Command)
+                { [void] $Command.Dispose(); }
+            If ($Connection)
+            {
+                If (!$Connection.State -ne [Data.ConnectionState]::Closed)
+                    { [void] $Connection.Close(); }
+                [void] $Connection.Dispose();
+            }
+        }
+        If ($Exception)
+        {
+            Throw $Exception;
+        }
+    }
 #endregion Base Methods
 
 Add-Member `
@@ -731,4 +793,88 @@ Add-Member `
         )
         $CommandText = $CommandText.Replace("`$(SchemaName)", $SchemaName)
         [void] $Global:Session.SQLServerLocalDB.Execute($ConnectionName, $CommandText, $Parameters);
+    }
+Add-Member `
+    -InputObject $Global:Session.SQLServerLocalDB `
+    -Name "DoesDatabaseExists" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Boolean])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
+        )
+        [Boolean] $ReturnValue = $false;
+        [PSCustomObject] $Connection = $Global:Session.SQLServerLocalDB.GetConnection($ConnectionName);
+Write-Host ($Connection.DatabaseFilePath)
+        [Object] $ScalarValue = $Global:Session.SQLServerLocalDB.GetScalar(
+            $Global:Session.SQLServerLocalDB.MasterConnectionName,
+            "SELECT 1 FROM [sys].[databases] WHERE [name] = @DatabaseFilePath",
+            @{ "@DatabaseFilePath" = $Connection.DatabaseFilePath; }
+        );
+        If (
+            $ScalarValue -is [Int64] -or
+            $ScalarValue -is [Int32] -or
+            $ScalarValue -is [Int16] -or
+            $ScalarValue -is [Byte]
+        )
+        {
+            If (([Int64]$ScalarValue) -eq 1)
+            {
+                $ReturnValue = $true;
+            }
+        }
+        Return $ReturnValue;
+    }
+Add-Member `
+    -InputObject $Global:Session.SQLServerLocalDB `
+    -Name "DetachDatabase" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
+        )
+        [PSCustomObject] $Connection = $Global:Session.SQLServerLocalDB.GetConnection($ConnectionName);
+        If ($Global:Session.SQLServerLocalDB.DoesDatabaseExists($Connection.DatabaseFilePath))
+        {
+            [void] $Global:Session.SQLServerLocalDB.ExecuteMultipleCommands(
+                $Global:Session.SQLServerLocalDB.MasterConnectionName,
+                @(
+                    [String]::Format("ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE", $Connection.DatabaseFilePath.ToUpper()),
+                    [String]::Format("EXEC [master].[dbo].[sp_detach_db] @dbname = N'{0}', @skipchecks = 'false'", $Connection.DatabaseFilePath.ToUpper())
+                )
+            );
+        }
+    }
+Add-Member `
+    -InputObject $Global:Session.SQLServerLocalDB `
+    -Name "CreateDatabaseIfNotExists" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([String])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $ConnectionName
+        )
+        If (!$Global:Session.SQLServerLocalDB.DoesDatabaseExists($ConnectionName))
+        {
+            [PSCustomObject] $Connection = $Global:Session.SQLServerLocalDB.GetConnection($ConnectionName);
+            [String] $PrimaryFilePath = $Connection.DatabaseFilePath;
+            [String] $LogFilePath = [IO.Path]::ChangeExtension($PrimaryFilePath, ".ldf");
+            [String] $PrimaryFileName = [String]::Format("{0}_Primary", [IO.Path]::GetFileNameWithoutExtension($PrimaryFilePath));
+            [String] $LogFileName = [String]::Format("{0}_Log", [IO.Path]::GetFileNameWithoutExtension($LogFilePath));
+            [String] $CommandText = [IO.File]::ReadAllText([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), "CreateDatabase.sql"));
+            $CommandText = $CommandText.Replace("`$(PrimaryFilePath)", $PrimaryFilePath);
+            $CommandText = $CommandText.Replace("`$(PrimaryFileName)", $PrimaryFileName);
+            $CommandText = $CommandText.Replace("`$(LogFilePath)", $LogFilePath);
+            $CommandText = $CommandText.Replace("`$(LogFileName)", $LogFileName);
+            [void] $Global:Session.SQLServerLocalDB.Execute(
+                $Global:Session.SQLServerLocalDB.MasterConnectionName,
+                $CommandText,
+                $null);
+            }
     }

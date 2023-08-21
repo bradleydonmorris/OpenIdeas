@@ -141,7 +141,7 @@ BEGIN
 					[Name] [nvarchar](100) N'$.Name',
 					[BeginTime] [datetime2](7) N'$.BeginTime',
 					[EndTime] [datetime2](7) N'$.EndTime',
-					[ElapsedSeconds] [decimal](32, 10) N'$.ElapsedSeconds'
+					[ElapsedSeconds] [float] N'$.ElapsedSeconds'
 				) AS [Source]
 				LEFT OUTER JOIN [Logging].[Timer] AS [Target]
 					ON

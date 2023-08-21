@@ -1,10 +1,79 @@
-. ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
-    "Prompts",
-    "Utilities",
-    "AppleHealth",
-    "ShieldsIO"
-);
-$Global:Session.Logging.OutputToHost = $true;
+[DateTime] $BeginTime = "2023-08-31 16:45:31.6443137";
+[DateTime] $EndTime = "2023-08-31 16:45:31.6443691";
+[TimeSpan] $ElapsedTime = $EndTime - $BeginTime;
+$ElapsedTime.TotalSeconds
+$ElapsedTime.TotalSeconds.ToString("N")
+
+# $Global:Session.Logging.ElapsedLogTime = $Global:Session.Logging.CloseLogTime - $Global:Session.Logging.OpenLogTime;
+# [String] $Temp = "5.54E-05";
+# [System.Convert]::ToDecimal($Temp);
+
+
+# [String] $BearerToken = "Bearer 00DHn0000019aWS!AQIAQHckR1CH3rlyf3qi2t1UBVhe9uhwv5F01nUwIyR8.uj.JFDVtq1_iGPo5TRoUYMKYkHYP8ecM9f0PWlpQ7Kbv6Df.RGn"
+# [String] $JobRequestURI = "https://selfemployed63-dev-ed.develop.my.salesforce.com/services/data/v58.0/jobs/ingest/"
+# [Collections.Hashtable] $JobRequestHeaders = @{
+#     "Authorization" = $BearerToken;
+#     "Content-Type" = "application/json";
+#     "X-PrettyPrint" = "1";
+# }
+# [Collections.Hashtable] $JobRequestBody = @{
+#     "object" = "fleet__c";
+#     "externalIdFieldName" = "vin__c";
+#     "contentType" = "CSV";
+#     "operation" = "upsert";
+#     "lineEnding" = "CRLF";
+# };
+# $JobResponse = Invoke-RestMethod -Uri $JobRequestURI -Method POST -Body (ConvertTo-Json $JobRequestBody -Depth 10) -Headers $JobRequestHeaders;
+
+# [String] $BatchRequestURI = [String]::Format(
+#     "https://selfemployed63-dev-ed.develop.my.salesforce.com/services/data/v58.0/jobs/ingest/{0}/batches/",
+#     $JobResponse.id
+# );
+# [Collections.Hashtable] $BatchRequestHeaders = @{
+#     "Authorization" = $BearerToken;
+#     "Content-Type" = "text/csv";
+# }
+# $BatchResponse = Invoke-RestMethod -Uri $BatchRequestURI -Method PUT -Headers $BatchRequestHeaders -InFile "C:\Users\bmorris\Documents\update.csv";
+# $BatchResponse
+
+
+# [Collections.Hashtable] $UploadCompleteRequestBody = @{
+#     "state" = "UploadComplete";
+# };
+# [String] $UploadCompleteRequestURI = [String]::Format(
+#     "https://selfemployed63-dev-ed.develop.my.salesforce.com/services/data/v58.0/jobs/ingest/{0}/",
+#     $JobResponse.id
+# );
+# [Collections.Hashtable] $UploadCompleteRequestHeaders = @{
+#     "Authorization" = $BearerToken;
+#     "Content-Type" = "application/json";
+# }
+# $UploadCompleteResponse = Invoke-RestMethod -Uri $UploadCompleteRequestURI -Method PATCH -Body (ConvertTo-Json $UploadCompleteRequestBody -Depth 10) -Headers $UploadCompleteRequestHeaders;
+# $UploadCompleteResponse
+
+
+# curl https://MyDomainName.my.salesforce.com/services/data/v58.0/jobs/ingest/7476gEXAMPLE4X2ZWO/
+# -H 'Authorization: Bearer 00DE0X0A0M0PeLE!AQcAQH0dMHEXAMPLEzmpkb58urFRkgeBGsxL_QJWwYMfAbUeeG7c1EXAMPLEDUkWe6H34r1AAwOR8B8fLEz6nEXAMPLE'
+# -H "Content-Type: application/json" -H "X-PrettyPrint:1" -d @upload_complete.json -X PATCH
+# curl https://MyDomainName.my.salesforce.com/services/data/v58.0/jobs/ingest/7476gEXAMPLE4X2ZWO/batches/
+# -H 'Authorization: Bearer 00DE0X0A0M0PeLE!AQcAQH0dMHEXAMPLEzmpkb58urFRkgeBGsxL_QJWwYMfAbUeeG7c1EXAMPLEDUkWe6H34r1AAwOR8B8fLEz6nEXAMPLE'
+# -H "Content-Type: text/csv" --data-binary @accountupsert.csv -X PUT
+
+
+# curl https://MyDomainName.my.salesforce.com/services/data/v59.0/jobs/ingest/ 
+# -H 'Authorization: Bearer 00DE0X0A0M0PeLE!AQcAQH0dMHEXAMPLEzmpkb58urFRkgeBGsxL_QJWwYMfAbUeeG7c1EXAMPLEDUkWe6H34r1AAwOR8B8fLEz6nEXAMPLE' 
+# -H "Content-Type: application/json" -H "X-PrettyPrint:1" -d @newupsertjob.json -X POST
+
+
+
+# . ([IO.Path]::Combine([IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName($PSCommandPath)), ".init.ps1")) -RequiredModules @(
+#     "Prompts",
+#     "Utilities",
+#     "AppleHealth",
+#     "ShieldsIO",
+#     "SQLServerLocalDB"
+# );
+# $Global:Session.Logging.OutputToHost = $true;
 #$Global:Session.Logging.Config.DatabaseConnectionName
 #$Global:Session.Logging.Config
 #$Global:Session.AppleHealth.DatabaseType = "Sqlite";
@@ -15,48 +84,22 @@ $Global:Session.Logging.OutputToHost = $true;
 #C:\Integrations\Connections\AppleHealth-SQLServerLocalDB.json
 #C:\Integrations\Connections\AppleHealth-SQLServerLocalDB.json
 
-[void] $Global:Session.AppleHealth.SetDatabaseConnection("AppleHealth-SQLServerLocalDB");
+#[void] $Global:Session.AppleHealth.SetDatabaseConnection("AppleHealth-SQLServerLocalDB");
+#$Global:Session.SQLServerLocalDB.GetConnectionString("AppleHealth-SQLServerLocalDB");
+#[void] $Global:Session.AppleHealth.SetDatabaseConnection("AppleHealth-SQLServer");
 #$Global:Session.AppleHealth.SetDatabaseType("SQLServerLocalDB");
-$Global:Session.AppleHealth.DatabaseType
-[void] $Global:Session.AppleHealth.VerifyDatabase();
+#$Global:Session.AppleHealth.DatabaseType
+#[void] $Global:Session.AppleHealth.VerifyDatabase();
 
-
-
-# [Data.SqlClient.SqlConnection] $Connection = $null;
-# [Data.SqlClient.SqlCommand] $Command = $null;
-# $Connection = [Data.SqlClient.SqlConnection]::new("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Integrations\Data\AdHoc\AppleHealth\LifeBook.mdf;Integrated Security=True;Connect Timeout=30");
-# $Connection.Open();
-# $Command = [Data.SqlClient.SqlCommand]::new("SELECT * FROM sys.objects", $Connection);
-# $Command.CommandTimeout = 0;
-# $Command.CommandType = [Data.CommandType]::Text;
-#     ForEach ($ParameterKey In $Parameters.Keys)
-#     {
-#         [String] $Name = $ParameterKey;
-#         If ($Name.StartsWith("@"))
-#             { $Name = $Name.Substring(1)}
-#         If ($Parameters[$ParameterKey] -isnot [System.Xml.XmlElement])
-#         {
-#             [void] $Command.Parameters.AddWithValue($Name, $Parameters[$ParameterKey]);
-#         }
-#         Else
-#         {
-#             [System.Data.SqlTypes.SqlXml] $SqlXml = [System.Data.SqlTypes.SqlXml]::new([System.Xml.XmlNodeReader]::new($Parameters[$ParameterKey]));
-#             [void] $Command.Parameters.AddWithValue($Name, (
-#                 $SqlXml.IsNull ?  
-#                     [System.DBNull]::Value :
-#                     $SqlXml
-#             ));
-#         }
-#     }
-#     $ReturnValue = $Command.ExecuteScalar();
-#     If ($ReturnValue -is [System.DBNull])
-#     {
-#         $ReturnValue = $null;
-#     }
-
-
-
-
+#$Global:Session.SQLServerLocalDB.MasterConnectionName
+#[void] $Global:Session.SQLServerLocalDB.SetConnection("Goober", $null, $true, [IO.Path]::Combine($Global:Session.DataDirectory, "Goober.mdf"));
+#[void] $Global:Session.SQLServerLocalDB.CreateDatabaseIfNotExists("Goober");
+#[PSCustomObject] $Connection = $Global:Session.SQLServerLocalDB.GetConnection("Goober");
+# [Decimal] $TotalSeconds = 1298.4738390000;
+# $TotalSeconds.ToString("N10");
+# $TotalSeconds.ToString("0.#");
+# $TotalSeconds.ToString("0.0");
+# $TotalSeconds.ToString();
 # # $LogObject = ([ordered]@{
 # #     "Log" = [ordered]@{
 # #         "LogGUID" = $Global:Session.Logging.LogGUID;

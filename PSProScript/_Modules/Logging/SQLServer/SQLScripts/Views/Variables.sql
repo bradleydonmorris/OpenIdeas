@@ -1,4 +1,4 @@
-CREATE OR ALTER VIEW [Logging].[LogEntry]
+CREATE OR ALTER VIEW [Logging].[Variables]
 AS
 	SELECT
 		[Project].[Name] AS [Project],
@@ -8,10 +8,8 @@ AS
 		[Log].[LogGUID],
 		[Log].[OpenLogTime],
 		[Log].[CloseLogTime],
-		[Level].[Name] AS [Level],
-		[Entry].[EntryTime],
-		[Entry].[Number],
-		[Entry].[Text]
+		[Variable].[Name],
+		[Variable].[Value]
 		FROM [Logging].[Project]
 			INNER JOIN [Logging].[Script]
 				ON [Project].[ProjectId] = [Script].[ProjectId]
@@ -19,7 +17,5 @@ AS
 				ON [Script].[ScriptId] = [Invocation].[ScriptId]
 			INNER JOIN [Logging].[Log]
 				ON [Invocation].[InvocationId] = [Log].[InvocationId]
-			INNER JOIN [Logging].[Entry]
-				ON [Log].[LogId] = [Entry].[LogId]
-			INNER JOIN [Logging].[Level]
-				ON [Entry].[LevelId] = [Level].[LevelId]
+			INNER JOIN [Logging].[Variable]
+				ON [Log].[LogId] = [Variable].[LogId]

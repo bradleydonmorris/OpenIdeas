@@ -18,7 +18,6 @@ Add-Member `
     -TypeName "System.String" `
     -NotePropertyName "ConnectionName" `
     -NotePropertyValue $null;
-
 Add-Member `
     -InputObject $Global:Session.AppleHealth `
     -Name "SetDatabaseConnection" `
@@ -28,7 +27,8 @@ Add-Member `
         (
             [String] $ConnectionName
         )
-        [PSCustomObject] $Connection = $Global:Session.Connections.Get($ConnectionName);
+        $Global:Session.AppleHealth.ConnectionName = $ConnectionName;
+        [PSCustomObject] $Connection = $Global:Session.Connections.Get($Global:Session.AppleHealth.ConnectionName);
         [String] $DatabaseType = $Connection.Type;
         $Global:Session.AppleHealth.DatabaseType = $DatabaseType
         . ([IO.Path]::Combine([IO.Path]::GetDirectoryName($PSCommandPath), $Global:Session.AppleHealth.DatabaseType, "Data.ps1"));
@@ -132,7 +132,17 @@ Add-Member `
         
         $Global:Session.Logging.TimedExecute("Import XML Data", {
             Try {
-                [void] $Global:Session.AppleHealth.Data.ImportXML();
+                If ($Global:Session.Variables.Get("IsExtracted"))
+                {
+                    [void] $Global:Session.AppleHealth.Data.ImportXML();
+                    $Global:Session.Variables.Set("IsImported", $true);
+                }
+                Else
+                {
+                    $Global:Session.Variables.Set("IsImported", $false);
+                    $Global:Session.Logging.WriteEntry("Information", "Nothing to import.");
+                }
+
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
@@ -157,7 +167,8 @@ Add-Member `
         [OutputType([System.Windows.Forms.DataVisualization.Charting.Series])]
         Param
         (
-            [System.Drawing.Color] $Color,
+            [System.Drawing.Color] $ForeColor,
+            [System.Drawing.Color] $BackColor,
             [String] $Text,
             [String] $FilePath
         )
@@ -165,9 +176,10 @@ Add-Member `
         [Int32] $Height = 20;
         [System.Drawing.Bitmap] $BitmapTemplate = [System.Drawing.Bitmap]::new($Width, $Height);
         [System.Drawing.Graphics] $GraphicsTemplate = [System.Drawing.Graphics]::FromImage($BitmapTemplate);
+        [void] $GraphicsTemplate.FillRectangle([System.Drawing.SolidBrush]::new($BackColor), 0, 0, $Width, $Height);
         [System.Drawing.Font] $LegendFont = [System.Drawing.Font]::new("Courier New", 16, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel);
-        [void] $GraphicsTemplate.DrawLine([System.Drawing.Pen]::new($Color, 3), [System.Drawing.Point]::new(0, 9), [System.Drawing.Point]::new(15, 9));
-        [void] $GraphicsTemplate.DrawString($Text, $LegendFont, [System.Drawing.SolidBrush]::new($Color), 20, 1);
+        [void] $GraphicsTemplate.DrawLine([System.Drawing.Pen]::new($ForeColor, 3), [System.Drawing.Point]::new(0, 9), [System.Drawing.Point]::new(15, 9));
+        [void] $GraphicsTemplate.DrawString($Text, $LegendFont, [System.Drawing.SolidBrush]::new($ForeColor), 20, 1);
         $Width = (20 + $GraphicsTemplate.MeasureString($Text, $LegendFont).Width);
         [System.Drawing.Bitmap] $Bitmap = [System.Drawing.Bitmap]::new($Width, $Height);
         [System.Drawing.Graphics] $Graphics = [System.Drawing.Graphics]::FromImage($Bitmap);
@@ -322,15 +334,12 @@ Add-Member `
             Try {
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [Collections.Hashtable] $YearlyStatistics_WeightBadgeFilePaths = [Collections.Hashtable]::new();
                 ForEach ($Aggregate In $YearlyStatistics.Weight.Aggregates)
                 {
                     [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}WeightBadge.svg", $Year, $Aggregate.Aggregation));
                     $Message = [String]::Format("{0} ({1})", $Aggregate.Weight, $Aggregate.Date);
-                    [void] $YearlyStatistics_WeightBadgeFilePaths.Add($Aggregate.Aggregation, $FilePath);
                     [void] $Global:Session.ShieldsIO.Download($Aggregate.Aggregation, $Message, "blue", $FilePath);
                 }
-                [void] $Global:Session.Variables.Set("YearlyStatistics_WeightBadgeFilePaths", $YearlyStatistics_WeightBadgeFilePaths);
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
@@ -352,7 +361,6 @@ Add-Member `
                 [void] $SeriesCollection.Add([PSObject]$WeightSeries);
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\WeightChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_WeightChartFilePath", $FilePath);
                 [void] $Global:Session.AppleHealth.BuildYearChart(
                     "Weight",
                     $Year,
@@ -361,11 +369,9 @@ Add-Member `
                 ForEach ($Series In $SeriesCollection)
                 {
                     [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $Series.Name.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $Series.Name.Replace(" ", "")),
-                        $LegendFilePath);
                     $Global:Session.AppleHealth.BuildLegendImage(
                         $Series.Color,
+                        [System.Drawing.Color]::White,
                         $Series.Name,
                         $LegendFilePath
                     );
@@ -378,22 +384,18 @@ Add-Member `
             Try {
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [Collections.Hashtable] $YearlyStatistics_BloodPressureBadgeFilePaths = [Collections.Hashtable]::new();
                 ForEach ($Aggregate In $YearlyStatistics.BloodPressure.Aggregates)
                 {
                     [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}BloodPressureBadge.svg", $Year, $Aggregate.Aggregation));
                     $Message = [String]::Format("{0}/{1}, {2} ({3})", $Aggregate.Systolic, $Aggregate.Diastolic, $Aggregate.MeanArterialPressure, $Aggregate.Date);
-                    [void] $YearlyStatistics_BloodPressureBadgeFilePaths.Add($Aggregate.Aggregation, $FilePath);
                     [void] $Global:Session.ShieldsIO.Download($Aggregate.Aggregation, $Message, "blue", $FilePath);
                 }
-                [void] $Global:Session.Variables.Set("YearlyStatistics_BloodPressureBadgeFilePaths", $YearlyStatistics_BloodPressureBadgeFilePaths);
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
 
         $Global:Session.Logging.TimedExecute("Build Blood Pressure Chart", {
             Try {
-
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Collections.Generic.List[PSObject]] $SeriesCollection = [Collections.Generic.List[PSObject]]::new();
 
@@ -435,7 +437,6 @@ Add-Member `
 
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\BloodPressureChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_BloodPressureChartFilePath", $FilePath);
                 [void] $Global:Session.AppleHealth.BuildYearChart(
                     "Blood Pressure",
                     $Year,
@@ -444,11 +445,9 @@ Add-Member `
                 ForEach ($Series In $SeriesCollection)
                 {
                     [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $Series.Name.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $Series.Name.Replace(" ", "")),
-                        $LegendFilePath);
                     $Global:Session.AppleHealth.BuildLegendImage(
                         $Series.Color,
+                        [System.Drawing.Color]::White,
                         $Series.Name,
                         $LegendFilePath
                     );
@@ -461,15 +460,12 @@ Add-Member `
             Try {
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [Collections.Hashtable] $YearlyStatistics_RestingHeartRateBadgeFilePaths = [Collections.Hashtable]::new();
                 ForEach ($Aggregate In $YearlyStatistics.RestingHeartRate.Aggregates)
                 {
                     [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}RestingHeartRateBadge.svg", $Year, $Aggregate.Aggregation));
                     $Message = [String]::Format("{0} ({1})", $Aggregate.RestingHeartRate, $Aggregate.Date);
-                    [void] $YearlyStatistics_RestingHeartRateBadgeFilePaths.Add($Aggregate.Aggregation, $FilePath);
                     [void] $Global:Session.ShieldsIO.Download($Aggregate.Aggregation, $Message, "blue", $FilePath);
                 }
-                [void] $Global:Session.Variables.Set("YearlyStatistics_RestingHeartRateBadgeFilePaths", $YearlyStatistics_RestingHeartRateBadgeFilePaths);
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
@@ -491,7 +487,6 @@ Add-Member `
                 [void] $SeriesCollection.Add([PSObject]$RestingHeartRateSeries);
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\RestingHeartRateChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_RestingHeartRateChartFilePath", $FilePath);
                 [void] $Global:Session.AppleHealth.BuildYearChart(
                     "Resting Heart Rate",
                     $Year,
@@ -500,41 +495,13 @@ Add-Member `
                 ForEach ($Series In $SeriesCollection)
                 {
                     [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $Series.Name.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $Series.Name.Replace(" ", "")),
-                        $LegendFilePath);
                     $Global:Session.AppleHealth.BuildLegendImage(
                         $Series.Color,
+                        [System.Drawing.Color]::White,
                         $Series.Name,
                         $LegendFilePath
                     );
                 }
-
-
-<#
-                $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
-                [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\RestingHeartRateChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_RestingHeartRateChartFilePath", $FilePath);
-                [Collections.Hashtable] $SeriesColors = @{ "Resting Heart Rate" = [System.Drawing.Color]::FromArgb(255, 0, 0, 255); }
-                [void] $Global:Session.AppleHealth.BuildRestingHeartRateChart(
-                    $Year,
-                    $YearlyStatistics.RestingHeartRate.Values,
-                    $SeriesColors,
-                    $FilePath);
-                ForEach ($SeriesColorKey In $SeriesColors.Keys)
-                {
-                    [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $SeriesColorKey.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $SeriesColorKey.Replace(" ", "")),
-                        $LegendFilePath);
-                    $Global:Session.AppleHealth.BuildLegendImage(
-                        $SeriesColors[$SeriesColorKey],
-                        $SeriesColorKey,
-                        $LegendFilePath
-                    );
-                }
-#>
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
@@ -543,22 +510,18 @@ Add-Member `
             Try {
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [Collections.Hashtable] $YearlyStatistics_EnergyBurnedBadgeFilePaths = [Collections.Hashtable]::new();
                 ForEach ($Aggregate In $YearlyStatistics.EnergyBurned.Aggregates)
                 {
                     [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}EnergyBurnedBadge.svg", $Year, $Aggregate.Aggregation));
                     $Message = [String]::Format("{0}/{1}, ({2})", $Aggregate.BasalEnergyBurned, $Aggregate.ActiveEnergyBurned, $Aggregate.Date);
-                    [void] $YearlyStatistics_EnergyBurnedBadgeFilePaths.Add($Aggregate.Aggregation, $FilePath);
                     [void] $Global:Session.ShieldsIO.Download($Aggregate.Aggregation, $Message, "blue", $FilePath);
                 }
-                [void] $Global:Session.Variables.Set("YearlyStatistics_EnergyBurnedBadgeFilePaths", $YearlyStatistics_EnergyBurnedBadgeFilePaths);
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
 
         $Global:Session.Logging.TimedExecute("Build Energy Burned Chart", {
             Try {
-
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Collections.Generic.List[PSObject]] $SeriesCollection = [Collections.Generic.List[PSObject]]::new();
 
@@ -588,7 +551,6 @@ Add-Member `
 
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\EnergyBurnedChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_EnergyBurnedChartFilePath", $FilePath);
                 [void] $Global:Session.AppleHealth.BuildYearChart(
                     "Energy Burned",
                     $Year,
@@ -597,11 +559,9 @@ Add-Member `
                 ForEach ($Series In $SeriesCollection)
                 {
                     [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $Series.Name.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $Series.Name.Replace(" ", "")),
-                        $LegendFilePath);
                     $Global:Session.AppleHealth.BuildLegendImage(
                         $Series.Color,
+                        [System.Drawing.Color]::White,
                         $Series.Name,
                         $LegendFilePath
                     );
@@ -614,15 +574,12 @@ Add-Member `
             Try {
                 $YearlyStatistics = $Global:Session.Variables.Get("YearlyStatistics");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
-                [Collections.Hashtable] $YearlyStatistics_StepsBadgeFilePaths = [Collections.Hashtable]::new();
                 ForEach ($Aggregate In $YearlyStatistics.Steps.Aggregates)
                 {
                     [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}StepsBadge.svg", $Year, $Aggregate.Aggregation));
                     $Message = [String]::Format("{0} ({1})", $Aggregate.Steps, $Aggregate.Date);
-                    [void] $YearlyStatistics_StepsBadgeFilePaths.Add($Aggregate.Aggregation, $FilePath);
                     [void] $Global:Session.ShieldsIO.Download($Aggregate.Aggregation, $Message, "blue", $FilePath);
                 }
-                [void] $Global:Session.Variables.Set("YearlyStatistics_StepsBadgeFilePaths", $YearlyStatistics_StepsBadgeFilePaths);
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });
@@ -644,7 +601,6 @@ Add-Member `
                 [void] $SeriesCollection.Add([PSObject]$StepsSeries);
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\StepsChart.png", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_StepsChartFilePath", $FilePath);
                 [void] $Global:Session.AppleHealth.BuildYearChart(
                     "Steps",
                     $Year,
@@ -653,11 +609,9 @@ Add-Member `
                 ForEach ($Series In $SeriesCollection)
                 {
                     [String] $LegendFilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats\{1}Legend.png", $Year, $Series.Name.Replace(" ", "")));
-                    [void] $Global:Session.Variables.Set(
-                        [String]::Format("YearlyStatistics_{0}LegendFilePath", $Series.Name.Replace(" ", "")),
-                        $LegendFilePath);
                     $Global:Session.AppleHealth.BuildLegendImage(
                         $Series.Color,
+                        [System.Drawing.Color]::White,
                         $Series.Name,
                         $LegendFilePath
                     );
@@ -671,7 +625,6 @@ Add-Member `
                 [Collections.ArrayList] $Badges = @("Lowest", "Highest", "First", "Last");
                 [Int32] $Year = $Global:Session.Variables.Get("YearlyStatistics_Year");
                 [String] $FilePath = [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats.md", $Year));
-                [void] $Global:Session.Variables.Set("YearlyStatistics_MarkdownFilePath", $FilePath);
 
                 [System.Text.StringBuilder] $StringBuilder = [System.Text.StringBuilder]::new();
                 [void] $StringBuilder.AppendFormat("# {0} Statistics`n`n", $Year);
@@ -727,6 +680,60 @@ Add-Member `
                 [void] $StringBuilder.AppendFormat("![EnergyBurnedChart]({0}_YearlyStats/EnergyBurnedChart.png)`n`n", $Year);
 
                 [void] [IO.File]::WriteAllText($FilePath, $StringBuilder.ToString());
+            }
+            Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
+        });
+        [void] $Global:Session.AppleHealth.AddReport(
+            [String]::Format("{0} Yearly Stats", $Year),
+            [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats.md", $Year)),
+            [IO.Path]::Combine($OutputDirectory, [String]::Format("{0}_YearlyStats", $Year))   
+        )
+    }
+Add-Member `
+    -InputObject $Global:Session.AppleHealth `
+    -Name "AddReport" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [String] $Name,
+            [String] $FilePath,
+            [String] $AssetDirectoryPath
+        )
+        [PSObject] $Report = [PSObject]::new();
+        Add-Member -InputObject $Report -TypeName "System.String" -NotePropertyName "Name" -NotePropertyValue $Name;
+        Add-Member -InputObject $Report -TypeName "System.String" -NotePropertyName "FilePath" -NotePropertyValue $FilePath;
+        Add-Member -InputObject $Report -TypeName "System.String" -NotePropertyName "AssetDirectoryPath" -NotePropertyValue $AssetDirectoryPath;
+        If ($Global:Session.Variables.Exists("Reports"))
+        {
+            [Collections.Generic.List[PSObject]] $Reports = $Global:Session.Variables.Get("Reports");
+            [void] $Reports.Add($Report);
+        }
+        Else
+        {
+            [Collections.Generic.List[PSObject]] $Reports = [Collections.Generic.List[PSObject]]::new();
+            [void] $Reports.Add($Report);
+            $Global:Session.Variables.Set("Reports", $Reports);
+        }
+    }
+Add-Member `
+    -InputObject $Global:Session.AppleHealth `
+    -Name "CopyReports" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        Param
+        (
+            [String] $CopyTo
+        )
+        [void] $Global:Session.Variables.Set("ReportsCopyTo", $CopyTo);
+        $Global:Session.Logging.TimedExecute("Copy Reports", {
+            Try {
+                [String] $ReportsCopyTo = $Global:Session.Variables.Get("ReportsCopyTo");
+                ForEach ($Report In $Global:Session.Variables.Get("Reports"))
+                {
+                    Copy-Item -Path ($Report.FilePath) -Destination $ReportsCopyTo -Force
+                    Copy-Item -Path ($Report.AssetDirectoryPath) -Destination $ReportsCopyTo -Force -Recurse
+                }
             }
             Catch { [void] $Global:Session.Logging.WriteException($_.Exception); }
         });

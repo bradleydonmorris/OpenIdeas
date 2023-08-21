@@ -47,6 +47,19 @@ Add-Member `
     };
 Add-Member `
     -InputObject $Global:Session.Variables `
+    -Name "Exists" `
+    -MemberType "ScriptMethod" `
+    -Value {
+        [OutputType([Boolean])]
+        Param
+        (
+            [Parameter(Mandatory=$true)]
+            [String] $Name
+        )
+        Return $Global:Session.Variables.Dictionary.ContainsKey($Name);
+    };
+Add-Member `
+    -InputObject $Global:Session.Variables `
     -Name "Remove" `
     -MemberType "ScriptMethod" `
     -Value {

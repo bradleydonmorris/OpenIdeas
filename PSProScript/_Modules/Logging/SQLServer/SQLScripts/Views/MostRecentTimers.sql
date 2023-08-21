@@ -1,4 +1,4 @@
-CREATE OR ALTER VIEW [Logging].[MostRecentLogEntry]
+CREATE OR ALTER VIEW [Logging].[MostRecentTimers]
 AS
 	SELECT
 		[Project].[Name] AS [Project],
@@ -8,10 +8,16 @@ AS
 		[Log].[LogGUID],
 		[Log].[OpenLogTime],
 		[Log].[CloseLogTime],
-		[Level].[Name] AS [Level],
-		[Entry].[EntryTime],
-		[Entry].[Number],
-		[Entry].[Text]
+		[Timer].[Sequence],
+		[Timer].[Name],
+		[Timer].[BeginTime],
+		[Timer].[EndTime],
+		[Timer].[ElapsedSeconds],
+		CONCAT
+		(
+			IIF(FLOOR(([Timer].[ElapsedSeconds] * 1000) / 86400000) > 0, CONCAT(FORMAT(FLOOR(([Timer].[ElapsedSeconds] * 1000) / 86400000), N'0'), N'd '), N''),
+			FORMAT(DATEADD([MILLISECOND], (([Timer].[ElapsedSeconds] * 1000) - (FLOOR(([Timer].[ElapsedSeconds] * 1000) / 86400000) * 86400000)), TRY_CAST(N'00:00:00' AS [time](7))), N'hh\:mm\:ss\.fffffff')
+		) AS [ElapsedTime]
 		FROM [Logging].[Project]
 			INNER JOIN [Logging].[Script]
 				ON [Project].[ProjectId] = [Script].[ProjectId]
@@ -30,7 +36,5 @@ AS
 				ON
 					[Invocation].[InvocationId] = [MostRecent].[InvocationId]
 					AND [Log].[OpenLogTime] = [MostRecent].[MaximumOpenLogTime]
-			INNER JOIN [Logging].[Entry]
-				ON [Log].[LogId] = [Entry].[LogId]
-			INNER JOIN [Logging].[Level]
-				ON [Entry].[LevelId] = [Level].[LevelId]
+			INNER JOIN [Logging].[Timer]
+				ON [Log].[LogId] = [Timer].[LogId]
