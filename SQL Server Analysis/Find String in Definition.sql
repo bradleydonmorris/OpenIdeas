@@ -1,4 +1,13 @@
 USE [master]
+DECLARE @StringsToFindAND TABLE
+(
+	[Id] [int] IDENTITY(1, 1) NOT NULL,
+	[String] [nvarchar](MAX) NOT NULL
+)
+INSERT INTO @StringsToFindAND([String]) VALUES
+	(N'knum, Pass_Through_Revenue, Net_Revenue, Upgrade_Revenue, TM_Revenue'),
+	(N'cpay.*')
+
 DECLARE @Object TABLE
 (
 	[Database] [sys].[sysname],
@@ -22,9 +31,15 @@ SELECT
 		INNER JOIN [{@DatabaseName}].[sys].[schemas]
 			ON [objects].[schema_id] = [schemas].[schema_id]
 	WHERE
-		[sql_modules].[definition] LIKE N''%substatus%''
-		--OR [sql_modules].[definition] LIKE N''%t_process_request_response%''
 '
+SELECT
+	@QueryTemplate += CASE
+		WHEN [Id] = 1
+			THEN CONCAT(CHAR(9), CHAR(9), '[sql_modules].[definition] LIKE N''%', [String], N'%''', CHAR(13), CHAR(10))
+		ELSE CONCAT(CHAR(9), CHAR(9), 'AND [sql_modules].[definition] LIKE N''%', [String], N'%''', CHAR(13), CHAR(10))
+	END
+	FROM @StringsToFindAND
+
 DECLARE @DatabaseName [sysname]
 
 DECLARE _Database CURSOR LOCAL FORWARD_ONLY READ_ONLY FOR
