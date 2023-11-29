@@ -5,8 +5,8 @@ DECLARE @StringsToFindAND TABLE
 	[String] [nvarchar](MAX) NOT NULL
 )
 INSERT INTO @StringsToFindAND([String]) VALUES
-	(N'knum, Pass_Through_Revenue, Net_Revenue, Upgrade_Revenue, TM_Revenue'),
-	(N'cpay.*')
+	(N'INTO'),
+	(N'#')
 
 DECLARE @Object TABLE
 (

@@ -78,7 +78,7 @@ Add-Member `
         )
         $Connection = $Global:Session.SQLServer.GetConnection($Name);
         Return [String]::Format(
-            "Server={0};Database={1};{2};Workstation ID={3};Application Name={4};",
+            "Server={0};Database={1};{2};Workstation ID={3};Application Name=`"PS:{4}`";",
             $Connection.Instance,
             $Connection.Database,
             (
@@ -218,7 +218,16 @@ Add-Member `
                 }
             }
             $DataReader = $Command.ExecuteReader();
-            If ($Fields.Contains("*"))
+            If (-not $Fields)
+            {
+                $Fields = [Collections.Generic.List[String]]::new();
+                [void] $Fields.Clear();
+                For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)
+                {
+                    [void] $Fields.Add($DataReader.GetName($FieldIndex));
+                }
+            }
+            ElseIf ($Fields.Contains("*"))
             {
                 [void] $Fields.Clear();
                 For ($FieldIndex = 0; $FieldIndex -lt $DataReader.FieldCount; $FieldIndex ++)

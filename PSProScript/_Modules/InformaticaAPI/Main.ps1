@@ -160,8 +160,8 @@ Add-Member `
                             ConvertTo-Json `
                                 -InputObject @{
                                     "@type" = "login";
-                                    "username" = $APIConnection.UserName;
-                                    "password" = $APIConnection.Password;
+                                    "username" = $Connection.UserName;
+                                    "password" = $Connection.Password;
                                 } `
                                 -Depth 100
                     )
